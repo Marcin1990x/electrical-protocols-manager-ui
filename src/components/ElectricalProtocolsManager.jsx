@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react"
 import { addBuildingApi, retrieveBuildingsApi, addFloorToBuildingApi} from "../api/BuildingApiService"
-import { retrieveFloorsApi, addFloorApi } from "../api/FloorApiService"
+import { addFloorApi, addRoomToFloorApi } from "../api/FloorApiService"
+import { addRoomApi } from "../api/RoomApiService"
+import FloorTable from "./tables/FloorTable"
 
 export default function ElectricalProtocolsManager() {
 
     const [render, setRender] = useState(0)
     const [buildings, setBuildings] = useState([])
-    const [floors, setFloors] = useState([])
-    const [buildingName, setBuildingName] = useState('Building Name')
-    const [floorName, setFloorName] = useState('Floor Name')
+    const [buildingName, setBuildingName] = useState('')
+    const [floorName, setFloorName] = useState('')
+    const [roomName, setRoomName] = useState('')
 
     useEffect ( () => refreshData(), [render])
 
@@ -18,19 +20,32 @@ export default function ElectricalProtocolsManager() {
     function handleFloorNameChange(event) {
         setFloorName(event.target.value)
     }
+    function setFloorNameFunction(value) {
+        setFloorName(value)
+    }
+    function handleRoomNameChange(event) {
+        setRoomName(event.target.value)
+    }
     function handleAddBuildingBtn() {
         const newBuilding = {
             buildingName: buildingName
         }
         if(buildingName !== '') {
             addBuildingApi(newBuilding)
-            .then(response => console.log(response))
+            .then(response => {
+                console.log(response)
+                setRender(render + 1)
+            })
             .catch(error => console.log(error))
-            setRender(render + 1)
             console.log(render)
         } else {
             console.log('Fill building name field.')
         }
+    }
+    function addFloorTable(building){
+        return (
+                FloorTable(building, handleRoomNameChange, handleAddRoomBtn)
+        )
     }
     function handleAddFloorBtn(id) {
         const newFloor = {
@@ -39,14 +54,37 @@ export default function ElectricalProtocolsManager() {
         if(floorName !== '') {
             addFloorApi(newFloor)
             .then(response => {
+                setRender(render - 1)
                 addFloorToBuildingApi(id, response.data.id)
-                .then(response => console.log(response))
+                .then(response => {
+                    setRender(render + 1)
+                    console.log(response)
+                })
                 .catch(error => console.log(error))
             })
             .catch(error => console.log(error))
-            setRender(render - 1)
         } else {
             console.log('Fill floor name field.')
+        }
+    }
+    function handleAddRoomBtn(id) { // same as above. Refactor with if
+        const newRoom = {
+            roomName: roomName
+        }
+        if(roomName !== '') {
+            addRoomApi(newRoom)
+            .then(response => {
+                setRender(render - 1)
+                addRoomToFloorApi(id, response.data.id)
+                .then(response => {
+                    setRender(render + 1)
+                    console.log(response)
+                })
+                .catch(error => console.log(error))
+            })
+            .catch(error => console.log(error))
+        } else {
+            console.log('Fill room name field.')
         }
     }
 
@@ -57,31 +95,23 @@ export default function ElectricalProtocolsManager() {
             setBuildings(response.data)
         })
         .catch(error => console.log(error))
-        retrieveFloorsApi()
-        .then(response => setFloors(response.data))
-        .catch(error => console.log(error))
     }
 
     return (
         <div className="ElectricalProtocolsManager">
-
             <div>
                 <table className="table">
                     <thead>
                         <tr>
                             <th>BUILDING</th>
-                            <th>add</th>
-                            <th>add</th>
-                            <th>add</th>
-                            <th>FLOOR</th>
-                            <th>add</th>
-                            <th>ROOM</th>
+                            <th>add FLOOR</th>
+                            <th>add ROOM</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                <input type="text" defaultValue= "Building Name" onChange={handleBuildingNameChange} ></input>
+                                <input type="text" onChange={handleBuildingNameChange} ></input>
                                 <button type="button" className="btn btn-success" onClick={handleAddBuildingBtn}>Add building</button>
                             </td>
                             <td></td>
@@ -96,42 +126,21 @@ export default function ElectricalProtocolsManager() {
                                             <button type="button" className="btn btn-danger">X</button>
                                         </td>
                                         <td>
-                                            <input type="text" defaultValue= "Floor Name" onChange={handleFloorNameChange} ></input>
-                                            <button type="button" className="btn btn-success" onClick={() =>handleAddFloorBtn(building.id)}>Add floor</button>
+                                            <input type="text" onChange={handleFloorNameChange} ></input>
+                                            <button type="button" className="btn btn-success" 
+                                                onClick={() => {
+                                                    //setFloorNameFunction()
+                                                    handleAddFloorBtn(building.id);
+                                                    }
+                                                } >Add floor</button>  
                                         </td>
                                         <td>
-                                            {
-                                                floors.map (
-                                                    floor => (
-                                                        <tr key = {floor.id} >
-                                                            <td>{floor.floorName}</td>
-                                                        </tr>
-                                                    )
-                                                )
-                                            }
+                                            {addFloorTable(building)}
                                         </td>
                                     </tr>
                                 )
                             )
                         }
-                        {/* {
-                            floors.map (
-                                floor => (
-                                    <tr key = {floor.id}>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            {floor.floorName}
-                                            <button type="button" className="btn btn-danger">X</button>
-                                        </td>
-                                        <td>
-                                            <input type="text" defaultValue= "Floor Name"  ></input>
-                                            <button type="button" className="btn btn-success">Add room</button>
-                                        </td>
-                                    </tr>
-                                )
-                            )
-                        } */}
                     </tbody>
                 </table>
             </div>
