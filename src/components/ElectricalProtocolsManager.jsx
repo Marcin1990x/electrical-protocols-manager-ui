@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { addBuildingApi, retrieveBuildingsApi, addFloorToBuildingApi} from "../api/BuildingApiService"
-import { addFloorApi, addRoomToFloorApi } from "../api/FloorApiService"
-import { addRoomApi } from "../api/RoomApiService"
+import { addBuildingApi, retrieveBuildingsApi, addFloorToBuildingApi, deleteBuildingByIdApi} from "../api/BuildingApiService"
+import { addFloorApi, addRoomToFloorApi, deleteFloorByIdApi } from "../api/FloorApiService"
+import { addRoomApi, deleteRoomByIdApi } from "../api/RoomApiService"
 import FloorTable from "./tables/FloorTable"
 
 export default function ElectricalProtocolsManager() {
@@ -19,9 +19,6 @@ export default function ElectricalProtocolsManager() {
     }
     function handleFloorNameChange(event) {
         setFloorName(event.target.value)
-    }
-    function setFloorNameFunction(value) {
-        setFloorName(value)
     }
     function handleRoomNameChange(event) {
         setRoomName(event.target.value)
@@ -44,8 +41,32 @@ export default function ElectricalProtocolsManager() {
     }
     function addFloorTable(building){
         return (
-                FloorTable(building, handleRoomNameChange, handleAddRoomBtn)
+                FloorTable(building, handleAddRoomBtn, handleDeleteBtn)
         )
+    }
+    function handleDeleteBtn(id, delType, parentId) {
+        if(delType === 1) {
+            deleteBuildingByIdApi(id)
+            .then(response => {
+                setRender(render + 1)
+                console.log(response)
+            })
+            .catch(error => console.log(error))
+        } else if (delType === 2) {
+            deleteFloorByIdApi(id, parentId)
+            .then(response => {
+                setRender(render + 1)
+                console.log(response)
+            })
+            .catch(error => console.log(error))
+        } else if (delType === 3) {
+            deleteRoomByIdApi(id)
+            .then(response => {
+                setRender(render + 1)
+                console.log(response)
+            })
+            .catch(error => console.log(error))
+        }
     }
     function handleAddFloorBtn(id) {
         const newFloor = {
@@ -111,11 +132,15 @@ export default function ElectricalProtocolsManager() {
                     <tbody>
                         <tr>
                             <td>
-                                <input type="text" onChange={handleBuildingNameChange} ></input>
+                                <input type="text" defaultValue="building name" onChange={handleBuildingNameChange} ></input>
                                 <button type="button" className="btn btn-success" onClick={handleAddBuildingBtn}>Add building</button>
                             </td>
-                            <td></td>
-                            <td></td>
+                            <td>
+                                <input type="text" defaultValue="floor name" onChange={handleFloorNameChange} ></input>
+                            </td>
+                            <td>
+                            <input type="text" defaultValue="room name" onChange={handleRoomNameChange} ></input>
+                            </td>
                         </tr>
                         {
                             buildings.map (
@@ -123,16 +148,10 @@ export default function ElectricalProtocolsManager() {
                                     <tr key = {building.id}>
                                         <td>
                                             {building.buildingName}
-                                            <button type="button" className="btn btn-danger">X</button>
+                                            <button type="button" className="btn btn-danger" onClick = {() => handleDeleteBtn(building.id, 1)}>X</button>
                                         </td>
                                         <td>
-                                            <input type="text" onChange={handleFloorNameChange} ></input>
-                                            <button type="button" className="btn btn-success" 
-                                                onClick={() => {
-                                                    //setFloorNameFunction()
-                                                    handleAddFloorBtn(building.id);
-                                                    }
-                                                } >Add floor</button>  
+                                            <button type="button" className="btn btn-success" onClick = {() => handleAddFloorBtn(building.id)}>Add floor</button>
                                         </td>
                                         <td>
                                             {addFloorTable(building)}

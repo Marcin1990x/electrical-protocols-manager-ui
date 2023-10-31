@@ -1,4 +1,4 @@
-export default function RoomTable(floor) {
+export default function RoomTable(floor, handleDeleteBtn) {
 
     return (
         <div className="RoomTable">
@@ -15,7 +15,7 @@ export default function RoomTable(floor) {
                             <tr key = {room.id} >
                                 <td>
                                     {room.roomName}
-                                    <button type="button" className="btn btn-danger">X</button>
+                                    <button type="button" className="btn btn-danger" onClick = {() => handleDeleteBtn(room.id, 3)}>X</button>
                                 </td>
                             </tr>
                         )
