@@ -1,10 +1,10 @@
 import RoomTable from "./RoomTable"
 
-export default function FloorTable(building, handleAddRoomBtn, handleDeleteBtn) {
+export default function FloorTable(building, handleAddRoomBtn, handleDeleteBtn, handleRoomBtn) {
 
     function addRoomTable(floor){
         return (
-                RoomTable(floor, handleDeleteBtn)
+                RoomTable(floor, handleDeleteBtn, handleRoomBtn)
         )
     }
 
@@ -23,10 +23,10 @@ export default function FloorTable(building, handleAddRoomBtn, handleDeleteBtn) 
                             <tr key = {floor.id} >
                                 <td>
                                     {floor.floorName}
-                                    <button type="button" className="btn btn-danger" onClick = {() => handleDeleteBtn(floor.id, 2, building.id)}>X</button>
+                                    <button className="btn btn-danger btn-sm m-1" onClick = {() => handleDeleteBtn(floor.id, 2, building.id)}>X</button>
                                 </td>
                                 <td>
-                                    <button type="button" className="btn btn-success" onClick={() =>handleAddRoomBtn(floor.id)}>Add room</button>
+                                    <button className="btn btn-success" onClick={() =>handleAddRoomBtn(floor.id)}>Add room</button>
                                 </td>
                                 <td>
                                     {addRoomTable(floor)}
