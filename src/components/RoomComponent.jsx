@@ -1,29 +1,16 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { retrieveMeasurementMainTypes } from "../api/MeasurementMainApiService"
-import { retrieveRoomApi } from "../api/RoomApiService"
+import { useGlobal } from "./GlobalData"
 
 export default function RoomComponent() {
+
+    const context = useGlobal()
 
     const {id} = useParams()
     const [add, setAdd] = useState(false)
     const [types, setTypes] = useState([])
-    const [mains, setMains] = useState([])
     const navigate = useNavigate()
-
-    useEffect( () => refreshData(), [])
-
-    function refreshData() {
-        retrieveRoomApi(id)
-            .then(response => {
-                console.log(response)
-                setMains(response.data)
-            })
-            .catch(error => console.log(error))
-    }
-    function testData() {
-        console.log(mains)
-    }
 
     function handleAddMeasBtn() {
         setAdd(true)
@@ -33,6 +20,9 @@ export default function RoomComponent() {
     }
     function handleAddBtn(index) {
         navigate(`/room/${id}/measurement/${index}`)
+    }
+    function handleOpenMainBtn(id) {
+        navigate(`/measurements/${id}`)
     }
 
     return (
@@ -53,7 +43,6 @@ export default function RoomComponent() {
                         }
                     </ul>
                 }
-                <button className="btn btn-danger" onClick={testData}>show data</button>
                 <table className="table">
                     <thead>
                         <tr>
@@ -62,16 +51,16 @@ export default function RoomComponent() {
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            mains.measurementMains.map (
+                        {   
+                            context.room.measurementMains?.map (
                                 main => (
-                                    <tr key = {main.id}>
+                                    <tr>
                                         <td>{main.measurementName}</td>
+                                        <td><button className="btn btn-info" onClick={() => handleOpenMainBtn(main.id)}>Otwórz</button></td>
                                     </tr>
                                 )
                             )
                         }
-                        {/* <tr><td>{mains.roomName}</td></tr> */}
                     </tbody>
                 </table>
         </div>

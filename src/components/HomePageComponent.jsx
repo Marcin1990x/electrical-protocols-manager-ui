@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom"
 import { addBuildingApi, retrieveBuildingsApi, addFloorToBuildingApi, deleteBuildingByIdApi} from "../api/BuildingApiService"
 import { addFloorApi, addRoomToFloorApi, deleteFloorByIdApi } from "../api/FloorApiService"
 import { addRoomApi, deleteRoomByIdApi } from "../api/RoomApiService"
+import { useGlobal } from "./GlobalData"
 import FloorTable from "./tables/FloorTable"
 
 export default function HomePageComponent() {
 
     const navigate = useNavigate()
+    const context = useGlobal()
 
     const [render, setRender] = useState('')
     const [buildings, setBuildings] = useState([])
@@ -27,7 +29,7 @@ export default function HomePageComponent() {
         setRoomName(event.target.value)
     }
     function handleRoomBtn(id) {
-        console.log(id)
+        context.getBuilding(1) // hardcoded
         navigate(`/rooms/${id}`)
     }
 
