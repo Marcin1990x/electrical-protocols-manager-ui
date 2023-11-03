@@ -3,21 +3,23 @@ import { useNavigate } from "react-router-dom"
 import { addBuildingApi, retrieveBuildingsApi, addFloorToBuildingApi, deleteBuildingByIdApi} from "../api/BuildingApiService"
 import { addFloorApi, addRoomToFloorApi, deleteFloorByIdApi } from "../api/FloorApiService"
 import { addRoomApi, deleteRoomByIdApi } from "../api/RoomApiService"
-import { useGlobal } from "./GlobalData"
 import FloorTable from "./tables/FloorTable"
 
 export default function HomePageComponent() {
 
     const navigate = useNavigate()
-    const context = useGlobal()
 
     const [render, setRender] = useState('')
     const [buildings, setBuildings] = useState([])
     const [buildingName, setBuildingName] = useState('')
     const [floorName, setFloorName] = useState('')
     const [roomName, setRoomName] = useState('')
+    //const [buildingAdded, setBuildingAdded] = useState(false)
 
-    useEffect ( () => refreshData(), [render])
+    useEffect ( () => {
+        refreshData()
+        //disableAddBuilding()
+    }, [render])
 
     function handleBuildingNameChange(event) {
         setBuildingName(event.target.value)
@@ -29,9 +31,17 @@ export default function HomePageComponent() {
         setRoomName(event.target.value)
     }
     function handleRoomBtn(id) {
-        context.getBuilding(1) // hardcoded
         navigate(`/rooms/${id}`)
     }
+    // function disableAddBuilding() {
+
+    //     console.log(buildings.length)
+    //     if(buildings.length == 1) {
+    //         setBuildingAdded(true)
+    //     } else {
+    //         setBuildingAdded(false)
+    //     }
+    // }
 
     function handleAddBuildingBtn() {
         const newBuilding = {
@@ -39,7 +49,7 @@ export default function HomePageComponent() {
         }
         if(buildingName !== '') {
             addBuildingApi(newBuilding)
-            .then(response => {
+                .then(response => {  
                 console.log(response)
                 setRender(render - 1)
             })
@@ -134,22 +144,22 @@ export default function HomePageComponent() {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>BUILDING</th>
-                            <th>add FLOOR</th>
-                            <th>add ROOM</th>
+                            <th>Budynek</th>
+                            <th>dodaj Piętro</th>
+                            <th>dodaj Pomieszczenie</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                <input type="text" defaultValue="building name" onChange={handleBuildingNameChange} ></input>
-                                <button className="btn btn-success m-2" onClick={handleAddBuildingBtn}>Add building</button>
+                                <input type="text" defaultValue="nazwa budynku" onChange={handleBuildingNameChange} ></input>
+                                <button className="btn btn-success m-2" onClick={handleAddBuildingBtn}>Dodaj budynek</button>
                             </td>
                             <td>
-                                <input type="text" defaultValue="floor name" onChange={handleFloorNameChange} ></input>
+                                <input type="text" defaultValue="nazwa piętra" onChange={handleFloorNameChange} ></input>
                             </td>
                             <td>
-                            <input type="text" defaultValue="room name" onChange={handleRoomNameChange} ></input>
+                            <input type="text" defaultValue="nazwa pomieszczenia" onChange={handleRoomNameChange} ></input>
                             </td>
                         </tr>
                         {
@@ -161,7 +171,7 @@ export default function HomePageComponent() {
                                             <button className="btn btn-danger btn-sm m-1" onClick = {() => handleDeleteBtn(building.id, 1)}>X</button>
                                         </td>
                                         <td>
-                                            <button className="btn btn-success" onClick = {() => handleAddFloorBtn(building.id)}>Add floor</button>
+                                            <button className="btn btn-success" onClick = {() => handleAddFloorBtn(building.id)}>Dodaj piętro</button>
                                         </td>
                                         <td>
                                             {addFloorTable(building)}

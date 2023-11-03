@@ -13,7 +13,7 @@ export default function FloorTable(building, handleAddRoomBtn, handleDeleteBtn, 
             <table className="table">
             <thead>
                 <tr>
-                    <th>FLOOR</th>
+                    <th>Piętro</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +26,7 @@ export default function FloorTable(building, handleAddRoomBtn, handleDeleteBtn, 
                                     <button className="btn btn-danger btn-sm m-1" onClick = {() => handleDeleteBtn(floor.id, 2, building.id)}>X</button>
                                 </td>
                                 <td>
-                                    <button className="btn btn-success" onClick={() =>handleAddRoomBtn(floor.id)}>Add room</button>
+                                    <button className="btn btn-success" onClick={() =>handleAddRoomBtn(floor.id)}>Dodaj pomieszczenie</button>
                                 </td>
                                 <td>
                                     {addRoomTable(floor)}

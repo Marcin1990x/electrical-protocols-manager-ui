@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { retrieveMeasurementMainById } from "../api/MeasurementMainApiService"
 //import { useGlobal } from "./GlobalData"
 
 export default function MeasurementComponent() {
+
+    const navigate = useNavigate()
 
     const [main, setMain] = useState([])
     //const context = useGlobal()
@@ -20,20 +22,21 @@ export default function MeasurementComponent() {
             })
             .catch(error => console.log(error))
     }
-
-    function test(){
-        console.log(main)
+    function handleBackButton() {
+        navigate(`/rooms/${id}`)
     }
 
 
     return (
         <div className="MeasurementComponent">
             <hr></hr>
-            <h4>{main.measurementMainCascadeNameWithoutMeasurementName}</h4>
+            <h4>
+                <button className = "btn btn-primary btn-lg m-2" onClick = {handleBackButton}>Wstecz</button>
+                {main.measurementMainCascadeNameWithoutMeasurementName}
+            </h4>
             <h3> {main.measurementName} - id {id}</h3>
-            
 
-            {/* <button className="btn btn-success" onClick = {() => test()}>test</button> */}
+            {(main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porazeniem przez samoczynne wylaczenie') && //fix this shit
             <table className="table">
                     <thead>
                         <tr>
@@ -56,7 +59,9 @@ export default function MeasurementComponent() {
                         </tr>
                     </tbody>
             </table> 
+            }
             <hr></hr>
+            {(main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porazeniem przez samoczynne wylaczenie') &&
             <table className="table">
                 <thead>
                     <tr>
@@ -67,8 +72,8 @@ export default function MeasurementComponent() {
                         <th>Typ</th>
                         <th>In[A]</th>
                         <th>Ia[A]</th>
-                        <th>Zs[Om]</th>
-                        <th>Za[Om]</th>
+                        <th>Zs[Ω]</th>
+                        <th>Za[Ω]</th>
                         <th>Ik[A]</th>
                         <th>Ocena</th>
                     </tr>
@@ -95,6 +100,70 @@ export default function MeasurementComponent() {
                     }
                 </tbody>
             </table>
+            }
+            {(main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodow') &&
+            <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Uiso[V]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{main.uiso}</td>
+                        </tr>
+                    </tbody>
+            </table> 
+            }
+            <hr></hr>
+            {(main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodow') &&
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Nazwa obwodu</th>
+                        <th>L1-L2[MΩ]</th>
+                        <th>L2-L3[MΩ]</th>
+                        <th>L3-L1[MΩ]</th>
+                        <th>L1-PE[MΩ]</th>
+                        <th>L2-PE[MΩ]</th>
+                        <th>L3-PE[MΩ]</th>
+                        <th>L1-N[MΩ]</th>
+                        <th>L2-N[MΩ]</th>
+                        <th>L3-N[MΩ]</th>
+                        <th>N-PE[MΩ]</th>
+                        <th>Ra</th>
+                        <th>Ocena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        main.measurementEntries?.map (
+                            entry => (
+                                <tr key={entry.id}>
+                                    <td>{entry.id}</td>
+                                    <td>{entry.symbol}</td>
+                                    <td>{entry.circuitName}</td>
+                                    <td>{entry.l1l2}</td>
+                                    <td>{entry.l2l3}</td>
+                                    <td>{entry.l3l1}</td>
+                                    <td>{entry.l1pe}</td>
+                                    <td>{entry.l2pe}</td>
+                                    <td>{entry.l3pe}</td>
+                                    <td>{entry.l1n}</td>
+                                    <td>{entry.l2n}</td>
+                                    <td>{entry.l3n}</td>
+                                    <td>{entry.npe}</td>
+                                    <td>{entry.ra}</td>
+                                    <td>{entry.result}</td>
+                                </tr>
+                            )
+                        )
+                    }
+                </tbody>
+            </table>
+            }
         </div>
     )
 }

@@ -1,19 +1,31 @@
+import React, { useEffect } from "react"
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { retrieveMeasurementMainTypes } from "../api/MeasurementMainApiService"
-import { useGlobal } from "./GlobalData"
+import { retrieveRoomApi } from "../api/RoomApiService"
 
 export default function RoomComponent() {
 
-    const context = useGlobal()
-
     const {id} = useParams()
-    const [add, setAdd] = useState(false)
     const [types, setTypes] = useState([])
+    const [room, setRoom] = useState({})
     const navigate = useNavigate()
 
-    function handleAddMeasBtn() {
-        setAdd(true)
+    useEffect( () => {
+        setRoomData()
+        setMeasurementTypes()
+    }, [])
+
+    function setRoomData() {
+        retrieveRoomApi(id)
+        .then( response => {
+            setRoom(response.data)
+            console.log(response)
+        })
+        .catch( error => console.log(error))
+    }
+
+    function setMeasurementTypes() {
         retrieveMeasurementMainTypes()
             .then(response => setTypes(response.data))
             .catch(error => console.log(error))
@@ -25,11 +37,14 @@ export default function RoomComponent() {
         navigate(`/measurements/${id}`)
     }
 
+    function handleBackButton() {
+        navigate(`/`)
+    }
+
     return (
         <div className="RoomComponent">
-            <h1>Room {id}</h1>
-            <button className="btn btn-info m-2" onClick={handleAddMeasBtn}>Dodaj pomiar</button>
-                { add && 
+            <button className = "btn btn-primary btn-lg m-2" onClick = {handleBackButton}>Wstecz</button>
+            <h1>{room.roomCascadeName}</h1>
                     <ul className ="list-group">
                         {
                             types.map (
@@ -42,7 +57,6 @@ export default function RoomComponent() {
                             )
                         }
                     </ul>
-                }
                 <table className="table">
                     <thead>
                         <tr>
@@ -52,9 +66,9 @@ export default function RoomComponent() {
                     </thead>
                     <tbody>
                         {   
-                            context.room.measurementMains?.map (
+                            room.measurementMains?.map (
                                 main => (
-                                    <tr>
+                                    <tr key = {main.index}>
                                         <td>{main.measurementName}</td>
                                         <td><button className="btn btn-info" onClick={() => handleOpenMainBtn(main.id)}>Otwórz</button></td>
                                     </tr>

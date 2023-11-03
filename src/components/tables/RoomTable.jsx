@@ -5,7 +5,7 @@ export default function RoomTable(floor, handleDeleteBtn, handleRoomBtn) {
             <table className="table">
             <thead>
                 <tr>
-                    <th>ROOM</th>
+                    <th>Pomieszczenie</th>
                 </tr>
             </thead>
             <tbody>
