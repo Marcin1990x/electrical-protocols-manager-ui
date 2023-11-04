@@ -14,8 +14,8 @@ export default function ElectricalProtocolsManager() {
                     <Routes>
                         <Route path = "" element = { <HomePageComponent />} />
                         <Route path = "/rooms/:id" element = { <RoomComponent />} />
-                        <Route path = "/room/:id/measurement/:index" element = { <AddMeasurementComponent />} />
-                        <Route path = "measurements/:id" element = { <MeasurementComponent />} />
+                        <Route path = "/room/:id/addMeasurement/:index" element = { <AddMeasurementComponent />} />
+                        <Route path = "/rooms/:id/measurements/:idMain" element = { <MeasurementComponent />} />
                     </Routes>
                 </BrowserRouter>
             </ContextProvider>

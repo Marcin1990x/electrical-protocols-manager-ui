@@ -36,12 +36,12 @@ export default function AddMeasurementComponent() {
     const zs = useRef()
     //discriminator 1
     //discriminator 2
-    const uiso = useRef()
+    const uiso = useRef() // common with 3
 
-    const circuitName = useRef()
-    const l1l2 = useRef()
-    const l2l3 = useRef()
-    const l3l1 = useRef()
+    const circuitName = useRef() // common with 3
+    const l1l2 = useRef() // common with 3
+    const l2l3 = useRef() // common with 3
+    const l3l1 = useRef() // common with 3
     const l1pe = useRef()
     const l2pe = useRef()
     const l3pe = useRef()
@@ -49,8 +49,13 @@ export default function AddMeasurementComponent() {
     const l2n = useRef()
     const l3n = useRef()
     const npe = useRef()
-    const ra = useRef()
+    const ra = useRef() // common with 3
     //discriminator 2
+    //discriminator 3
+    const l1pen = useRef()
+    const l2pen = useRef()
+    const l3pen = useRef()
+    //discriminator 3
 
 
     const [render, setRender] = useState('')
@@ -139,6 +144,35 @@ export default function AddMeasurementComponent() {
                 console.log('Fill all fields.')
             }
         }
+        if(index == 2) {
+            const newCircuitInsulationTncMainEntry = {
+                symbol: symbol.current.value,
+                circuitName : circuitName.current.value,
+                l1l2 : l1l2.current.value,
+                l2l3 : l2l3.current.value,
+                l3l1 : l3l1.current.value,
+                l1pen : l1pen.current.value,
+                l2pen : l2pen.current.value,
+                l3pen : l3pen.current.value,
+                ra : ra.current.value
+            }
+            if(l1l2.current.value !== '' && l2l3.current.value !== '' && l3l1.current.value !== '' && l1pen.current.value !== ''
+             && l2pen.current.value !== ''&& l3pen.current.value !== '' && ra.current.value !== '')
+            {
+                addMeasurementEntry(index, newCircuitInsulationTncMainEntry)
+                .then(response => {
+                    setRender(render + 1)
+                    console.log(response)
+                    setEntry(response.data)
+                        addEntryToMainApi(index, mainIndex, response.data.id)
+                        .then(response => console.log(response))
+                        .catch(error => console.log(error))
+                })
+                .catch(error => console.log(error))          
+            } else {
+                console.log('Fill all fields.')
+            }
+        }
     }
     function handleAddMainBtn() {
 
@@ -151,15 +185,14 @@ export default function AddMeasurementComponent() {
                 ta : ta.current.value,
                 networkType : networkType.current.value,
             }
-            if(un.current.value !== '' && ui.current.value !== '' && ko.current.value !== '' && ta.current.value !== '' && networkType.current.value !== '') {
+            if(un.current.value !== '' && ui.current.value !== '' && ko.current.value !== '' && ta.current.value !== '' 
+            && networkType.current.value !== ''&& uo.current.value !== '0') {
                 setMainAdded(true)
                 addMeasurementMain(index, newProtectionMeasurementMain)
                 .then(response => {
+                    setMainIndex(response.data.id)
                     addMainToRoomApi(id, response.data.id)
-                    .then(response => {
-                        setMainIndex(response.data.id)
-                        console.log(response)
-                    })
+                    .then(response => console.log(response))
                     .catch(error => console.log(error))
                 })
                 .catch(error => console.log(error))
@@ -167,19 +200,17 @@ export default function AddMeasurementComponent() {
                 console.log('Fill all fields.')
             }
         }
-        if(index == 1 ) {
-            const newCircuitInsulationTnsMain = {
+        if(index == 1 || 2) {
+            const newCircuitInsulationMain = {
                 uiso : uiso.current.value
             }
             if(uiso.current.value !== '') {
                 setMainAdded(true)
-                addMeasurementMain(index, newCircuitInsulationTnsMain)
+                addMeasurementMain(index, newCircuitInsulationMain)
                 .then(response => {
+                    setMainIndex(response.data.id)
                     addMainToRoomApi(id, response.data.id)
-                    .then(response => {
-                        setMainIndex(response.data.id)
-                        console.log(response)
-                    })
+                    .then(response => console.log(response))
                     .catch(error => console.log(error))
                 })
                 .catch(error => console.log(error))
@@ -196,6 +227,8 @@ export default function AddMeasurementComponent() {
 
         {/* add room name from authcontext building */}
             <h3>{types[index]} (room {id})</h3> 
+
+        {/* Add main  */}
 
             { (index == 0) &&
                 <table className="table">
@@ -215,13 +248,18 @@ export default function AddMeasurementComponent() {
                             <td><input type = "text" className="form-control" ref={ui}></input></td>
                             <td><input type = "text" className="form-control" ref={ko}></input></td>
                             <td><input type = "text" className="form-control" ref={ta}></input></td>
-                            <td><input type = "text" className="form-control" ref={networkType}></input></td>
+                            <td><select className="form-select" ref={networkType}>
+                                    <option value = "TNS">TNS</option>
+                                    <option value = "TNC">TNS</option>
+                                    <option value = "TNS">TN-C-S</option>
+                                </select>
+                            </td>
                             <td><input type = "text" className="form-control" ref={uo}></input></td>
                         </tr>
                     </tbody>
                 </table>   
             }
-            { (index == 1) &&
+            { (index == 1 || 2) &&
                 <table className="table">
                     <thead>
                         <tr>
@@ -236,8 +274,10 @@ export default function AddMeasurementComponent() {
                 </table>   
             }
             <button className="btn btn-success m-1" disabled = {mainAdded} onClick={handleAddMainBtn}>Dodaj</button>
-            <button className="btn btn-info m-1" disabled = {!mainAdded}>Edytuj</button>
-            
+            <button className="btn btn-info m-1" disabled = {!mainAdded}>Edytuj - not done</button>
+
+            {/* Add entry */}
+
             { (index == 0) &&
                 <table className="table">
                 <thead>
@@ -261,7 +301,12 @@ export default function AddMeasurementComponent() {
                         <td><input type = "text" className="form-control" ref = {symbol}></input></td>
                         <td><input type = "text" className="form-control" ref = {point}></input></td>
                         <td><input type = "text" className="form-control" ref = {cutout}></input></td>
-                        <td><input type = "text" className="form-control" ref = {type}></input></td>
+                        <td><select className="form-select" ref={type}>
+                                    <option value = "B">B</option>
+                                    <option value = "C">C</option>
+                                    <option value = "D">D</option>
+                            </select>
+                        </td>
                         <td><input type = "text" className="form-control" ref = {iNom}></input></td>
                         <td><input type = "text" className="form-control" disabled value={entry.ia}></input></td>
                         <td><input type = "text" className="form-control" ref = {zs}></input></td>
@@ -314,8 +359,45 @@ export default function AddMeasurementComponent() {
                 </tbody>
             </table>
             }
+            { (index == 2) &&
+                <table className="table">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Nazwa obwodu</th>
+                        <th>L1-L2[MΩ]</th>
+                        <th>L2-L3[MΩ]</th>
+                        <th>L3-L1[MΩ]</th>
+                        <th>L1-PEN[MΩ]</th>
+                        <th>L2-PEN[MΩ]</th>
+                        <th>L3-PEN[MΩ]</th>
+                        <th>Ra</th>
+                        <th>Ocena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type = "text" className="form-control" disabled></input></td>
+                        <td><input type = "text" className="form-control" ref = {symbol}></input></td>
+                        <td><input type = "text" className="form-control" ref = {circuitName}></input></td>
+                        <td><input type = "text" className="form-control" ref = {l1l2}></input></td>
+                        <td><input type = "text" className="form-control" ref = {l2l3}></input></td>
+                        <td><input type = "text" className="form-control" ref = {l3l1}></input></td>
+                        <td><input type = "text" className="form-control" ref = {l1pen}></input></td>
+                        <td><input type = "text" className="form-control" ref = {l2pen}></input></td>
+                        <td><input type = "text" className="form-control" ref = {l3pen}></input></td>
+                        <td><input type = "text" className="form-control" ref = {ra}></input></td>
+                        <td><input type = "text" className="form-control" disabled value={entry.result}></input></td>
+                    </tr>
+                </tbody>
+            </table>
+            }
             <button className="btn btn-success" disabled = {!mainAdded} onClick={handleAddEntryBtn}>Dodaj wpis</button> 
             <hr></hr>
+
+            {/* view entry */}
+
             { (index == 0) &&
             <table className="table table-striped">
                 <thead>
@@ -395,6 +477,46 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.l2n}</td>
                                     <td>{entry.l3n}</td>
                                     <td>{entry.npe}</td>
+                                    <td>{entry.ra}</td>
+                                    <td>{entry.result}</td>
+                                </tr>
+                            )
+                        )
+                    }
+                </tbody>
+            </table>
+            }
+            { (index == 2) &&
+            <table className="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Nazwa obwodu</th>
+                        <th>L1-L2[MΩ]</th>
+                        <th>L2-L3[MΩ]</th>
+                        <th>L3-L1[MΩ]</th>
+                        <th>L1-PEN[MΩ]</th>
+                        <th>L2-PEN[MΩ]</th>
+                        <th>L3-PEN[MΩ]</th>
+                        <th>Ra</th>
+                        <th>Ocena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        entries.map (
+                            entry => (
+                                <tr key={entry.id}>
+                                    <td></td>
+                                    <td>{entry.symbol}</td>
+                                    <td>{entry.circuitName}</td>
+                                    <td>{entry.l1l2}</td>
+                                    <td>{entry.l2l3}</td>
+                                    <td>{entry.l3l1}</td>
+                                    <td>{entry.l1pen}</td>
+                                    <td>{entry.l2pen}</td>
+                                    <td>{entry.l3pen}</td>
                                     <td>{entry.ra}</td>
                                     <td>{entry.result}</td>
                                 </tr>

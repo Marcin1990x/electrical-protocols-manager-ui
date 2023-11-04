@@ -9,15 +9,20 @@ export default function MeasurementComponent() {
 
     const [main, setMain] = useState([])
     //const context = useGlobal()
-    const {id} = useParams()
+    const {id, idMain} = useParams()
+
+    //discriminator 1
+    const [uo, setUo] = useState(0)
+    //discriminator 1
     
     useEffect( () => refreshData(), [])
 
     function refreshData() {
 
-        retrieveMeasurementMainById(id)
+        retrieveMeasurementMainById(idMain)
             .then(response => {
                 setMain(response.data)
+                setUo(response.data.measurementEntries[0].uo)
                 console.log(response)
             })
             .catch(error => console.log(error))
@@ -34,7 +39,7 @@ export default function MeasurementComponent() {
                 <button className = "btn btn-primary btn-lg m-2" onClick = {handleBackButton}>Wstecz</button>
                 {main.measurementMainCascadeNameWithoutMeasurementName}
             </h4>
-            <h3> {main.measurementName} - id {id}</h3>
+            <h3> {main.measurementName} - id {idMain}</h3>
 
             {(main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porazeniem przez samoczynne wylaczenie') && //fix this shit
             <table className="table">
@@ -55,7 +60,7 @@ export default function MeasurementComponent() {
                             <td>{main.ko}</td>
                             <td>{main.ta}</td>
                             <td>{main.networkType}</td>
-                            <td>{main.uo}</td>
+                            <td>{uo}</td>
                         </tr>
                     </tbody>
             </table> 
@@ -155,6 +160,46 @@ export default function MeasurementComponent() {
                                     <td>{entry.l2n}</td>
                                     <td>{entry.l3n}</td>
                                     <td>{entry.npe}</td>
+                                    <td>{entry.ra}</td>
+                                    <td>{entry.result}</td>
+                                </tr>
+                            )
+                        )
+                    }
+                </tbody>
+            </table>
+            }
+            {(main.measurementName == '(TN-C) Badanie rezystancji izolacji obwodow') &&
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Nazwa obwodu</th>
+                        <th>L1-L2[MΩ]</th>
+                        <th>L2-L3[MΩ]</th>
+                        <th>L3-L1[MΩ]</th>
+                        <th>L1-PEN[MΩ]</th>
+                        <th>L2-PEN[MΩ]</th>
+                        <th>L3-PEN[MΩ]</th>
+                        <th>Ra</th>
+                        <th>Ocena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        main.measurementEntries?.map (
+                            entry => (
+                                <tr key={entry.id}>
+                                    <td>{entry.id}</td>
+                                    <td>{entry.symbol}</td>
+                                    <td>{entry.circuitName}</td>
+                                    <td>{entry.l1l2}</td>
+                                    <td>{entry.l2l3}</td>
+                                    <td>{entry.l3l1}</td>
+                                    <td>{entry.l1pen}</td>
+                                    <td>{entry.l2pen}</td>
+                                    <td>{entry.l3pen}</td>
                                     <td>{entry.ra}</td>
                                     <td>{entry.result}</td>
                                 </tr>

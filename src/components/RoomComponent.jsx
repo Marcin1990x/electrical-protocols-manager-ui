@@ -31,10 +31,10 @@ export default function RoomComponent() {
             .catch(error => console.log(error))
     }
     function handleAddBtn(index) {
-        navigate(`/room/${id}/measurement/${index}`)
+        navigate(`/room/${id}/addMeasurement/${index}`)
     }
-    function handleOpenMainBtn(id) {
-        navigate(`/measurements/${id}`)
+    function handleOpenMainBtn(idMain) {
+        navigate(`/rooms/${id}/measurements/${idMain}`)
     }
 
     function handleBackButton() {
