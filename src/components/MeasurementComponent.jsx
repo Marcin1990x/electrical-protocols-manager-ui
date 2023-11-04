@@ -251,6 +251,36 @@ export default function MeasurementComponent() {
                 </tbody>
             </table>
             }
+            {(main.measurementName == 'Badanie rezystywnosci gruntu') &&
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Badany punkt</th>
+                        <th>L[m]</th>
+                        <th>d[m]</th>
+                        <th>p[Ωm]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        main.measurementEntries?.map (
+                            entry => (
+                                <tr key={entry.id}>
+                                    <td></td>
+                                    <td>{entry.symbol}</td>
+                                    <td>{entry.measuringPoint}</td>
+                                    <td>{entry.l}</td>
+                                    <td>{entry.d}</td>
+                                    <td>{entry.p}</td>
+                                </tr>
+                            )
+                        )
+                    }
+                </tbody>
+            </table>
+            }
         </div>
     )
 }

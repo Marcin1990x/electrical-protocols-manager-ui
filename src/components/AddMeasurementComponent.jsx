@@ -61,6 +61,12 @@ export default function AddMeasurementComponent() {
     const trcd = useRef()
     const ub = useRef()
     //discriminator 3
+    //discriminator 4
+    const lm = useRef()
+    const dm = useRef()
+    const p = useRef()
+
+    //discriminator 4
 
 
     const [render, setRender] = useState('')
@@ -208,6 +214,29 @@ export default function AddMeasurementComponent() {
                 console.log('Fill all fields.')
             }
         }
+        if(index == 4) {
+            const SoilResistanceEntry = {
+                symbol : symbol.current.value,
+                measuringPoint : point.current.value,
+                l : lm.current.value,
+                d : dm.current.value,
+                p : p.current.value,
+            }
+            if(lm.current.value !== '' && dm.current.value !== '' && p.current.value !== '') {
+                addMeasurementEntry(index, SoilResistanceEntry)
+                .then(response => {
+                    setRender(render + 1)
+                    console.log(response)
+                    setEntry(response.data)
+                        addEntryToMainApi(index, mainIndex, response.data.id)
+                        .then(response => console.log(response))
+                        .catch(error => console.log(error))
+                })
+                .catch(error => console.log(error))          
+            } else {
+                console.log('Fill all fields.')
+            }
+        }
     }
     function handleAddMainBtn() {
 
@@ -254,10 +283,23 @@ export default function AddMeasurementComponent() {
             }
         }
         if(index == 3) {
-            const newResidualCurrentProtection = {}
+            const newResidualCurrentProtectionMain = {}
 
             setMainAdded(true)
-            addMeasurementMain(index, newResidualCurrentProtection)
+            addMeasurementMain(index, newResidualCurrentProtectionMain)
+                .then(response => {
+                setMainIndex(response.data.id)
+                addMainToRoomApi(id, response.data.id)
+                  .then(response => console.log(response))
+                  .catch(error => console.log(error))
+                })
+                  .catch(error => console.log(error))
+        }
+        if(index == 4) {
+            const newSoilResistanceMain = {}
+
+            setMainAdded(true)
+            addMeasurementMain(index, newSoilResistanceMain)
                 .then(response => {
                 setMainIndex(response.data.id)
                 addMainToRoomApi(id, response.data.id)
@@ -482,6 +524,30 @@ export default function AddMeasurementComponent() {
                 </tbody>
             </table>
             }
+            { (index == 4) &&
+                <table className="table">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Badany punkt</th>
+                        <th>L[m]</th>
+                        <th>d[m]</th>
+                        <th>p[Ωm]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type = "text" className="form-control" disabled></input></td>
+                        <td><input type = "text" className="form-control" ref = {symbol}></input></td>
+                        <td><input type = "text" className="form-control" ref = {point}></input></td>
+                        <td><input type = "text" className="form-control" ref = {lm}></input></td>
+                        <td><input type = "text" className="form-control" ref = {dm}></input></td>
+                        <td><input type = "text" className="form-control" ref = {p}></input></td>
+                    </tr>
+                </tbody>
+            </table>
+            }
             <button className="btn btn-success" disabled = {!mainAdded} onClick={handleAddEntryBtn}>Dodaj wpis</button> 
             <hr></hr>
 
@@ -650,6 +716,36 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.ub}</td>
                                     <td>{entry.ui}</td>
                                     <td>{entry.result}</td>
+                                </tr>
+                            )
+                        )
+                    }
+                </tbody>
+            </table>
+            }
+            { (index == 4) &&
+            <table className="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Badany punkt</th>
+                        <th>L[m]</th>
+                        <th>d[m]</th>
+                        <th>p[Ωm]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        entries.map (
+                            entry => (
+                                <tr key={entry.id}>
+                                    <td></td>
+                                    <td>{entry.symbol}</td>
+                                    <td>{entry.measuringPoint}</td>
+                                    <td>{entry.l}</td>
+                                    <td>{entry.d}</td>
+                                    <td>{entry.p}</td>
                                 </tr>
                             )
                         )
