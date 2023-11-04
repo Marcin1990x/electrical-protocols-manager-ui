@@ -20,28 +20,28 @@ export default function AddMeasurementComponent() {
     const [entries, setEntries] = useState([])
 
 
-    //discriminator 1
+    //discriminator 0
     const un = useRef()
-    const ui = useRef()
+    const ui = useRef() // common with 3
     const ko = useRef()
-    const ta = useRef()
+    const ta = useRef() // common with 3
     const networkType = useRef()
 
     const uo = useRef()
     const symbol = useRef()
-    const point = useRef()
-    const cutout = useRef()
-    const type = useRef()
-    const iNom = useRef()
+    const point = useRef() // common with 3
+    const cutout = useRef() // common with 3
+    const type = useRef() // common with 3
+    const iNom = useRef() // common with 3
     const zs = useRef()
+    //discriminator 0
     //discriminator 1
-    //discriminator 2
-    const uiso = useRef() // common with 3
+    const uiso = useRef() // common with 2
 
-    const circuitName = useRef() // common with 3
-    const l1l2 = useRef() // common with 3
-    const l2l3 = useRef() // common with 3
-    const l3l1 = useRef() // common with 3
+    const circuitName = useRef() // common with 2
+    const l1l2 = useRef() // common with 2
+    const l2l3 = useRef() // common with 2
+    const l3l1 = useRef() // common with 2
     const l1pe = useRef()
     const l2pe = useRef()
     const l3pe = useRef()
@@ -49,12 +49,17 @@ export default function AddMeasurementComponent() {
     const l2n = useRef()
     const l3n = useRef()
     const npe = useRef()
-    const ra = useRef() // common with 3
+    const ra = useRef() // common with 2
+    //discriminator 1
     //discriminator 2
-    //discriminator 3
     const l1pen = useRef()
     const l2pen = useRef()
     const l3pen = useRef()
+    //discriminator 2
+    //discriminator 3
+    const ia = useRef()
+    const trcd = useRef()
+    const ub = useRef()
     //discriminator 3
 
 
@@ -111,7 +116,7 @@ export default function AddMeasurementComponent() {
             }
         }
         if(index == 1) {
-            const newCircuitInsulationTnsMainEntry = {
+            const newCircuitInsulationTnsEntry = {
                 symbol: symbol.current.value,
                 circuitName : circuitName.current.value,
                 l1l2 : l1l2.current.value,
@@ -130,7 +135,7 @@ export default function AddMeasurementComponent() {
                 && l3pe.current.value !== '' && l1n.current.value !== '' && l2n.current.value !== '' && l3n.current.value !== '' && npe.current.value !== ''
                 && ra.current.value !== ''
             ) {
-                addMeasurementEntry(index, newCircuitInsulationTnsMainEntry)
+                addMeasurementEntry(index, newCircuitInsulationTnsEntry)
                 .then(response => {
                     setRender(render + 1)
                     console.log(response)
@@ -145,7 +150,7 @@ export default function AddMeasurementComponent() {
             }
         }
         if(index == 2) {
-            const newCircuitInsulationTncMainEntry = {
+            const newCircuitInsulationTncEntry = {
                 symbol: symbol.current.value,
                 circuitName : circuitName.current.value,
                 l1l2 : l1l2.current.value,
@@ -159,7 +164,37 @@ export default function AddMeasurementComponent() {
             if(l1l2.current.value !== '' && l2l3.current.value !== '' && l3l1.current.value !== '' && l1pen.current.value !== ''
              && l2pen.current.value !== ''&& l3pen.current.value !== '' && ra.current.value !== '')
             {
-                addMeasurementEntry(index, newCircuitInsulationTncMainEntry)
+                addMeasurementEntry(index, newCircuitInsulationTncEntry)
+                .then(response => {
+                    setRender(render + 1)
+                    console.log(response)
+                    setEntry(response.data)
+                        addEntryToMainApi(index, mainIndex, response.data.id)
+                        .then(response => console.log(response))
+                        .catch(error => console.log(error))
+                })
+                .catch(error => console.log(error))          
+            } else {
+                console.log('Fill all fields.')
+            }
+        }
+        if(index == 3) {
+            const newResidualCurrentProtectionEntry = {
+                symbol: symbol.current.value,
+                measuringPoint : point.current.value,
+                circuitBreaker : cutout.current.value,
+                rcdType : type.current.value,
+                iNom : iNom.current.value,
+                ia : ia.current.value,
+                ta : ta.current.value,
+                trcd : trcd.current.value,
+                ub : ub.current.value,
+                ui : ui.current.value
+            }
+            if(cutout.current.value !== '' && type.current.value !== '' && iNom.current.value !== '' && ia.current.value !== ''
+             && ta.current.value !== ''&& trcd.current.value !== '' && ub.current.value !== '' && ui.current.value !== '')
+            {
+                addMeasurementEntry(index, newResidualCurrentProtectionEntry)
                 .then(response => {
                     setRender(render + 1)
                     console.log(response)
@@ -200,7 +235,7 @@ export default function AddMeasurementComponent() {
                 console.log('Fill all fields.')
             }
         }
-        if(index == 1 || 2) {
+        if(index == 1 || index == 2) {
             const newCircuitInsulationMain = {
                 uiso : uiso.current.value
             }
@@ -217,6 +252,19 @@ export default function AddMeasurementComponent() {
             } else {
                 console.log('Fill all fields.')
             }
+        }
+        if(index == 3) {
+            const newResidualCurrentProtection = {}
+
+            setMainAdded(true)
+            addMeasurementMain(index, newResidualCurrentProtection)
+                .then(response => {
+                setMainIndex(response.data.id)
+                addMainToRoomApi(id, response.data.id)
+                  .then(response => console.log(response))
+                  .catch(error => console.log(error))
+                })
+                  .catch(error => console.log(error))
         }
     }
 
@@ -259,7 +307,7 @@ export default function AddMeasurementComponent() {
                     </tbody>
                 </table>   
             }
-            { (index == 1 || 2) &&
+            { (index == 1 || index == 2) &&
                 <table className="table">
                     <thead>
                         <tr>
@@ -393,6 +441,47 @@ export default function AddMeasurementComponent() {
                 </tbody>
             </table>
             }
+            { (index == 3) &&
+                <table className="table">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Badany punkt</th>
+                        <th>Wyłącznik RCD</th>
+                        <th>Typ</th>
+                        <th>In[mA]</th>
+                        <th>Ia[mA]</th>
+                        <th>ta[ms]</th>
+                        <th>t rcd[ms]</th>
+                        <th>Ub[V]</th>
+                        <th>Ui[V]</th>
+                        <th>Ocena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type = "text" className="form-control" disabled></input></td>
+                        <td><input type = "text" className="form-control" ref = {point}></input></td>
+                        <td><input type = "text" className="form-control" ref = {symbol}></input></td>
+                        <td><input type = "text" className="form-control" ref = {cutout}></input></td>
+                        <td><select className="form-select" ref={type}>
+                                    <option value = '[AC]'>[AC]</option>
+                                    <option value = '[A]'>[A]</option>
+                                    <option value = '[B]'>[B]</option>
+                            </select>
+                        </td>
+                        <td><input type = "text" className="form-control" ref = {iNom}></input></td>
+                        <td><input type = "text" className="form-control" ref = {ia}></input></td>
+                        <td><input type = "text" className="form-control" ref = {ta}></input></td>
+                        <td><input type = "text" className="form-control" ref = {trcd}></input></td>
+                        <td><input type = "text" className="form-control" ref = {ub}></input></td>
+                        <td><input type = "text" className="form-control" ref = {ui}></input></td>
+                        <td><input type = "text" className="form-control" disabled value={entry.result}></input></td>
+                    </tr>
+                </tbody>
+            </table>
+            }
             <button className="btn btn-success" disabled = {!mainAdded} onClick={handleAddEntryBtn}>Dodaj wpis</button> 
             <hr></hr>
 
@@ -518,6 +607,48 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.l2pen}</td>
                                     <td>{entry.l3pen}</td>
                                     <td>{entry.ra}</td>
+                                    <td>{entry.result}</td>
+                                </tr>
+                            )
+                        )
+                    }
+                </tbody>
+            </table>
+            }
+            { (index == 3) &&
+            <table className="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Badany punkt</th>
+                        <th>Wyłącznik RCD</th>
+                        <th>Typ</th>
+                        <th>In[mA]</th>
+                        <th>Ia[mA]</th>
+                        <th>ta[ms]</th>
+                        <th>t rcd[ms]</th>
+                        <th>Ub[V]</th>
+                        <th>Ui[V]</th>
+                        <th>Ocena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        entries.map (
+                            entry => (
+                                <tr key={entry.id}>
+                                    <td></td>
+                                    <td>{entry.symbol}</td>
+                                    <td>{entry.measuringPoint}</td>
+                                    <td>{entry.circuitBreaker}</td>
+                                    <td>{entry.rcdType}</td>
+                                    <td>{entry.iNom}</td>
+                                    <td>{entry.ia}</td>
+                                    <td>{entry.ta}</td>
+                                    <td>{entry.trcd}</td>
+                                    <td>{entry.ub}</td>
+                                    <td>{entry.ui}</td>
                                     <td>{entry.result}</td>
                                 </tr>
                             )

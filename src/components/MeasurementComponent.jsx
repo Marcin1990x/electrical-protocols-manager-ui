@@ -88,7 +88,7 @@ export default function MeasurementComponent() {
                         main.measurementEntries?.map (
                             entry => (
                                 <tr key={entry.id}>
-                                    <td>{entry.id}</td>
+                                    <td>{entry.index}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.measuringPoint}</td>
                                     <td>{entry.cutout}</td>
@@ -201,6 +201,48 @@ export default function MeasurementComponent() {
                                     <td>{entry.l2pen}</td>
                                     <td>{entry.l3pen}</td>
                                     <td>{entry.ra}</td>
+                                    <td>{entry.result}</td>
+                                </tr>
+                            )
+                        )
+                    }
+                </tbody>
+            </table>
+            }
+            {(main.measurementName == 'Parametry zabezpieczen roznicowopradowych') &&
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Badany punkt</th>
+                        <th>Wyłącznik RCD</th>
+                        <th>Typ</th>
+                        <th>In[mA]</th>
+                        <th>Ia[mA]</th>
+                        <th>ta[ms]</th>
+                        <th>t rcd[ms]</th>
+                        <th>Ub[V]</th>
+                        <th>Ui[V]</th>
+                        <th>Ocena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        main.measurementEntries?.map (
+                            entry => (
+                                <tr key={entry.id}>
+                                    <td>{entry.id}</td>
+                                    <td>{entry.symbol}</td>
+                                    <td>{entry.measuringPoint}</td>
+                                    <td>{entry.circuitBreaker}</td>
+                                    <td>{entry.rcdType}</td>
+                                    <td>{entry.iNom}</td>
+                                    <td>{entry.ia}</td>
+                                    <td>{entry.ta}</td>
+                                    <td>{entry.trcd}</td>
+                                    <td>{entry.ub}</td>
+                                    <td>{entry.ui}</td>
                                     <td>{entry.result}</td>
                                 </tr>
                             )
