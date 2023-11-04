@@ -4,6 +4,9 @@ import RoomComponent from "./RoomComponent"
 import AddMeasurementComponent from "./AddMeasurementComponent"
 import MeasurementComponent from "./MeasurementComponent"
 import ContextProvider from "./GlobalData"
+import HomeComponent from "./HomeComponent"
+import ProjectComponent from "./ProjectComponent"
+import ElectriciansComponent from "./ElectriciansComponent"
 
 export default function ElectricalProtocolsManager() {
 
@@ -12,7 +15,10 @@ export default function ElectricalProtocolsManager() {
             <ContextProvider>
                 <BrowserRouter>
                     <Routes>
+                        <Route path = "/temp1" element = { <ProjectComponent />} /> 
+                        <Route path = "/temp" element = { <HomeComponent />} />
                         <Route path = "" element = { <HomePageComponent />} />
+                        <Route path = "/electricians" element = { <ElectriciansComponent />} />
                         <Route path = "/rooms/:id" element = { <RoomComponent />} />
                         <Route path = "/room/:id/addMeasurement/:index" element = { <AddMeasurementComponent />} />
                         <Route path = "/rooms/:id/measurements/:idMain" element = { <MeasurementComponent />} />
