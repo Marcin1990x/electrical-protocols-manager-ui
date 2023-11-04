@@ -281,6 +281,36 @@ export default function MeasurementComponent() {
                 </tbody>
             </table>
             }
+            {(main.measurementName == 'Badanie ciaglosci malych rezystancji') &&
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Ciągłość</th>
+                        <th>Rs[Ω]</th>
+                        <th>Ra[Ω]</th>
+                        <th>Ocena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        main.measurementEntries?.map (
+                            entry => (
+                                <tr key={entry.id}>
+                                    <td></td>
+                                    <td>{entry.symbol}</td>
+                                    <td>{entry.continuity}</td>
+                                    <td>{entry.rs}</td>
+                                    <td>{entry.ra}</td>
+                                    <td>{entry.result}</td>
+                                </tr>
+                            )
+                        )
+                    }
+                </tbody>
+            </table>
+            }
         </div>
     )
 }

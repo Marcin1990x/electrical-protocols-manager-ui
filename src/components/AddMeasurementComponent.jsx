@@ -49,7 +49,7 @@ export default function AddMeasurementComponent() {
     const l2n = useRef()
     const l3n = useRef()
     const npe = useRef()
-    const ra = useRef() // common with 2
+    const ra = useRef() // common with 2 and 5
     //discriminator 1
     //discriminator 2
     const l1pen = useRef()
@@ -65,8 +65,12 @@ export default function AddMeasurementComponent() {
     const lm = useRef()
     const dm = useRef()
     const p = useRef()
-
     //discriminator 4
+
+    //discriminator 5
+    const continuity = useRef()
+    const rs = useRef()
+    //discriminator 5
 
 
     const [render, setRender] = useState('')
@@ -237,6 +241,28 @@ export default function AddMeasurementComponent() {
                 console.log('Fill all fields.')
             }
         }
+        if(index == 5) {
+            const newContinuityOfSmallResistanceEntry = {
+                symbol : symbol.current.value,
+                continuity : continuity.current.value,
+                rs : rs.current.value,
+                ra : ra.current.value,
+            }
+            if(continuity.current.value !== '' && rs.current.value !== '' && ra.current.value !== '') {
+                addMeasurementEntry(index, newContinuityOfSmallResistanceEntry)
+                .then(response => {
+                    setRender(render + 1)
+                    console.log(response)
+                    setEntry(response.data)
+                        addEntryToMainApi(index, mainIndex, response.data.id)
+                        .then(response => console.log(response))
+                        .catch(error => console.log(error))
+                })
+                .catch(error => console.log(error))          
+            } else {
+                console.log('Fill all fields.')
+            }
+        }
     }
     function handleAddMainBtn() {
 
@@ -300,6 +326,19 @@ export default function AddMeasurementComponent() {
 
             setMainAdded(true)
             addMeasurementMain(index, newSoilResistanceMain)
+                .then(response => {
+                setMainIndex(response.data.id)
+                addMainToRoomApi(id, response.data.id)
+                  .then(response => console.log(response))
+                  .catch(error => console.log(error))
+                })
+                  .catch(error => console.log(error))
+        }
+        if(index == 5) {
+            const newContinuityOfSmallResistanceMain = {}
+
+            setMainAdded(true)
+            addMeasurementMain(index, newContinuityOfSmallResistanceMain)
                 .then(response => {
                 setMainIndex(response.data.id)
                 addMainToRoomApi(id, response.data.id)
@@ -548,6 +587,34 @@ export default function AddMeasurementComponent() {
                 </tbody>
             </table>
             }
+            { (index == 5) &&
+                <table className="table">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Ciągłość</th>
+                        <th>Rs[Ω]</th>
+                        <th>Ra[Ω]</th>
+                        <th>Ocena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type = "text" className="form-control" disabled></input></td>
+                        <td><input type = "text" className="form-control" ref = {symbol}></input></td>
+                        <td><select className="form-select" ref={continuity}>
+                                    <option value = 'PRESERVED'>Zachowana</option>
+                                    <option value = 'NOTPRESERVED'>Niezachowana</option>
+                            </select>
+                        </td>
+                        <td><input type = "text" className="form-control" ref = {rs}></input></td>
+                        <td><input type = "text" className="form-control" ref = {ra}></input></td>
+                        <td><input type = "text" className="form-control" disabled value={entry.result}></input></td>
+                    </tr>
+                </tbody>
+            </table>
+            }
             <button className="btn btn-success" disabled = {!mainAdded} onClick={handleAddEntryBtn}>Dodaj wpis</button> 
             <hr></hr>
 
@@ -746,6 +813,36 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.l}</td>
                                     <td>{entry.d}</td>
                                     <td>{entry.p}</td>
+                                </tr>
+                            )
+                        )
+                    }
+                </tbody>
+            </table>
+            }
+                       { (index == 5) &&
+            <table className="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Lp.</th>
+                        <th>Symbol</th>
+                        <th>Ciągłość</th>
+                        <th>Rs[Ω]</th>
+                        <th>Ra[Ω]</th>
+                        <th>Ocena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        entries.map (
+                            entry => (
+                                <tr key={entry.id}>
+                                    <td></td>
+                                    <td>{entry.symbol}</td>
+                                    <td>{entry.continuity}</td>
+                                    <td>{entry.rs}</td>
+                                    <td>{entry.ra}</td>
+                                    <td>{entry.result}</td>
                                 </tr>
                             )
                         )
