@@ -1,16 +1,30 @@
-import { useRef, useState } from "react"
-import { addElectricianApi } from "../api/ElectricianApiService"
+import { useEffect, useRef, useState } from "react"
+import { addElectricianApi, retrieveElectriciansApi} from "../api/ElectricianApiService"
+import { useNavigate } from "react-router-dom"
 
 export default function ElectriciansComponent() {
 
     const [addElectrician, setAddElectrician] = useState(false)
+    const [electricians, setElectricians] = useState([])
+    const [render, setRender] = useState(0)
+    const navigate = useNavigate()
+
+    useEffect( () => refreshData(), [render])
 
     const firstName = useRef()
     const lastName = useRef()
     const address = useRef()
     const permissions = useRef()
     const position = useRef()
-    
+
+    function refreshData() {
+        retrieveElectriciansApi()
+            .then(response => {
+                setElectricians(response.data)
+                console.log(response)    
+            })
+            .catch(error => console.log(error))
+    }
 
     function handleAddElectrician(){
 
@@ -27,7 +41,10 @@ export default function ElectriciansComponent() {
         if(firstName.current.value !== '' && lastName.current.value !== ''&& address.current.value !== '' && permissions.current.value != ''
         && position.current.value !== '' ) {
             addElectricianApi(newElectrician)
-                .then(response => console.log(response))
+                .then(response => {
+                    setRender(render + 1)
+                    console.log(response)
+                })
                 .catch(error => console.log(error))
 
         } else {
@@ -38,6 +55,7 @@ export default function ElectriciansComponent() {
 
     return (
         <div className="ElectriciansComponent">
+            <button className="btn btn-info m-3" onClick={() => navigate(`/temp`)}>Wstecz</button>
             <h1>Elektrycy</h1>
             <button className="btn btn-dark m-3" onClick={() => setAddElectrician(true)}>Dodaj elektryka</button>
             {addElectrician && 
@@ -66,6 +84,13 @@ export default function ElectriciansComponent() {
                 </tbody>
                 <button className="btn btn-success m-1" onClick={handleAddElectrician}>Dodaj elektryka</button>
             </table>
+            }
+            {   
+                electricians.map (
+                    electrician => (
+                        <textarea class="form-control w-50 m-2" rows="2" value = {electrician.signature} disabled = {true}></textarea>
+                    )
+                )
             }
         </div>
     )
