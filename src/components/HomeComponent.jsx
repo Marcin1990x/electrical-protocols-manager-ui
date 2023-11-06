@@ -1,8 +1,18 @@
 import { useNavigate } from "react-router-dom"
+import { retrieveElectriciansFromFileApi } from "../api/ElectricianApiService"
+import { useEffect } from "react"
 
 export default function HomeComponent() {
 
     const navigate = useNavigate()
+
+    useEffect( () => readData(), [])
+
+    function readData() {
+        retrieveElectriciansFromFileApi()
+            .then(reponse => console.log(reponse))
+            .catch(error => console.log(error))
+    }
 
     return (
         <div className="HomeComponent">

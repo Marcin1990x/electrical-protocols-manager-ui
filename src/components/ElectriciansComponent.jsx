@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom"
 
 export default function ElectriciansComponent() {
 
-    const [addElectrician, setAddElectrician] = useState(false)
     const [electricians, setElectricians] = useState([])
     const [render, setRender] = useState(0)
     const navigate = useNavigate()
@@ -27,8 +26,6 @@ export default function ElectriciansComponent() {
     }
 
     function handleAddElectrician(){
-
-        console.log('lole')
 
         const newElectrician = {
             firstName : firstName.current.value,
@@ -57,8 +54,6 @@ export default function ElectriciansComponent() {
         <div className="ElectriciansComponent">
             <button className="btn btn-info m-3" onClick={() => navigate(`/temp`)}>Wstecz</button>
             <h1>Elektrycy</h1>
-            <button className="btn btn-dark m-3" onClick={() => setAddElectrician(true)}>Dodaj elektryka</button>
-            {addElectrician && 
             <table className="table">
                 <thead>
                     <tr>
@@ -84,14 +79,32 @@ export default function ElectriciansComponent() {
                 </tbody>
                 <button className="btn btn-success m-1" onClick={handleAddElectrician}>Dodaj elektryka</button>
             </table>
-            }
-            {   
-                electricians.map (
-                    electrician => (
-                        <textarea class="form-control w-50 m-2" rows="2" value = {electrician.signature} disabled = {true}></textarea>
-                    )
-                )
-            }
+            <table className="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Imię</th>
+                        <th>Nazwisko</th>
+                        <th>Adres</th>
+                        <th>Uprawnienia</th>
+                        <th>Pozycja</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        electricians.map (
+                            electrician => (
+                                <tr key = {electrician.id}>
+                                    <td>{electrician.firstName}</td>
+                                    <td>{electrician.lastName}</td>
+                                    <td>{electrician.electricianAddress}</td>
+                                    <td>{electrician.permissionList}</td>
+                                    <td>{electrician.position}</td>
+                                </tr>
+                            )
+                        )
+                    }
+                </tbody>
+            </table>
         </div>
     )
 }

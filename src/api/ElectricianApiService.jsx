@@ -4,4 +4,4 @@ export const addElectricianApi = (electrician) => apiClient.post(`/electricians`
 
 export const retrieveElectriciansApi = () => apiClient.get(`/electricians`)
 
-export const testApi = () => apiClient.get(`electricians/test`)
+export const retrieveElectriciansFromFileApi = () => apiClient.get(`electricians/loadFromFile`)

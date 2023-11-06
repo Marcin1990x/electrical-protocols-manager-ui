@@ -14,11 +14,9 @@ export default function HomePageComponent() {
     const [buildingName, setBuildingName] = useState('')
     const [floorName, setFloorName] = useState('')
     const [roomName, setRoomName] = useState('')
-    //const [buildingAdded, setBuildingAdded] = useState(false)
 
     useEffect ( () => {
         refreshData()
-        //disableAddBuilding()
     }, [render])
 
     function handleBuildingNameChange(event) {
@@ -33,15 +31,6 @@ export default function HomePageComponent() {
     function handleRoomBtn(id) {
         navigate(`/rooms/${id}`)
     }
-    // function disableAddBuilding() {
-
-    //     console.log(buildings.length)
-    //     if(buildings.length == 1) {
-    //         setBuildingAdded(true)
-    //     } else {
-    //         setBuildingAdded(false)
-    //     }
-    // }
 
     function handleAddBuildingBtn() {
         const newBuilding = {
