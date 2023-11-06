@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { addElectricianApi, retrieveElectriciansApi} from "../api/ElectricianApiService"
+import { addElectricianApi, retrieveElectriciansApi, deleteElectricianByIdApi} from "../api/ElectricianApiService"
 import { useNavigate } from "react-router-dom"
 
 export default function ElectriciansComponent() {
@@ -21,6 +21,23 @@ export default function ElectriciansComponent() {
             .then(response => {
                 setElectricians(response.data)
                 console.log(response)    
+            })
+            .catch(error => console.log(error))
+    }
+
+    function handlePosition(position) {
+        if(position == 'MEASURER') {
+            return 'Pomiarowiec'
+        } else {
+            return 'Sprawdzający'
+        }
+    }
+    function handleDeleteBtn(id) {
+        console.log(id)
+        deleteElectricianByIdApi(id)
+            .then(response => {
+                setRender(render - 1)
+                console.log(response)
             })
             .catch(error => console.log(error))
     }
@@ -52,7 +69,7 @@ export default function ElectriciansComponent() {
 
     return (
         <div className="ElectriciansComponent">
-            <button className="btn btn-info m-3" onClick={() => navigate(`/temp`)}>Wstecz</button>
+            <button className="btn btn-primary btn-lg m-2" onClick={() => navigate(`/`)}>Wstecz</button>
             <h1>Elektrycy</h1>
             <table className="table">
                 <thead>
@@ -87,6 +104,7 @@ export default function ElectriciansComponent() {
                         <th>Adres</th>
                         <th>Uprawnienia</th>
                         <th>Pozycja</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -98,7 +116,8 @@ export default function ElectriciansComponent() {
                                     <td>{electrician.lastName}</td>
                                     <td>{electrician.electricianAddress}</td>
                                     <td>{electrician.permissionList}</td>
-                                    <td>{electrician.position}</td>
+                                    <td>{handlePosition(electrician.position)}</td>
+                                    <td><button className="btn btn-danger" onClick = {() => handleDeleteBtn(electrician.id)}>Usuń</button></td>
                                 </tr>
                             )
                         )

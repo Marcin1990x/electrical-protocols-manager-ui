@@ -5,7 +5,7 @@ import { addFloorApi, addRoomToFloorApi, deleteFloorByIdApi } from "../api/Floor
 import { addRoomApi, deleteRoomByIdApi } from "../api/RoomApiService"
 import FloorTable from "./tables/FloorTable"
 
-export default function HomePageComponent() {
+export default function StructureComponent() {
 
     const navigate = useNavigate()
 
@@ -15,9 +15,7 @@ export default function HomePageComponent() {
     const [floorName, setFloorName] = useState('')
     const [roomName, setRoomName] = useState('')
 
-    useEffect ( () => {
-        refreshData()
-    }, [render])
+    useEffect ( () => refreshData(), [render])
 
     function handleBuildingNameChange(event) {
         setBuildingName(event.target.value)
@@ -128,7 +126,8 @@ export default function HomePageComponent() {
     }
 
     return (
-        <div className="HomePageComponent">
+        <div className="StructureComponent">
+            <button className="btn btn-primary btn-lg m-2" onClick={() => navigate(`/project`)}>Wstecz</button>
             <div>
                 <table className="table">
                     <thead>

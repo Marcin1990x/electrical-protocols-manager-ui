@@ -5,3 +5,5 @@ export const addElectricianApi = (electrician) => apiClient.post(`/electricians`
 export const retrieveElectriciansApi = () => apiClient.get(`/electricians`)
 
 export const retrieveElectriciansFromFileApi = () => apiClient.get(`electricians/loadFromFile`)
+
+export const deleteElectricianByIdApi = (id) => apiClient.delete(`/electricians/${id}`)

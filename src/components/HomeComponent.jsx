@@ -21,7 +21,7 @@ export default function HomeComponent() {
             </div>
                 <div className="w-100 p-1">
                     <div className="shadow-sm p-3 mb-2 bg-body rounded">
-                        <button className="btn btn-dark" onClick={() => navigate(`/temp1`)}>Nowy projekt</button>
+                        <button className="btn btn-dark" onClick={() => navigate(`/project`)}>Nowy projekt</button>
                     </div>
                     <div className="shadow-sm p-3 mb-2 bg-body rounded">
                         <button className="btn btn-dark">Wczytaj projekt</button>

@@ -8,7 +8,6 @@ export default function MeasurementComponent() {
     const navigate = useNavigate()
 
     const [main, setMain] = useState([])
-    //const context = useGlobal()
     const {id, idMain} = useParams()
 
     //discriminator 1

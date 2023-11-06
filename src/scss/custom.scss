@@ -1,0 +1,7 @@
+@import "/electrical-protocols-manager-ui/node_modules/bootstrap";
+
+
+$custom-position-values: (
+  25: 25%
+);
+$position-values: map-merge($position-values , $custom-position-values)

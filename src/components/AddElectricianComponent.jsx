@@ -22,7 +22,7 @@ export default function AddElectricianComponent() {
 
     return (
         <div className="AddElectricianComponent">
-            <button className="btn btn-info m-3" onClick={() => navigate(`/temp1`)}>Wstecz</button>
+            <button className="btn btn-primary btn-lg m-2" onClick={() => navigate(`/project`)}>Wstecz</button>
             <h1>Dodaj elektryka do projektu</h1>
             {   
                 electricians?.map (

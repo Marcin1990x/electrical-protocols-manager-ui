@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import HomePageComponent from './HomePageComponent'
+import StructureComponent from './StructureComponent'
 import RoomComponent from "./RoomComponent"
 import AddMeasurementComponent from "./AddMeasurementComponent"
 import MeasurementComponent from "./MeasurementComponent"
@@ -16,13 +16,13 @@ export default function ElectricalProtocolsManager() {
             <ContextProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route path = "/temp1" element = { <ProjectComponent />} /> 
-                        <Route path = "/temp" element = { <HomeComponent />} />
-                        <Route path = "" element = { <HomePageComponent />} />
+                        <Route path = "/project" element = { <ProjectComponent />} /> 
+                        <Route path = "" element = { <HomeComponent />} />
+                        <Route path = "/structure" element = { <StructureComponent />} />
                         <Route path = "/addElectrician" element = { <AddElectricianComponent />} />
                         <Route path = "/electricians" element = { <ElectriciansComponent />} />
                         <Route path = "/rooms/:id" element = { <RoomComponent />} />
-                        <Route path = "/room/:id/addMeasurement/:index" element = { <AddMeasurementComponent />} />
+                        <Route path = "/rooms/:id/addMeasurement/:index" element = { <AddMeasurementComponent />} />
                         <Route path = "/rooms/:id/measurements/:idMain" element = { <MeasurementComponent />} />
                     </Routes>
                 </BrowserRouter>
