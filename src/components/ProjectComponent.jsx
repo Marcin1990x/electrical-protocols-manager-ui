@@ -16,10 +16,13 @@ export default function ProjectComponent() {
                         <button className="btn btn-dark" onClick={() => navigate(`/structure`)}>Nowa struktura</button>
                     </div>
                     <div className="shadow-sm p-3 mb-2 bg-body rounded">
-                        <button className="btn btn-dark" onClick={() => navigate(`/addElectrician`)}>Dodaj pomiarowca do projektu</button>
+                        <button className="btn btn-dark" onClick={() => navigate(`/protocolInfo`)}>Informacje do protokołu</button>
                     </div>
                     <div className="shadow-sm p-3 mb-2 bg-body rounded">
-                        <button className="btn btn-dark">Generuj PDF</button>
+                        <button className="btn btn-dark">Informacje do protokołu</button>
+                    </div>
+                    <div className="shadow-sm p-3 mb-2 bg-body rounded">
+                        <button className="btn btn-dark">Generuj PDF protokołu</button>
                     </div>
                     <div className="shadow-sm p-3 mb-2 bg-body rounded">
                         <button className="btn btn-dark">Zapisz projekt</button>
