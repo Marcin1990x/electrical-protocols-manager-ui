@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { retrieveElectriciansApi} from "../api/ElectricianApiService"
 import { useNavigate } from "react-router-dom"
+import { addTitlePageApi, addElectricanToTitlePageApi, removeElectricanFromTitlePageApi, retrievePdfTitlePageData } from "../api/PdfTitlePageApiService"
 
 export default function ProtocolInformationComponent() {
 
@@ -8,18 +9,18 @@ export default function ProtocolInformationComponent() {
     const [electriciansToAdd, setElectriciansToAdd] = useState([])
     const [render, setRender] = useState(0)
     const [electriciansAdded, setElectriciansAdded] = useState([])
+    const [titlePage, setTitlePage] = useState([])
     const title = useRef()
     const protocolNumber = useRef()
     const customer = useRef()
     const address = useRef()
     const measurementType = useRef()
+    const installationType = useRef()
     const measDate = useRef()
     const measNextDate = useRef()
     const weather = useRef()
-
-    const option1= useRef()
-
-
+    const decisionDescription = useRef()
+    const comments = useRef()
 
     const navigate = useNavigate()
 
@@ -34,18 +35,70 @@ export default function ProtocolInformationComponent() {
             })
             .catch(error => console.log(error))    
     }
-    function refreshData() {}
+    function refreshData() {
+        retrievePdfTitlePageData()
+            .then(response => {
+                console.log(response)
+                setTitlePage(response.data)
+            })
+            .catch(error => console.log(error))
+    }
 
     function handleAddBtn(electrician) {
-        setRender(render + 1)
+
+        addElectricanToTitlePageApi(titlePage.id, electrician.id)
+            .then(response => {
+                setRender(render + 1)
+                console.log(response)
+            })
+            .catch(error => console.log(error))
+
         electriciansAdded.push(electrician)
         electriciansToAdd.pop(electrician)
     }
     function handleDeleteBtn(electrician) {
-        setRender(render -1)
+        
+        removeElectricanFromTitlePageApi(titlePage.id, electrician.id)
+            .then(response => {
+                setRender(render -1)
+                console.log(response)
+            })
+            .catch(error => console.log(error))
+
         electriciansAdded.pop(electrician)
         electriciansToAdd.push(electrician)
     }
+     function handleSubmitBtn() {
+
+        const titlePageData = {
+            documentNumber : protocolNumber.current.value,
+            title: title.current.value,
+            customerName : customer.current.value,
+            measurementPlace : address.current.value,
+            typeOfMeasurement : measurementType.current.value,
+            typeOfWeather : weather.current.value,
+            measurementDate : measDate.current.value,
+            nextMeasurementDate : measNextDate.current.value,
+            typeOfInstallation : installationType.current.value,
+            decisionDescription : decisionDescription.current.value,
+            comments : comments.current.value
+        }
+
+        if(protocolNumber.current.value !== '' && title.current.value !== '' && customer.current.value !== '' &&
+        address.current.value !== '' && measurementType.current.value !== '' && weather.current.value !== '' &&
+        measDate.current.value !== '' && measNextDate.current.value !== '' && installationType.current.value !== ''
+        && decisionDescription.current.value !== '' && comments.current.value !== ''){
+
+            addTitlePageApi(titlePageData)
+                .then(response => {
+                    console.log(response)
+                    setTitlePage(response.data)
+                })
+                .catch(error => console.log(error))
+        } else {
+            console.log('Fill all fields.')
+        }
+     }
 
     return (
         <div className="ProtocolInformationComponent">
@@ -88,30 +141,21 @@ export default function ProtocolInformationComponent() {
                         <div>
                             <label><b>Rodzaj instalacji:</b></label>
                         </div>
-                        <div class="form-check form-check-inline m-2">
-                            <input className="form-check-input" type="radio" name="inlineRadioOptions" value='NEW'/>
-                            <label className="form-check-label" for="inlineRadio1">Nowa</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" name="inlineRadioOptions" value='MODIFICATED'/>
-                            <label className="form-check-label" for="inlineRadio1">Modyfikacja</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" name="inlineRadioOptions" value='EXPANDED'/>
-                            <label className="form-check-label" for="inlineRadio1">Rozbudowa</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" name="inlineRadioOptions" value='EXISING'/>
-                            <label className="form-check-label" for="inlineRadio1">Istniejąca</label>
-                        </div>
+                            <select className="form-select" ref = {installationType}>
+                                                    <option value = 'NEW'>Nowa</option>
+                                                    <option value = 'MODIFICATED'>Modyfikacja</option>
+                                                    <option value = 'EXPANDED'>Rozbudowa</option>
+                                                    <option value = 'EXISTING'>Istniejąca</option>
+                            </select>
                         <div>
                             <label><b>Orzeczenie:</b></label>
                         </div>
-                            <textarea className="form-control" rows="2"></textarea>
+                            <textarea className="form-control" rows="2" ref=  {decisionDescription}></textarea>
                         <label><b>Uwagi do orzeczenia:</b></label>
-                            <textarea className="form-control" rows="4"></textarea>
-                        </div>    
-                </div>
+                            <textarea className="form-control" rows="4" ref = {comments}></textarea>
+                        </div>
+                        <button className="btn btn-success m-2" onClick={handleSubmitBtn}>Załaduj dane</button>    
+            </div>
             </div>
             <label><b>Wykonawcy pomiarów:</b></label>
             
@@ -133,7 +177,7 @@ export default function ProtocolInformationComponent() {
                                 </thead>
                                 <tbody>
                                     {
-                                        electriciansToAdd.map (
+                                        electriciansToAdd.map (//compare all elec in db with elec in pdftitledata
                                             elec => (
                                                 <tr key={elec.id}>
                                                     <td>{elec.firstName}</td>
@@ -160,7 +204,8 @@ export default function ProtocolInformationComponent() {
                                 </thead>
                                 <tbody>
                                     {
-                                        electriciansAdded?.map (
+                                        titlePage.electricians?.map (
+                                        //electriciansAdded?.map (
                                             elec => (
                                                 <tr key={elec.id}>
                                                     <td>{elec.firstName}</td>

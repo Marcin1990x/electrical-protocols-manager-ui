@@ -31,6 +31,7 @@ export default function StructureComponent() {
     }
 
     function handleAddBuildingBtn() {
+
         const newBuilding = {
             buildingName: buildingName
         }
@@ -76,6 +77,7 @@ export default function StructureComponent() {
         }
     }
     function handleAddFloorBtn(id) {
+
         const newFloor = {
             floorName: floorName
         }
