@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { retrieveElectriciansApi} from "../api/ElectricianApiService"
+import { retrieveDistinctElectriciansApi} from "../api/ElectricianApiService"
 import { useNavigate } from "react-router-dom"
 import { addTitlePageApi, addElectricanToTitlePageApi, removeElectricanFromTitlePageApi, retrievePdfTitlePageData } from "../api/PdfTitlePageApiService"
 
@@ -28,7 +28,7 @@ export default function ProtocolInformationComponent() {
     useEffect( () => refreshData(), [render])
 
     function initializeData() {
-        retrieveElectriciansApi()
+        retrieveDistinctElectriciansApi()
             .then(response => {
                 setElectriciansToAdd(response.data)
                 console.log(response)    
@@ -157,8 +157,8 @@ export default function ProtocolInformationComponent() {
                         <button className="btn btn-success m-2" onClick={handleSubmitBtn}>Załaduj dane</button>    
             </div>
             </div>
-            <label><b>Wykonawcy pomiarów:</b></label>
-            
+            {titlePage && <label><b>Wykonawcy pomiarów:</b></label> }
+            {titlePage &&
             <div className="container p-3">
                 <div className="row">
                     <div className="col"><b>Dostępni :</b></div>
@@ -221,7 +221,7 @@ export default function ProtocolInformationComponent() {
                             </table>
                     </div>        
                 </div>            
-            </div>                            
+            </div>  }                          
         </div>
     )
 }

@@ -1,0 +1,12 @@
+.container {
+    width: 100%;
+    font-size: medium;
+    background-color: darkblue;
+}
+.col {
+    background-color: aquamarine;
+    justify-content: center;
+}
+.row {
+    background-color: aqua;
+}

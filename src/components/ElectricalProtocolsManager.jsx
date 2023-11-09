@@ -8,6 +8,7 @@ import HomeComponent from "./HomeComponent"
 import ProjectComponent from "./ProjectComponent"
 import ElectriciansComponent from "./ElectriciansComponent"
 import ProtocolInformationComponent from "./ProtocolInformationComponent"
+import GeneratePdf from "./GeneratePdf"
 
 export default function ElectricalProtocolsManager() {
 
@@ -19,6 +20,7 @@ export default function ElectricalProtocolsManager() {
                         <Route path = "/project" element = { <ProjectComponent />} /> 
                         <Route path = "" element = { <HomeComponent />} />
                         <Route path = "/structure" element = { <StructureComponent />} />
+                        <Route path = "/generate" element = { <GeneratePdf />} />
                         <Route path = "/protocolInfo" element = { <ProtocolInformationComponent />} />
                         <Route path = "/electricians" element = { <ElectriciansComponent />} />
                         <Route path = "/rooms/:id" element = { <RoomComponent />} />
