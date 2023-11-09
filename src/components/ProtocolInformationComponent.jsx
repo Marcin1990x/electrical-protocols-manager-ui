@@ -86,9 +86,8 @@ export default function ProtocolInformationComponent() {
 
         if(protocolNumber.current.value !== '' && title.current.value !== '' && customer.current.value !== '' &&
         address.current.value !== '' && measurementType.current.value !== '' && weather.current.value !== '' &&
-        measDate.current.value !== '' && measNextDate.current.value !== '' && installationType.current.value !== ''
-        && decisionDescription.current.value !== '' && comments.current.value !== ''){
-
+        measDate.current.value !== '' && measNextDate.current.value !== '' && installationType.current.value !== '')
+        {
             addTitlePageApi(titlePageData)
                 .then(response => {
                     console.log(response)

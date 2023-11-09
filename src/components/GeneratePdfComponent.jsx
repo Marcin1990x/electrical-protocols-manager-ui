@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom"
-import { Document, Page, pdfjs } from 'react-pdf';
-import { useState } from "react";
-import './GeneratePdf.css'
+import { Document, Page, pdfjs } from 'react-pdf'
+import { useState } from "react"
 import pdf from '../test.pdf'
+import { getDataForProtocolApi, generateProtocolApi } from "../api/GeneratePdfApi"
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
@@ -38,15 +38,31 @@ export default function GeneratePdf() {
         }
     }
 
+    function loadDataToProtocol() {
+        getDataForProtocolApi()
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
+    }
+    function generatePdf() {
+        generateProtocolApi()
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
+    }
+
     function onDocumentLoadSuccess({numPages}){
         setNumPages(numPages);
-      }
+    }
 
 
     return (
         <div className="GeneratePdf">
             <button className="btn btn-primary btn-lg m-2" onClick={() => navigate(`/project`)}>Wstecz</button>
-                <h1>Protokół pomiarowy</h1>
+
+            <h1>Protokół pomiarowy</h1>
+            
+            <button className="btn btn-primary btn-lg m-2" onClick={loadDataToProtocol}>Załaduj dane</button>
+            <button className="btn btn-primary btn-lg m-2" onClick={generatePdf}>Generuj Pdf</button>
+
             <br></br>
             <div className="container">
                 <div className="row">
