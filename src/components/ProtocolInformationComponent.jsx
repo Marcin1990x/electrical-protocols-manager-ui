@@ -8,7 +8,6 @@ export default function ProtocolInformationComponent() {
 
     const [electriciansToAdd, setElectriciansToAdd] = useState([])
     const [render, setRender] = useState(0)
-    const [electriciansAdded, setElectriciansAdded] = useState([])
     const [titlePage, setTitlePage] = useState([])
     const title = useRef()
     const protocolNumber = useRef()
@@ -21,12 +20,23 @@ export default function ProtocolInformationComponent() {
     const weather = useRef()
     const decisionDescription = useRef()
     const comments = useRef()
+    const [nextDateYear, setNextDateYear] = useState(5)
+
+    const today = new Date()
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+    var nextDate = (today.getFullYear() + parseInt(nextDateYear)) + '-' + (today.getMonth() + 1) + '-' + today.getDate()
 
     const navigate = useNavigate()
 
-    useEffect( () => initializeData(), [])
-    useEffect( () => refreshData(), [render])
+    useEffect( () => {
+        refreshData()
+        initializeData()
+    } , [render])
 
+    function setNextMeasurementDate(event) {
+        setNextDateYear(event.target.value)
+        setRender(render - 1)
+    }
     function initializeData() {
         retrieveDistinctElectriciansApi()
             .then(response => {
@@ -52,9 +62,6 @@ export default function ProtocolInformationComponent() {
                 console.log(response)
             })
             .catch(error => console.log(error))
-
-        electriciansAdded.push(electrician)
-        electriciansToAdd.pop(electrician)
     }
     function handleDeleteBtn(electrician) {
         
@@ -64,9 +71,6 @@ export default function ProtocolInformationComponent() {
                 console.log(response)
             })
             .catch(error => console.log(error))
-
-        electriciansAdded.pop(electrician)
-        electriciansToAdd.push(electrician)
     }
      function handleSubmitBtn() {
 
@@ -126,14 +130,24 @@ export default function ProtocolInformationComponent() {
                                                 <option value = 'RAINY'>Deszczowa</option>
                             </select>
                         <div className="container"> 
-                            <div className="row">   
-                                <div className="col">
+                            <div className="row m-2">   
+                                <div className="col">  
                                     <label><b>Data pomiarów:</b></label>
-                                    <input class="form-control" type="date" ref={measDate}/>
+                                    <input class="form-control" type="date" defaultValue={date} ref={measDate}/>
                                 </div>
                                 <div className="col">
+                                    <label><b>Kolejny pomiar:</b></label>
+                                        <select className="form-select" onChange= {setNextMeasurementDate}> 
+                                                    <option value = '1'>Za rok</option>
+                                                    <option value = '2'>Za 2 lata</option>
+                                                    <option value = '3'>Za 3 lata</option>
+                                                    <option value = '4'>Za 4 lata</option>
+                                                    <option value = '5'>Za 5 lat</option>
+                                        </select>
+                                </div>  
+                                <div className="col">
                                     <label><b>Data następnych pomiarów:</b></label>
-                                    <input class="form-control" type="date" ref={measNextDate}/>
+                                    <input class="form-control" type="date" defaultValue={nextDate} ref={measNextDate}/>
                                 </div>
                             </div>
                         </div>    
@@ -176,7 +190,7 @@ export default function ProtocolInformationComponent() {
                                 </thead>
                                 <tbody>
                                     {
-                                        electriciansToAdd.map (//compare all elec in db with elec in pdftitledata
+                                        electriciansToAdd.map (
                                             elec => (
                                                 <tr key={elec.id}>
                                                     <td>{elec.firstName}</td>
@@ -204,7 +218,6 @@ export default function ProtocolInformationComponent() {
                                 <tbody>
                                     {
                                         titlePage.electricians?.map (
-                                        //electriciansAdded?.map (
                                             elec => (
                                                 <tr key={elec.id}>
                                                     <td>{elec.firstName}</td>
