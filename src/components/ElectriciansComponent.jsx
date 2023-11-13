@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { addElectricianApi, retrieveElectriciansApi, deleteElectricianByIdApi} from "../api/ElectricianApiService"
 import { useNavigate } from "react-router-dom"
-import './ElectriciansComponent.css'
+import './Common.css'
 
 export default function ElectriciansComponent() {
 
@@ -42,8 +42,15 @@ export default function ElectriciansComponent() {
             .then(response => {
                 setRender(render - 1)
                 console.log(response)
+                setMessageVisible(false)
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+                console.log(error)
+                if((error.response.data).includes('Error 100')){
+                    setMessage('Elektryk dodany do informacji protokołu. Usuń najpierw elektryka z zakładki "informacje do protokołu".')
+                    setMessageVisible(true)
+                }
+            })
     }
 
     function handleAddPermission() {
@@ -60,13 +67,13 @@ export default function ElectriciansComponent() {
 
     function handleChangeBtn(electrician) {
 
-        firstName.current.value = electrician.firstName
-        lastName.current.value = electrician.lastName
-        address.current.value = electrician.electricianAddress
-        setPermissionsList(electrician.permissionList)
-        position.current.value = electrician.position
+            firstName.current.value = electrician.firstName
+            lastName.current.value = electrician.lastName
+            address.current.value = electrician.electricianAddress
+            setPermissionsList(electrician.permissionList)
+            position.current.value = electrician.position
 
-        handleDeleteBtn(electrician.id)
+            handleDeleteBtn(electrician.id)
     }
 
     function handleAddElectrician(){
@@ -87,11 +94,17 @@ export default function ElectriciansComponent() {
                     console.log(response)
                     setMessageVisible(false)
                 })
-                .catch(error => console.log(error))
+                .catch(error => {
+                    console.log(error)
+                    if((error.response.data).includes('Error 101')){
+                        setMessage('Elektryk o nazwisku ' + lastName.current.value + ' już istnieje.')
+                        setMessageVisible(true)
+                    }
+                })
 
         } else {
             setMessageVisible(true)
-            setMessage('Wypełnij wszystkie pola')
+            setMessage('Wypełnij wszystkie pola.')
         }
     }
 
@@ -115,10 +128,10 @@ export default function ElectriciansComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" className="form-control" ref ={firstName}></input></td>
-                        <td><input type = "text" className="form-control" ref ={lastName}></input></td>
-                        <td><input type = "text" className="form-control" ref ={address}></input></td>
-                        <td><input type = "text" className="form-control" ref ={permissions}></input>
+                        <td><input type = "text" size = {10} maxLength={15} className="form-control" ref ={firstName}></input></td>
+                        <td><input type = "text" size = {10} maxLength={15} className="form-control" ref ={lastName}></input></td>
+                        <td><input type = "text" size = {40} maxLength={40} className="form-control" ref ={address}></input></td>
+                        <td><input type = "text" maxLength={15} className="form-control" ref ={permissions}></input>
                         {
                             permissionsList.map (
                                 perm => (

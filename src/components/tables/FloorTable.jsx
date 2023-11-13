@@ -1,4 +1,5 @@
 import RoomTable from "./RoomTable"
+import '../Common.css'
 
 export default function FloorTable(building, handleAddRoomBtn, handleDeleteBtn, handleRoomBtn) {
 
@@ -10,9 +11,9 @@ export default function FloorTable(building, handleAddRoomBtn, handleDeleteBtn, 
 
     return (
         <div className="FloorTable">
-            <table className="table">
+            <table className="table table-bordered">
             <thead>
-                <tr>
+                <tr className="table-success">
                     <th>Piętro</th>
                 </tr>
             </thead>
@@ -22,7 +23,9 @@ export default function FloorTable(building, handleAddRoomBtn, handleDeleteBtn, 
                         floor => (
                             <tr key = {floor.id} >
                                 <td>
-                                    {floor.floorName}
+                                    <div className="structure-element">
+                                        {floor.floorName}
+                                    </div>
                                     <button className="btn btn-danger btn-sm m-1" onClick = {() => handleDeleteBtn(floor.id, 2, building.id)}>X</button>
                                 </td>
                                 <td>

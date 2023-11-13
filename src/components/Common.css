@@ -1,0 +1,12 @@
+.message{
+    background-color: yellow;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: large;
+}
+.structure-element{
+    border-radius: 25px;
+    background: #009030;
+    color: white;
+    padding: 5px;
+    width: 20;
+}

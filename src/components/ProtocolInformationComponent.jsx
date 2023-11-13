@@ -22,6 +22,9 @@ export default function ProtocolInformationComponent() {
     const comments = useRef()
     const [nextDateYear, setNextDateYear] = useState(5)
 
+    const [message, setMessage] = useState('')
+    const [messageVisible, setMessageVisible] = useState(false)
+
     const today = new Date()
     var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
     var nextDate = (today.getFullYear() + parseInt(nextDateYear)) + '-' + (today.getMonth() + 1) + '-' + today.getDate()
@@ -29,15 +32,33 @@ export default function ProtocolInformationComponent() {
     const navigate = useNavigate()
 
     useEffect( () => {
-        refreshData()
-        initializeData()
+        refreshTitlePageData()
+        refreshElectriciansToAdd()
     } , [render])
+    
 
     function setNextMeasurementDate(event) {
         setNextDateYear(event.target.value)
         setRender(render - 1)
     }
-    function initializeData() {
+    function fillTitlePageData(titlePage) {
+        if(titlePage) {
+            title.current.value = titlePage.title
+            protocolNumber.current.value = titlePage.documentNumber
+            customer.current.value = titlePage.customerName
+            address.current.value = titlePage.measurementPlace
+            measurementType.current.value = titlePage.typeOfMeasurement
+            weather.current.value = titlePage.typeOfWeather
+            measDate.current.value =titlePage.measurementDate
+            measNextDate.current.value = titlePage.nextMeasurementDate
+            installationType.current.value = titlePage.typeOfInstallation
+            decisionDescription.current.value = titlePage.decisionDescription
+            comments.current.value = titlePage.comments
+        }
+    }
+
+
+    function refreshElectriciansToAdd() {
         retrieveDistinctElectriciansApi()
             .then(response => {
                 setElectriciansToAdd(response.data)
@@ -45,11 +66,12 @@ export default function ProtocolInformationComponent() {
             })
             .catch(error => console.log(error))    
     }
-    function refreshData() {
+    function refreshTitlePageData() {
         retrievePdfTitlePageData()
             .then(response => {
                 console.log(response)
                 setTitlePage(response.data)
+                fillTitlePageData(response.data)
             })
             .catch(error => console.log(error))
     }
@@ -96,27 +118,33 @@ export default function ProtocolInformationComponent() {
                 .then(response => {
                     console.log(response)
                     setTitlePage(response.data)
+                    setMessageVisible(true)
+                    setMessage('Formularz dodano pomyślnie.')
                 })
                 .catch(error => console.log(error))
         } else {
-            console.log('Fill all fields.')
+            setMessageVisible(true)
+            setMessage('Wypełnij wszystkie pola formularza.')
         }
      }
 
     return (
         <div className="ProtocolInformationComponent">
             <button className="btn btn-primary btn-lg m-2" onClick={() => navigate(`/project`)}>Wstecz</button>
+            <div className="message">
+                {messageVisible && message}
+            </div>
             <div className="container"> 
                 <div className="row">
                     <div className="col">
                         <label><b>Tytuł protokołu:</b></label>
-                            <input type = "text" className="form-control" id="dupa" ref={title}></input>
+                            <input type = "text" maxLength = {20} className="form-control" ref={title}></input>
                         <label><b>Numer protokołu:</b></label>
-                            <input type = "text" className="form-control" ref={protocolNumber}></input>
+                            <input type = "text" maxLength = {20} className="form-control" ref={protocolNumber}></input>
                             <label><b>Zleceniodawca:</b></label>
-                            <input type = "text" className="form-control" ref={customer}></input>
+                            <input type = "text" maxLength = {30} className="form-control" ref={customer}></input>
                         <label><b>Miejsce przeprowadzenia pomiarów:</b></label>
-                            <input type = "text" className="form-control" ref={address}></input>
+                            <input type = "text" maxLength = {40} className="form-control" ref={address}></input>
                         <label><b>Rodzaj pomiarów:</b></label>
                             <select className="form-select" ref={measurementType}>
                                                 <option value = 'NEW_INSTALLATION'>Nowa instalacja</option>

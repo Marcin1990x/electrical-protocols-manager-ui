@@ -15,6 +15,9 @@ export default function StructureComponent() {
     const [floorName, setFloorName] = useState('')
     const [roomName, setRoomName] = useState('')
 
+    const [message, setMessage] = useState('')
+    const [messageVisible, setMessageVisible] = useState(false)
+
     useEffect ( () => refreshData(), [render])
 
     function handleBuildingNameChange(event) {
@@ -40,11 +43,18 @@ export default function StructureComponent() {
                 .then(response => {  
                 console.log(response)
                 setRender(render - 1)
+                setMessageVisible(false)
             })
-            .catch(error => console.log(error))
-            console.log(render)
+            .catch(error => {
+                console.log(error)
+                if((error.response.data).includes('Error 102')){
+                    setMessage('Możesz utworzyć tylko jeden budynek.')
+                    setMessageVisible(true)
+                }
+            })
         } else {
-            console.log('Fill building name field.')
+            setMessageVisible(true)
+            setMessage('Wpisz nazwę budynku.')
         }
     }
     function addFloorTable(building){
@@ -87,6 +97,7 @@ export default function StructureComponent() {
                 setRender(render - 1)
                 addFloorToBuildingApi(id, response.data.id)
                 .then(response => {
+                    setMessageVisible(false)
                     setRender(render + 1)
                     console.log(response)
                 })
@@ -94,7 +105,8 @@ export default function StructureComponent() {
             })
             .catch(error => console.log(error))
         } else {
-            console.log('Fill floor name field.')
+            setMessageVisible(true)
+            setMessage('Wpisz nazwę piętra.')
         }
     }
     function handleAddRoomBtn(id) { // same as above. Refactor with if
@@ -107,6 +119,7 @@ export default function StructureComponent() {
                 setRender(render - 1)
                 addRoomToFloorApi(id, response.data.id)
                 .then(response => {
+                    setMessageVisible(false)
                     setRender(render + 1)
                     console.log(response)
                 })
@@ -114,7 +127,8 @@ export default function StructureComponent() {
             })
             .catch(error => console.log(error))
         } else {
-            console.log('Fill room name field.')
+            setMessageVisible(true)
+            setMessage('Wpisz nazwę pomieszczenia.')
         }
     }
 
@@ -130,10 +144,13 @@ export default function StructureComponent() {
     return (
         <div className="StructureComponent">
             <button className="btn btn-primary btn-lg m-2" onClick={() => navigate(`/project`)}>Wstecz</button>
+            <div className="message">
+                {messageVisible && message}
+            </div>
             <div>
-                <table className="table">
+                <table className="table table-bordered">
                     <thead>
-                        <tr>
+                        <tr className="table-success">
                             <th>Budynek</th>
                             <th>dodaj Piętro</th>
                             <th>dodaj Pomieszczenie</th>
@@ -142,14 +159,14 @@ export default function StructureComponent() {
                     <tbody>
                         <tr>
                             <td>
-                                <input type="text" defaultValue="nazwa budynku" onChange={handleBuildingNameChange} ></input>
+                                <input type="text" className="form-control form-control-sm" maxLength = {15} onChange={handleBuildingNameChange} />
                                 <button className="btn btn-success m-2" onClick={handleAddBuildingBtn}>Dodaj budynek</button>
                             </td>
                             <td>
-                                <input type="text" defaultValue="nazwa piętra" onChange={handleFloorNameChange} ></input>
+                                <input type="text" className="form-control form-control-sm" maxLength = {15} onChange={handleFloorNameChange} />
                             </td>
                             <td>
-                            <input type="text" defaultValue="nazwa pomieszczenia" onChange={handleRoomNameChange} ></input>
+                                <input type="text" className="form-control form-control-sm" maxLength = {15} onChange={handleRoomNameChange} />
                             </td>
                         </tr>
                         {
@@ -157,7 +174,9 @@ export default function StructureComponent() {
                                 building => (
                                     <tr key = {building.id}>
                                         <td>
-                                            {building.buildingName}
+                                            <div className="structure-element">
+                                                {building.buildingName}
+                                            </div>
                                             <button className="btn btn-danger btn-sm m-1" onClick = {() => handleDeleteBtn(building.id, 1)}>X</button>
                                         </td>
                                         <td>
