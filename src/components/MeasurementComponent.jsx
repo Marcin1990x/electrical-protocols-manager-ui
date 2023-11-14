@@ -29,6 +29,13 @@ export default function MeasurementComponent() {
     function handleBackButton() {
         navigate(`/rooms/${id}`)
     }
+    function handleResult(result) {
+        if(result == 'NEGATIVE') {
+            return 'Negatywna'
+        } else if (result == 'POSITIVE') {
+            return 'Pozytywna'
+        }
+    }
 
 
     return (
@@ -38,9 +45,9 @@ export default function MeasurementComponent() {
                 <button className = "btn btn-primary btn-lg m-2" onClick = {handleBackButton}>Wstecz</button>
                 {main.measurementMainCascadeNameWithoutMeasurementName}
             </h4>
-            <h3> {main.measurementName} - id {idMain}</h3>
+            <h3> {main.measurementName}</h3>
 
-            {(main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porazeniem przez samoczynne wylaczenie') && //fix this shit
+            {(main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porażeniem przez samoczynne wyłączenie') && //fix this shit
             <table className="table">
                     <thead>
                         <tr>
@@ -65,7 +72,7 @@ export default function MeasurementComponent() {
             </table> 
             }
             <hr></hr>
-            {(main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porazeniem przez samoczynne wylaczenie') &&
+            {(main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porażeniem przez samoczynne wyłączenie') &&
             <table className="table">
                 <thead>
                     <tr>
@@ -97,7 +104,7 @@ export default function MeasurementComponent() {
                                     <td>{entry.zs}</td>
                                     <td>{entry.za}</td>
                                     <td>{entry.ik}</td>
-                                    <td>{entry.result}</td>
+                                    <td>{handleResult(entry.result)}</td>
                                 </tr>
                             )
                         )

@@ -19,6 +19,9 @@ export default function AddMeasurementComponent() {
     const [entry, setEntry] = useState([])
     const [entries, setEntries] = useState([])
 
+    const [message, setMessage] = useState('')
+    const [messageVisible, setMessageVisible] = useState(false)
+
 
     //discriminator 0
     const un = useRef()
@@ -98,6 +101,11 @@ export default function AddMeasurementComponent() {
         navigate(`/rooms/${id}`)
     }
 
+    function showError(text) {
+        setMessageVisible(true)
+        setMessage(text)
+    }
+
     function handleAddEntryBtn() {
 
         if(index == 0) {
@@ -114,6 +122,7 @@ export default function AddMeasurementComponent() {
                 addMeasurementEntry(index, newProtectionMeasurementEntry)
                 .then(response => {
                     setRender(render + 1)
+                    setMessageVisible(false)
                     console.log(response)
                     setEntry(response.data)
                         addEntryToMainApi(index, mainIndex, response.data.id)
@@ -122,7 +131,7 @@ export default function AddMeasurementComponent() {
                 })
                 .catch(error => console.log(error))          
             } else {
-                console.log('Fill all fields.')
+                showError('Wypełnij wszystkie pola.')
             }
         }
         if(index == 1) {
@@ -148,6 +157,7 @@ export default function AddMeasurementComponent() {
                 addMeasurementEntry(index, newCircuitInsulationTnsEntry)
                 .then(response => {
                     setRender(render + 1)
+                    setMessageVisible(false)
                     console.log(response)
                     setEntry(response.data)
                         addEntryToMainApi(index, mainIndex, response.data.id)
@@ -156,7 +166,7 @@ export default function AddMeasurementComponent() {
                 })
                 .catch(error => console.log(error))          
             } else {
-                console.log('Fill all fields.')
+                showError('Wypełnij wszystkie pola.')
             }
         }
         if(index == 2) {
@@ -177,6 +187,7 @@ export default function AddMeasurementComponent() {
                 addMeasurementEntry(index, newCircuitInsulationTncEntry)
                 .then(response => {
                     setRender(render + 1)
+                    setMessageVisible(false)
                     console.log(response)
                     setEntry(response.data)
                         addEntryToMainApi(index, mainIndex, response.data.id)
@@ -185,7 +196,7 @@ export default function AddMeasurementComponent() {
                 })
                 .catch(error => console.log(error))          
             } else {
-                console.log('Fill all fields.')
+                showError('Wypełnij wszystkie pola.')
             }
         }
         if(index == 3) {
@@ -207,6 +218,7 @@ export default function AddMeasurementComponent() {
                 addMeasurementEntry(index, newResidualCurrentProtectionEntry)
                 .then(response => {
                     setRender(render + 1)
+                    setMessageVisible(false)
                     console.log(response)
                     setEntry(response.data)
                         addEntryToMainApi(index, mainIndex, response.data.id)
@@ -215,7 +227,7 @@ export default function AddMeasurementComponent() {
                 })
                 .catch(error => console.log(error))          
             } else {
-                console.log('Fill all fields.')
+                showError('Wypełnij wszystkie pola.')
             }
         }
         if(index == 4) {
@@ -230,6 +242,7 @@ export default function AddMeasurementComponent() {
                 addMeasurementEntry(index, SoilResistanceEntry)
                 .then(response => {
                     setRender(render + 1)
+                    setMessageVisible(false)
                     console.log(response)
                     setEntry(response.data)
                         addEntryToMainApi(index, mainIndex, response.data.id)
@@ -238,7 +251,7 @@ export default function AddMeasurementComponent() {
                 })
                 .catch(error => console.log(error))          
             } else {
-                console.log('Fill all fields.')
+                showError('Wypełnij wszystkie pola.')
             }
         }
         if(index == 5) {
@@ -252,6 +265,7 @@ export default function AddMeasurementComponent() {
                 addMeasurementEntry(index, newContinuityOfSmallResistanceEntry)
                 .then(response => {
                     setRender(render + 1)
+                    setMessageVisible(false)
                     console.log(response)
                     setEntry(response.data)
                         addEntryToMainApi(index, mainIndex, response.data.id)
@@ -260,7 +274,7 @@ export default function AddMeasurementComponent() {
                 })
                 .catch(error => console.log(error))          
             } else {
-                console.log('Fill all fields.')
+                showError('Wypełnij wszystkie pola.')
             }
         }
     }
@@ -276,18 +290,19 @@ export default function AddMeasurementComponent() {
                 networkType : networkType.current.value,
             }
             if(un.current.value !== '' && ui.current.value !== '' && ko.current.value !== '' && ta.current.value !== '' 
-            && networkType.current.value !== ''&& uo.current.value !== '0') {
+            && networkType.current.value !== ''&& uo.current.value !== '') {
                 setMainAdded(true)
                 addMeasurementMain(index, newProtectionMeasurementMain)
                 .then(response => {
                     setMainIndex(response.data.id)
+                    setMessageVisible(false)
                     addMainToRoomApi(id, response.data.id)
                     .then(response => console.log(response))
                     .catch(error => console.log(error))
                 })
                 .catch(error => console.log(error))
             } else {
-                console.log('Fill all fields.')
+                showError('Wypełnij wszystkie pola.')
             }
         }
         if(index == 1 || index == 2) {
@@ -299,13 +314,14 @@ export default function AddMeasurementComponent() {
                 addMeasurementMain(index, newCircuitInsulationMain)
                 .then(response => {
                     setMainIndex(response.data.id)
+                    setMessageVisible(false)
                     addMainToRoomApi(id, response.data.id)
                     .then(response => console.log(response))
                     .catch(error => console.log(error))
                 })
                 .catch(error => console.log(error))
             } else {
-                console.log('Fill all fields.')
+                showError('Wypełnij wszystkie pola.')
             }
         }
         if(index == 3) {
@@ -349,13 +365,32 @@ export default function AddMeasurementComponent() {
         }
     }
 
+    function handleResult(result) {
+        if(result == 'NEGATIVE') {
+            return 'Negatywna'
+        } else if (result == 'POSITIVE') {
+            return 'Pozytywna'
+        }
+    }
+    function handleContinuity(continuity) {
+        if(continuity == 'PRESERVED') {
+            return 'Zachowana'
+        } else if (continuity == 'NOTPRESERVED') {
+            return 'Niezachowana'
+        }
+    }
+
     return (
         <div className="AddMeasurementComponent">
 
             <button className = "btn btn-primary btn-lg m-2" onClick = {handleBackButton}>Wstecz</button>
 
         {/* add room name from authcontext building */}
-            <h3>{types[index]} (room {id})</h3> 
+            <h3>{types[index]}</h3> 
+
+            <div className="message">
+                {messageVisible && message}
+            </div>
 
         {/* Add main  */}
 
@@ -373,17 +408,17 @@ export default function AddMeasurementComponent() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type = "text" className="form-control" ref={un}></input></td>
-                            <td><input type = "text" className="form-control" ref={ui}></input></td>
-                            <td><input type = "text" className="form-control" ref={ko}></input></td>
-                            <td><input type = "text" className="form-control" ref={ta}></input></td>
+                            <td><input type = "number" className="form-control" ref={un}></input></td>
+                            <td><input type = "number" className="form-control" ref={ui}></input></td>
+                            <td><input type = "number" className="form-control" ref={ko}></input></td>
+                            <td><input type = "number" className="form-control" ref={ta}></input></td>
                             <td><select className="form-select" ref={networkType}>
                                     <option value = "TNS">TNS</option>
                                     <option value = "TNC">TNS</option>
                                     <option value = "TNS">TN-C-S</option>
                                 </select>
                             </td>
-                            <td><input type = "text" className="form-control" ref={uo}></input></td>
+                            <td><input type = "number" className="form-control" ref={uo}></input></td>
                         </tr>
                     </tbody>
                 </table>   
@@ -397,7 +432,7 @@ export default function AddMeasurementComponent() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type = "text" className="form-control" ref={uiso}></input></td>
+                            <td><input type = "number" className="form-control" ref={uiso}></input></td>
                         </tr>
                     </tbody>
                 </table>   
@@ -427,21 +462,21 @@ export default function AddMeasurementComponent() {
                 <tbody>
                     <tr>
                         <td><input type = "text" className="form-control" disabled></input></td>
-                        <td><input type = "text" className="form-control" ref = {symbol}></input></td>
-                        <td><input type = "text" className="form-control" ref = {point}></input></td>
-                        <td><input type = "text" className="form-control" ref = {cutout}></input></td>
-                        <td><select className="form-select" ref={type}>
+                        <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol}></input></td>
+                        <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {point}></input></td>
+                        <td><input type = "text" maxLength = {6} className="form-control" ref = {cutout}></input></td>
+                        <td className="col-md-1"><select className="form-select" ref={type}>
                                     <option value = "B">B</option>
                                     <option value = "C">C</option>
                                     <option value = "D">D</option>
                             </select>
                         </td>
-                        <td><input type = "text" className="form-control" ref = {iNom}></input></td>
+                        <td><input type = "number" className="form-control" ref = {iNom}></input></td>
                         <td><input type = "text" className="form-control" disabled value={entry.ia}></input></td>
-                        <td><input type = "text" className="form-control" ref = {zs}></input></td>
+                        <td><input type = "number" className="form-control" ref = {zs}></input></td>
                         <td><input type = "text" className="form-control" disabled value={entry.za}></input></td>
                         <td><input type = "text" className="form-control" disabled value={entry.ik}></input></td>
-                        <td><input type = "text" className="form-control" disabled value={entry.result}></input></td>
+                        <td className="col-md-2"><input type = "text" className="form-control" disabled value= {handleResult(entry.result)}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -470,20 +505,20 @@ export default function AddMeasurementComponent() {
                 <tbody>
                     <tr>
                         <td><input type = "text" className="form-control" disabled></input></td>
-                        <td><input type = "text" className="form-control" ref = {symbol}></input></td>
-                        <td><input type = "text" className="form-control" ref = {circuitName}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l1l2}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l2l3}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l3l1}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l1pe}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l2pe}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l3pe}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l1n}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l2n}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l3n}></input></td>
-                        <td><input type = "text" className="form-control" ref = {npe}></input></td>
-                        <td><input type = "text" className="form-control" ref = {ra}></input></td>
-                        <td><input type = "text" className="form-control" disabled value={entry.result}></input></td>
+                        <td className="col-md-1"><input type = "text" maxLength = {6} className="form-control" ref = {symbol}/></td>
+                        <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {circuitName}/></td>
+                        <td><input type = "number" className="form-control" ref = {l1l2}></input></td>
+                        <td><input type = "number" className="form-control" ref = {l2l3}></input></td>
+                        <td><input type = "number" className="form-control" ref = {l3l1}></input></td>
+                        <td><input type = "number" className="form-control" ref = {l1pe}></input></td>
+                        <td><input type = "number" className="form-control" ref = {l2pe}></input></td>
+                        <td><input type = "number" className="form-control" ref = {l3pe}></input></td>
+                        <td><input type = "number" className="form-control" ref = {l1n}></input></td>
+                        <td><input type = "number" className="form-control" ref = {l2n}></input></td>
+                        <td><input type = "number" className="form-control" ref = {l3n}></input></td>
+                        <td><input type = "number" className="form-control" ref = {npe}></input></td>
+                        <td><input type = "number" className="form-control" ref = {ra}></input></td>
+                        <td><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -508,16 +543,16 @@ export default function AddMeasurementComponent() {
                 <tbody>
                     <tr>
                         <td><input type = "text" className="form-control" disabled></input></td>
-                        <td><input type = "text" className="form-control" ref = {symbol}></input></td>
-                        <td><input type = "text" className="form-control" ref = {circuitName}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l1l2}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l2l3}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l3l1}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l1pen}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l2pen}></input></td>
-                        <td><input type = "text" className="form-control" ref = {l3pen}></input></td>
-                        <td><input type = "text" className="form-control" ref = {ra}></input></td>
-                        <td><input type = "text" className="form-control" disabled value={entry.result}></input></td>
+                        <td className="col-md-1"><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol}></input></td>
+                        <td className="col-md-2"><input type = "text"  maxLength={20} className="form-control" ref = {circuitName}/></td>
+                        <td><input type = "number" className="form-control" ref = {l1l2}/></td>
+                        <td><input type = "number" className="form-control" ref = {l2l3}/></td>
+                        <td><input type = "number" className="form-control" ref = {l3l1}/></td>
+                        <td><input type = "number" className="form-control" ref = {l1pen}/></td>
+                        <td><input type = "number" className="form-control" ref = {l2pen}/></td>
+                        <td><input type = "number" className="form-control" ref = {l3pen}/></td>
+                        <td><input type = "number" className="form-control" ref = {ra}/></td>
+                        <td><input type = "number" className="form-control" disabled value={handleResult(entry.result)}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -542,23 +577,23 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" className="form-control" disabled></input></td>
-                        <td><input type = "text" className="form-control" ref = {point}></input></td>
-                        <td><input type = "text" className="form-control" ref = {symbol}></input></td>
-                        <td><input type = "text" className="form-control" ref = {cutout}></input></td>
-                        <td><select className="form-select" ref={type}>
+                        <td className="col-md-1"><input type = "text" className="form-control" disabled/></td>
+                        <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol}/></td>
+                        <td className="col-md-2"><input type = "text" maxLength={20} className="form-control" ref = {point}/></td>
+                        <td><input type = "text" maxLength={8} className="form-control" ref = {cutout}/></td>
+                        <td className="col-md-1"><select className="form-select" ref={type}>
                                     <option value = '[AC]'>[AC]</option>
                                     <option value = '[A]'>[A]</option>
                                     <option value = '[B]'>[B]</option>
                             </select>
                         </td>
-                        <td><input type = "text" className="form-control" ref = {iNom}></input></td>
-                        <td><input type = "text" className="form-control" ref = {ia}></input></td>
-                        <td><input type = "text" className="form-control" ref = {ta}></input></td>
-                        <td><input type = "text" className="form-control" ref = {trcd}></input></td>
-                        <td><input type = "text" className="form-control" ref = {ub}></input></td>
-                        <td><input type = "text" className="form-control" ref = {ui}></input></td>
-                        <td><input type = "text" className="form-control" disabled value={entry.result}></input></td>
+                        <td><input type = "number" className="form-control" ref = {iNom}/></td>
+                        <td><input type = "number" className="form-control" ref = {ia}/></td>
+                        <td><input type = "number" className="form-control" ref = {ta}/></td>
+                        <td><input type = "number" className="form-control" ref = {trcd}/></td>
+                        <td><input type = "number" className="form-control" ref = {ub}/></td>
+                        <td><input type = "number" className="form-control" ref = {ui}/></td>
+                        <td className="col-md-1"><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -577,12 +612,12 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" className="form-control" disabled></input></td>
-                        <td><input type = "text" className="form-control" ref = {symbol}></input></td>
-                        <td><input type = "text" className="form-control" ref = {point}></input></td>
-                        <td><input type = "text" className="form-control" ref = {lm}></input></td>
-                        <td><input type = "text" className="form-control" ref = {dm}></input></td>
-                        <td><input type = "text" className="form-control" ref = {p}></input></td>
+                        <td className="col-md-1"><input type = "text" className="form-control" disabled/></td>
+                        <td><input type = "text" size = {5} maxLength = {6} className="form-control" ref = {symbol}/></td>
+                        <td className="col-md-2"><input type = "text" maxLength={20} className="form-control" ref = {point}/></td>
+                        <td><input type = "number" className="form-control" ref = {lm}/></td>
+                        <td><input type = "number" className="form-control" ref = {dm}/></td>
+                        <td><input type = "number" className="form-control" ref = {p}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -601,16 +636,16 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" className="form-control" disabled></input></td>
-                        <td><input type = "text" className="form-control" ref = {symbol}></input></td>
+                        <td className="col-md-1"><input type = "text" className="form-control" disabled/></td>
+                        <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol}/></td>
                         <td><select className="form-select" ref={continuity}>
                                     <option value = 'PRESERVED'>Zachowana</option>
                                     <option value = 'NOTPRESERVED'>Niezachowana</option>
                             </select>
                         </td>
-                        <td><input type = "text" className="form-control" ref = {rs}></input></td>
-                        <td><input type = "text" className="form-control" ref = {ra}></input></td>
-                        <td><input type = "text" className="form-control" disabled value={entry.result}></input></td>
+                        <td><input type = "number" className="form-control" ref = {rs}/></td>
+                        <td><input type = "number" className="form-control" ref = {ra}/></td>
+                        <td><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -652,7 +687,7 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.zs}</td>
                                     <td>{entry.za}</td>
                                     <td>{entry.ik}</td>
-                                    <td>{entry.result}</td>
+                                    <td>{handleResult(entry.result)}</td>
                                 </tr>
                             )
                         )
@@ -700,7 +735,7 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.l3n}</td>
                                     <td>{entry.npe}</td>
                                     <td>{entry.ra}</td>
-                                    <td>{entry.result}</td>
+                                    <td>{handleResult(entry.result)}</td>
                                 </tr>
                             )
                         )
@@ -740,7 +775,7 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.l2pen}</td>
                                     <td>{entry.l3pen}</td>
                                     <td>{entry.ra}</td>
-                                    <td>{entry.result}</td>
+                                    <td>{handleResult(entry.result)}</td>
                                 </tr>
                             )
                         )
@@ -782,7 +817,7 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.trcd}</td>
                                     <td>{entry.ub}</td>
                                     <td>{entry.ui}</td>
-                                    <td>{entry.result}</td>
+                                    <td>{handleResult(entry.result)}</td>
                                 </tr>
                             )
                         )
@@ -839,10 +874,10 @@ export default function AddMeasurementComponent() {
                                 <tr key={entry.id}>
                                     <td></td>
                                     <td>{entry.symbol}</td>
-                                    <td>{entry.continuity}</td>
+                                    <td>{handleContinuity(entry.continuity)}</td>
                                     <td>{entry.rs}</td>
                                     <td>{entry.ra}</td>
-                                    <td>{entry.result}</td>
+                                    <td>{handleResult(entry.result)}</td>
                                 </tr>
                             )
                         )
