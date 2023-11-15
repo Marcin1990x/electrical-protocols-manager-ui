@@ -11,10 +11,10 @@ export default function FloorTable(building, handleAddRoomBtn, handleDeleteBtn, 
 
     return (
         <div className="FloorTable">
-            <table className="table table-bordered">
+            <table className="table table-borderless">
             <thead>
-                <tr className="table-success">
-                    <th>Piętro</th>
+                <tr>
+                    <th>Piętra</th>
                 </tr>
             </thead>
             <tbody>

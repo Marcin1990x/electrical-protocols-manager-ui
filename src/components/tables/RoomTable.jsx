@@ -4,10 +4,10 @@ export default function RoomTable(floor, handleDeleteBtn, handleRoomBtn) {
 
     return (
         <div className="RoomTable">
-            <table className="table table-bordered">
+            <table className="table table-borderless">
             <thead>
-                <tr className="table-success">
-                    <th>Pomieszczenie</th>
+                <tr>
+                    <th>Pomieszczenia</th>
                 </tr>
             </thead>
             <tbody>

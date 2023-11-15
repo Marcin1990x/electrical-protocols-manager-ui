@@ -4,13 +4,10 @@ import { useEffect, useRef, useState } from "react"
 import { addMainToRoomApi } from "../api/RoomApiService"
 import { retrieveMeasurementMainTypes } from "../api/MeasurementMainApiService"
 import { addMeasurementEntry, retrieveMeasurementEntries } from "../api/MeasurementEntryApiService"
-import { useGlobal } from "./GlobalData"
 
 export default function AddMeasurementComponent() {
 
     const {id, index} = useParams()
-
-    const context = useGlobal()
 
     const navigate = useNavigate()
 
@@ -106,6 +103,14 @@ export default function AddMeasurementComponent() {
         setMessage(text)
     }
 
+    function numberFieldChecker(value) {
+        if(value !== '' && value > 0){
+            return true
+        } else {
+            return false
+        }
+    }
+
     function handleAddEntryBtn() {
 
         if(index == 0) {
@@ -118,7 +123,8 @@ export default function AddMeasurementComponent() {
                 iNom : iNom.current.value,
                 zs : zs.current.value
             }
-            if(cutout.current.value !== '' && type.current.value !== '' && iNom.current.value !== '' && zs.current.value !== '' && uo.current.value !== '') {
+            if(cutout.current.value !== '' && type.current.value !== '' && numberFieldChecker(iNom.current.value) 
+            && numberFieldChecker(zs.current.value) && numberFieldChecker(uo.current.value)) {
                 addMeasurementEntry(index, newProtectionMeasurementEntry)
                 .then(response => {
                     setRender(render + 1)
@@ -150,9 +156,10 @@ export default function AddMeasurementComponent() {
                 npe : npe.current.value,
                 ra : ra.current.value
             }
-            if(l1l2.current.value !== '' && l2l3.current.value !== '' && l3l1.current.value !== '' && l1pe.current.value !== '' && l2pe.current.value !== ''
-                && l3pe.current.value !== '' && l1n.current.value !== '' && l2n.current.value !== '' && l3n.current.value !== '' && npe.current.value !== ''
-                && ra.current.value !== ''
+            if(numberFieldChecker(l1l2.current.value) && numberFieldChecker(l2l3.current.value) && numberFieldChecker(l3l1.current.value)
+                && numberFieldChecker(l1pe.current.value) && numberFieldChecker(l2pe.current.value) && numberFieldChecker(l3pe.current.value)
+                && numberFieldChecker(l1n.current.value) && numberFieldChecker(l2n.current.value) && numberFieldChecker(l3n.current.value) 
+                && numberFieldChecker(npe.current.value) && numberFieldChecker(ra.current.value)
             ) {
                 addMeasurementEntry(index, newCircuitInsulationTnsEntry)
                 .then(response => {
@@ -181,8 +188,9 @@ export default function AddMeasurementComponent() {
                 l3pen : l3pen.current.value,
                 ra : ra.current.value
             }
-            if(l1l2.current.value !== '' && l2l3.current.value !== '' && l3l1.current.value !== '' && l1pen.current.value !== ''
-             && l2pen.current.value !== ''&& l3pen.current.value !== '' && ra.current.value !== '')
+            if(numberFieldChecker(l1l2.current.value) && numberFieldChecker(l2l3.current.value) && numberFieldChecker(l3l1.current.value)
+             && numberFieldChecker(l1pen.current.value) && numberFieldChecker(l2pen.current.value) && numberFieldChecker(l3pen.current.value) 
+             && numberFieldChecker(ra.current.value))
             {
                 addMeasurementEntry(index, newCircuitInsulationTncEntry)
                 .then(response => {
@@ -212,8 +220,9 @@ export default function AddMeasurementComponent() {
                 ub : ub.current.value,
                 ui : ui.current.value
             }
-            if(cutout.current.value !== '' && type.current.value !== '' && iNom.current.value !== '' && ia.current.value !== ''
-             && ta.current.value !== ''&& trcd.current.value !== '' && ub.current.value !== '' && ui.current.value !== '')
+            if(cutout.current.value !== '' && type.current.value !== '' && numberFieldChecker(iNom.current.value) && numberFieldChecker(ia.current.value)
+             && numberFieldChecker(ta.current.value) && numberFieldChecker(trcd.current.value) && numberFieldChecker(ub.current.value)
+              && numberFieldChecker(ui.current.value))
             {
                 addMeasurementEntry(index, newResidualCurrentProtectionEntry)
                 .then(response => {
@@ -238,7 +247,7 @@ export default function AddMeasurementComponent() {
                 d : dm.current.value,
                 p : p.current.value,
             }
-            if(lm.current.value !== '' && dm.current.value !== '' && p.current.value !== '') {
+            if(numberFieldChecker(lm.current.value) && numberFieldChecker(dm.current.value) && numberFieldChecker(p.current.value)) {
                 addMeasurementEntry(index, SoilResistanceEntry)
                 .then(response => {
                     setRender(render + 1)
@@ -261,7 +270,7 @@ export default function AddMeasurementComponent() {
                 rs : rs.current.value,
                 ra : ra.current.value,
             }
-            if(continuity.current.value !== '' && rs.current.value !== '' && ra.current.value !== '') {
+            if(continuity.current.value !== '' && numberFieldChecker(rs.current.value) && numberFieldChecker(ra.current.value)) {
                 addMeasurementEntry(index, newContinuityOfSmallResistanceEntry)
                 .then(response => {
                     setRender(render + 1)
@@ -289,8 +298,8 @@ export default function AddMeasurementComponent() {
                 ta : ta.current.value,
                 networkType : networkType.current.value,
             }
-            if(un.current.value !== '' && ui.current.value !== '' && ko.current.value !== '' && ta.current.value !== '' 
-            && networkType.current.value !== ''&& uo.current.value !== '') {
+            if(numberFieldChecker(un.current.value) && numberFieldChecker(ui.current.value) && numberFieldChecker(ko.current.value)
+            && numberFieldChecker(ta.current.value) && networkType.current.value !== ''&& numberFieldChecker(uo.current.value)) {
                 setMainAdded(true)
                 addMeasurementMain(index, newProtectionMeasurementMain)
                 .then(response => {
@@ -309,7 +318,7 @@ export default function AddMeasurementComponent() {
             const newCircuitInsulationMain = {
                 uiso : uiso.current.value
             }
-            if(uiso.current.value !== '') {
+            if(numberFieldChecker(uiso.current.value)) {
                 setMainAdded(true)
                 addMeasurementMain(index, newCircuitInsulationMain)
                 .then(response => {
@@ -408,17 +417,17 @@ export default function AddMeasurementComponent() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type = "number" className="form-control" ref={un}></input></td>
-                            <td><input type = "number" className="form-control" ref={ui}></input></td>
-                            <td><input type = "number" className="form-control" ref={ko}></input></td>
-                            <td><input type = "number" className="form-control" ref={ta}></input></td>
-                            <td><select className="form-select" ref={networkType}>
+                            <td><input type = "number" className="form-control" disabled = {mainAdded} ref={un}></input></td>
+                            <td><input type = "number" className="form-control" disabled = {mainAdded} ref={ui}></input></td>
+                            <td><input type = "number" className="form-control" disabled = {mainAdded} ref={ko}></input></td>
+                            <td><input type = "number" className="form-control" disabled = {mainAdded} ref={ta}></input></td>
+                            <td><select className="form-select" disabled = {mainAdded} ref={networkType}>
                                     <option value = "TNS">TNS</option>
                                     <option value = "TNC">TNS</option>
                                     <option value = "TNS">TN-C-S</option>
                                 </select>
                             </td>
-                            <td><input type = "number" className="form-control" ref={uo}></input></td>
+                            <td><input type = "number" className="form-control" disabled = {mainAdded} ref={uo}></input></td>
                         </tr>
                     </tbody>
                 </table>   
@@ -432,7 +441,7 @@ export default function AddMeasurementComponent() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type = "number" className="form-control" ref={uiso}></input></td>
+                            <td><input type = "number" className="form-control" disabled = {mainAdded} ref={uiso}></input></td>
                         </tr>
                     </tbody>
                 </table>   
@@ -446,7 +455,6 @@ export default function AddMeasurementComponent() {
                 <table className="table">
                 <thead>
                     <tr>
-                        <th>Lp.</th>
                         <th>Symbol</th>
                         <th>Badany punkt</th>
                         <th>Wyłącznik</th>
@@ -461,7 +469,6 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" className="form-control" disabled></input></td>
                         <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol}></input></td>
                         <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {point}></input></td>
                         <td><input type = "text" maxLength = {6} className="form-control" ref = {cutout}></input></td>
@@ -485,7 +492,6 @@ export default function AddMeasurementComponent() {
                 <table className="table">
                 <thead>
                     <tr>
-                        <th>Lp.</th>
                         <th>Symbol</th>
                         <th>Nazwa obwodu</th>
                         <th>L1-L2[MΩ]</th>
@@ -504,7 +510,6 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" className="form-control" disabled></input></td>
                         <td className="col-md-1"><input type = "text" maxLength = {6} className="form-control" ref = {symbol}/></td>
                         <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {circuitName}/></td>
                         <td><input type = "number" className="form-control" ref = {l1l2}></input></td>
@@ -517,8 +522,8 @@ export default function AddMeasurementComponent() {
                         <td><input type = "number" className="form-control" ref = {l2n}></input></td>
                         <td><input type = "number" className="form-control" ref = {l3n}></input></td>
                         <td><input type = "number" className="form-control" ref = {npe}></input></td>
-                        <td><input type = "number" className="form-control" ref = {ra}></input></td>
-                        <td><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
+                        <td className="col-md-1"><input type = "number" className="form-control" ref = {ra}></input></td>
+                        <td className="col-md-1"><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -527,7 +532,6 @@ export default function AddMeasurementComponent() {
                 <table className="table">
                 <thead>
                     <tr>
-                        <th>Lp.</th>
                         <th>Symbol</th>
                         <th>Nazwa obwodu</th>
                         <th>L1-L2[MΩ]</th>
@@ -542,7 +546,6 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" className="form-control" disabled></input></td>
                         <td className="col-md-1"><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol}></input></td>
                         <td className="col-md-2"><input type = "text"  maxLength={20} className="form-control" ref = {circuitName}/></td>
                         <td><input type = "number" className="form-control" ref = {l1l2}/></td>
@@ -561,7 +564,6 @@ export default function AddMeasurementComponent() {
                 <table className="table">
                 <thead>
                     <tr>
-                        <th>Lp.</th>
                         <th>Symbol</th>
                         <th>Badany punkt</th>
                         <th>Wyłącznik RCD</th>
@@ -577,7 +579,6 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td className="col-md-1"><input type = "text" className="form-control" disabled/></td>
                         <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol}/></td>
                         <td className="col-md-2"><input type = "text" maxLength={20} className="form-control" ref = {point}/></td>
                         <td><input type = "text" maxLength={8} className="form-control" ref = {cutout}/></td>
@@ -602,7 +603,6 @@ export default function AddMeasurementComponent() {
                 <table className="table">
                 <thead>
                     <tr>
-                        <th>Lp.</th>
                         <th>Symbol</th>
                         <th>Badany punkt</th>
                         <th>L[m]</th>
@@ -612,7 +612,6 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td className="col-md-1"><input type = "text" className="form-control" disabled/></td>
                         <td><input type = "text" size = {5} maxLength = {6} className="form-control" ref = {symbol}/></td>
                         <td className="col-md-2"><input type = "text" maxLength={20} className="form-control" ref = {point}/></td>
                         <td><input type = "number" className="form-control" ref = {lm}/></td>
@@ -626,7 +625,6 @@ export default function AddMeasurementComponent() {
                 <table className="table">
                 <thead>
                     <tr>
-                        <th>Lp.</th>
                         <th>Symbol</th>
                         <th>Ciągłość</th>
                         <th>Rs[Ω]</th>
@@ -636,7 +634,6 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td className="col-md-1"><input type = "text" className="form-control" disabled/></td>
                         <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol}/></td>
                         <td><select className="form-select" ref={continuity}>
                                     <option value = 'PRESERVED'>Zachowana</option>
@@ -659,7 +656,6 @@ export default function AddMeasurementComponent() {
             <table className="table table-striped">
                 <thead>
                     <tr>
-                        <th>Lp.</th>
                         <th>Symbol</th>
                         <th>Badany punkt</th>
                         <th>Wyłącznik</th>
@@ -677,7 +673,6 @@ export default function AddMeasurementComponent() {
                         entries.map (
                             entry => (
                                 <tr key={entry.id}>
-                                    <td></td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.measuringPoint}</td>
                                     <td>{entry.cutout}</td>

@@ -152,21 +152,21 @@ export default function StructureComponent() {
                     <thead>
                         <tr className="table-success">
                             <th>Budynek</th>
-                            <th>dodaj Piętro</th>
-                            <th>dodaj Pomieszczenie</th>
+                            <th>Piętro</th>
+                            <th>Pomieszczenie</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                <input type="text" className="form-control form-control-sm" maxLength = {15} onChange={handleBuildingNameChange} />
+                                <input type="text" className="form-control form-control-sm" defaultValue = "wprowadź nazwę" maxLength = {15} onChange={handleBuildingNameChange} />
                                 <button className="btn btn-success m-2" onClick={handleAddBuildingBtn}>Dodaj budynek</button>
                             </td>
                             <td>
-                                <input type="text" className="form-control form-control-sm" maxLength = {15} onChange={handleFloorNameChange} />
+                                <input type="text" className="form-control form-control-sm" defaultValue = "wprowadź nazwę" maxLength = {15} onChange={handleFloorNameChange} />
                             </td>
                             <td>
-                                <input type="text" className="form-control form-control-sm" maxLength = {15} onChange={handleRoomNameChange} />
+                                <input type="text" className="form-control form-control-sm" defaultValue = "wprowadź nazwę" maxLength = {15} onChange={handleRoomNameChange} />
                             </td>
                         </tr>
                         {
