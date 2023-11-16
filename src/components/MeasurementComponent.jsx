@@ -112,7 +112,7 @@ export default function MeasurementComponent() {
                 </tbody>
             </table>
             }
-            {(main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodow') &&
+            {(main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodów') &&
             <table className="table">
                     <thead>
                         <tr>
@@ -127,7 +127,7 @@ export default function MeasurementComponent() {
             </table> 
             }
             <hr></hr>
-            {(main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodow') &&
+            {(main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodów') &&
             <table className="table">
                 <thead>
                     <tr>
@@ -175,7 +175,7 @@ export default function MeasurementComponent() {
                 </tbody>
             </table>
             }
-            {(main.measurementName == '(TN-C) Badanie rezystancji izolacji obwodow') &&
+            {(main.measurementName == '(TN-C) Badanie rezystancji izolacji obwodów') &&
             <table className="table">
                 <thead>
                     <tr>
@@ -215,7 +215,7 @@ export default function MeasurementComponent() {
                 </tbody>
             </table>
             }
-            {(main.measurementName == 'Parametry zabezpieczen roznicowopradowych') &&
+            {(main.measurementName == 'Parametry zabezpieczeń różnicowoprądowych') &&
             <table className="table">
                 <thead>
                     <tr>
@@ -257,7 +257,7 @@ export default function MeasurementComponent() {
                 </tbody>
             </table>
             }
-            {(main.measurementName == 'Badanie rezystywnosci gruntu') &&
+            {(main.measurementName == 'Badanie rezystywności gruntu') &&
             <table className="table">
                 <thead>
                     <tr>
@@ -287,7 +287,7 @@ export default function MeasurementComponent() {
                 </tbody>
             </table>
             }
-            {(main.measurementName == 'Badanie ciaglosci malych rezystancji') &&
+            {(main.measurementName == 'Badanie ciągłości małych rezystancji') &&
             <table className="table">
                 <thead>
                     <tr>

@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom"
-import { addEntryToMainApi, addMeasurementMain } from "../api/MeasurementMainApiService"
+import { addEntryToMainApi, addMeasurementMain, retrieveMeasurementMainById } from "../api/MeasurementMainApiService"
 import { useEffect, useRef, useState } from "react"
 import { addMainToRoomApi } from "../api/RoomApiService"
 import { retrieveMeasurementMainTypes } from "../api/MeasurementMainApiService"
-import { addMeasurementEntry, retrieveMeasurementEntries } from "../api/MeasurementEntryApiService"
+import { addMeasurementEntry, retrieveMeasurementEntries, deleteEntryByIdApi, deleteAllEntriesApi } from "../api/MeasurementEntryApiService"
 
 export default function AddMeasurementComponent() {
 
@@ -12,9 +12,9 @@ export default function AddMeasurementComponent() {
     const navigate = useNavigate()
 
     const [mainAdded, setMainAdded] = useState(false)
-    const [mainIndex, setMainIndex] = useState('')
+    const [mainIndex, setMainIndex] = useState(0)
+    const [main, setMain] = useState(null)
     const [entry, setEntry] = useState([])
-    const [entries, setEntries] = useState([])
 
     const [message, setMessage] = useState('')
     const [messageVisible, setMessageVisible] = useState(false)
@@ -79,19 +79,24 @@ export default function AddMeasurementComponent() {
 
     useEffect ( () => { 
         refreshMeasurementName()
-        refreshEntries() 
+        refreshMain()
     }, [render])
 
-    function refreshEntries(){
-        retrieveMeasurementEntries(index)
-            .then(response =>setEntries(response.data))
-            .catch(error => console.log(error))
-    }
 
     function refreshMeasurementName(){
         retrieveMeasurementMainTypes()
             .then(response => setTypes(response.data))
             .catch(error => console.log(error))
+    }
+    function refreshMain(){
+        if(mainIndex !== 0) {
+        retrieveMeasurementMainById(mainIndex)
+            .then(response => {
+                console.log(response)
+                setMain(response.data)
+            })
+            .catch(error => console.log(error))
+        }
     }
 
     function handleBackButton() {
@@ -127,12 +132,14 @@ export default function AddMeasurementComponent() {
             && numberFieldChecker(zs.current.value) && numberFieldChecker(uo.current.value)) {
                 addMeasurementEntry(index, newProtectionMeasurementEntry)
                 .then(response => {
-                    setRender(render + 1)
                     setMessageVisible(false)
                     console.log(response)
                     setEntry(response.data)
-                        addEntryToMainApi(index, mainIndex, response.data.id)
-                        .then(response => console.log(response))
+                        addEntryToMainApi(index, main.id, response.data.id)
+                        .then(response => {
+                            console.log(response)
+                            setRender(render + 1)
+                        })
                         .catch(error => console.log(error))
                 })
                 .catch(error => console.log(error))          
@@ -163,12 +170,14 @@ export default function AddMeasurementComponent() {
             ) {
                 addMeasurementEntry(index, newCircuitInsulationTnsEntry)
                 .then(response => {
-                    setRender(render + 1)
                     setMessageVisible(false)
                     console.log(response)
                     setEntry(response.data)
                         addEntryToMainApi(index, mainIndex, response.data.id)
-                        .then(response => console.log(response))
+                        .then(response => {
+                            console.log(response)
+                            setRender(render + 1)
+                        })
                         .catch(error => console.log(error))
                 })
                 .catch(error => console.log(error))          
@@ -194,12 +203,14 @@ export default function AddMeasurementComponent() {
             {
                 addMeasurementEntry(index, newCircuitInsulationTncEntry)
                 .then(response => {
-                    setRender(render + 1)
                     setMessageVisible(false)
                     console.log(response)
                     setEntry(response.data)
                         addEntryToMainApi(index, mainIndex, response.data.id)
-                        .then(response => console.log(response))
+                        .then(response => {
+                            console.log(response)
+                            setRender(render + 1)
+                        })
                         .catch(error => console.log(error))
                 })
                 .catch(error => console.log(error))          
@@ -226,12 +237,14 @@ export default function AddMeasurementComponent() {
             {
                 addMeasurementEntry(index, newResidualCurrentProtectionEntry)
                 .then(response => {
-                    setRender(render + 1)
                     setMessageVisible(false)
                     console.log(response)
                     setEntry(response.data)
                         addEntryToMainApi(index, mainIndex, response.data.id)
-                        .then(response => console.log(response))
+                        .then(response => {
+                            console.log(response)
+                            setRender(render + 1)
+                        })
                         .catch(error => console.log(error))
                 })
                 .catch(error => console.log(error))          
@@ -250,12 +263,14 @@ export default function AddMeasurementComponent() {
             if(numberFieldChecker(lm.current.value) && numberFieldChecker(dm.current.value) && numberFieldChecker(p.current.value)) {
                 addMeasurementEntry(index, SoilResistanceEntry)
                 .then(response => {
-                    setRender(render + 1)
                     setMessageVisible(false)
                     console.log(response)
                     setEntry(response.data)
                         addEntryToMainApi(index, mainIndex, response.data.id)
-                        .then(response => console.log(response))
+                        .then(response => {
+                            console.log(response)
+                            setRender(render + 1)
+                        })
                         .catch(error => console.log(error))
                 })
                 .catch(error => console.log(error))          
@@ -273,12 +288,14 @@ export default function AddMeasurementComponent() {
             if(continuity.current.value !== '' && numberFieldChecker(rs.current.value) && numberFieldChecker(ra.current.value)) {
                 addMeasurementEntry(index, newContinuityOfSmallResistanceEntry)
                 .then(response => {
-                    setRender(render + 1)
                     setMessageVisible(false)
                     console.log(response)
                     setEntry(response.data)
                         addEntryToMainApi(index, mainIndex, response.data.id)
-                        .then(response => console.log(response))
+                        .then(response => {
+                            console.log(response)
+                            setRender(render + 1)
+                        })
                         .catch(error => console.log(error))
                 })
                 .catch(error => console.log(error))          
@@ -288,7 +305,6 @@ export default function AddMeasurementComponent() {
         }
     }
     function handleAddMainBtn() {
-
 
         if(index == 0 ) {
             const newProtectionMeasurementMain = {
@@ -304,6 +320,7 @@ export default function AddMeasurementComponent() {
                 addMeasurementMain(index, newProtectionMeasurementMain)
                 .then(response => {
                     setMainIndex(response.data.id)
+                    setMain(response.data)
                     setMessageVisible(false)
                     addMainToRoomApi(id, response.data.id)
                     .then(response => console.log(response))
@@ -323,6 +340,7 @@ export default function AddMeasurementComponent() {
                 addMeasurementMain(index, newCircuitInsulationMain)
                 .then(response => {
                     setMainIndex(response.data.id)
+                    setMain(response.data)
                     setMessageVisible(false)
                     addMainToRoomApi(id, response.data.id)
                     .then(response => console.log(response))
@@ -340,6 +358,7 @@ export default function AddMeasurementComponent() {
             addMeasurementMain(index, newResidualCurrentProtectionMain)
                 .then(response => {
                 setMainIndex(response.data.id)
+                setMain(response.data)
                 addMainToRoomApi(id, response.data.id)
                   .then(response => console.log(response))
                   .catch(error => console.log(error))
@@ -353,6 +372,7 @@ export default function AddMeasurementComponent() {
             addMeasurementMain(index, newSoilResistanceMain)
                 .then(response => {
                 setMainIndex(response.data.id)
+                setMain(response.data)
                 addMainToRoomApi(id, response.data.id)
                   .then(response => console.log(response))
                   .catch(error => console.log(error))
@@ -366,6 +386,7 @@ export default function AddMeasurementComponent() {
             addMeasurementMain(index, newContinuityOfSmallResistanceMain)
                 .then(response => {
                 setMainIndex(response.data.id)
+                setMain(response.data)
                 addMainToRoomApi(id, response.data.id)
                   .then(response => console.log(response))
                   .catch(error => console.log(error))
@@ -387,6 +408,42 @@ export default function AddMeasurementComponent() {
         } else if (continuity == 'NOTPRESERVED') {
             return 'Niezachowana'
         }
+    }
+    function handleDeleteEntryBtn(entryId) {
+
+        deleteEntryByIdApi(index, entryId, mainIndex)
+            .then(response => {
+                console.log(response)
+                setRender(render + 1)
+            })
+            .catch(error => console.log(error))
+    }
+    function handleDeleteAllEntriesBtn() {
+
+        deleteAllEntriesApi(index, mainIndex)
+            .then(response => {
+                console.log(response)
+                setRender(render - 1)
+            })
+            .catch(error => console.log(error))
+    }
+
+    //btn to delete entry
+    function deleteEntryButton(entryId) {
+        return (
+            <td><button className="btn btn-danger btn-sm" onClick = {() => handleDeleteEntryBtn(entryId)}>Usuń</button></td>
+        )
+    }
+    //btn to delete all entries
+    function deleteAllEntriesButton() {
+        return (
+            (main!= null && main.measurementEntries!= null) &&
+            <button className="btn btn-danger" onClick = {handleDeleteAllEntriesBtn}>Usuń wszystkie wpisy</button>
+        )
+    }
+
+    function test(){
+        console.log(main)
     }
 
     return (
@@ -446,9 +503,7 @@ export default function AddMeasurementComponent() {
                     </tbody>
                 </table>   
             }
-            <button className="btn btn-success m-1" disabled = {mainAdded} onClick={handleAddMainBtn}>Dodaj</button>
-            <button className="btn btn-info m-1" disabled = {!mainAdded}>Edytuj - not done</button>
-
+            <button className="btn btn-success m-1" disabled = {mainAdded} onClick={handleAddMainBtn}>Dodaj pomiar do protokołu</button>
             {/* Add entry */}
 
             { (index == 0) &&
@@ -647,7 +702,7 @@ export default function AddMeasurementComponent() {
                 </tbody>
             </table>
             }
-            <button className="btn btn-success" disabled = {!mainAdded} onClick={handleAddEntryBtn}>Dodaj wpis</button> 
+            <button className="btn btn-success" disabled = {!mainAdded} onClick={handleAddEntryBtn}>Dodaj wpis do pomiaru</button> 
             <hr></hr>
 
             {/* view entry */}
@@ -666,11 +721,12 @@ export default function AddMeasurementComponent() {
                         <th>Za[Ω]</th>
                         <th>Ik[A]</th>
                         <th>Ocena</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        entries.map (
+                        main?.measurementEntries?.map (
                             entry => (
                                 <tr key={entry.id}>
                                     <td>{entry.symbol}</td>
@@ -683,6 +739,7 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.za}</td>
                                     <td>{entry.ik}</td>
                                     <td>{handleResult(entry.result)}</td>
+                                    {deleteEntryButton(entry.id)}
                                 </tr>
                             )
                         )
@@ -709,11 +766,12 @@ export default function AddMeasurementComponent() {
                         <th>N-PE[MΩ]</th>
                         <th>Ra</th>
                         <th>Ocena</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        entries.map (
+                        main?.measurementEntries?.map (
                             entry => (
                                 <tr key={entry.id}>
                                     <td></td>
@@ -731,6 +789,7 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.npe}</td>
                                     <td>{entry.ra}</td>
                                     <td>{handleResult(entry.result)}</td>
+                                    {deleteEntryButton(entry.id)}
                                 </tr>
                             )
                         )
@@ -753,11 +812,12 @@ export default function AddMeasurementComponent() {
                         <th>L3-PEN[MΩ]</th>
                         <th>Ra</th>
                         <th>Ocena</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        entries.map (
+                        main?.measurementEntries?.map (
                             entry => (
                                 <tr key={entry.id}>
                                     <td></td>
@@ -771,6 +831,7 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.l3pen}</td>
                                     <td>{entry.ra}</td>
                                     <td>{handleResult(entry.result)}</td>
+                                    {deleteEntryButton(entry.id)}
                                 </tr>
                             )
                         )
@@ -794,11 +855,12 @@ export default function AddMeasurementComponent() {
                         <th>Ub[V]</th>
                         <th>Ui[V]</th>
                         <th>Ocena</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        entries.map (
+                        main?.measurementEntries?.map (
                             entry => (
                                 <tr key={entry.id}>
                                     <td></td>
@@ -813,6 +875,7 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.ub}</td>
                                     <td>{entry.ui}</td>
                                     <td>{handleResult(entry.result)}</td>
+                                    {deleteEntryButton(entry.id)}
                                 </tr>
                             )
                         )
@@ -830,11 +893,12 @@ export default function AddMeasurementComponent() {
                         <th>L[m]</th>
                         <th>d[m]</th>
                         <th>p[Ωm]</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        entries.map (
+                        main?.measurementEntries?.map (
                             entry => (
                                 <tr key={entry.id}>
                                     <td></td>
@@ -843,6 +907,7 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.l}</td>
                                     <td>{entry.d}</td>
                                     <td>{entry.p}</td>
+                                    {deleteEntryButton(entry.id)}
                                 </tr>
                             )
                         )
@@ -850,7 +915,7 @@ export default function AddMeasurementComponent() {
                 </tbody>
             </table>
             }
-                       { (index == 5) &&
+            { (index == 5) &&
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -860,11 +925,12 @@ export default function AddMeasurementComponent() {
                         <th>Rs[Ω]</th>
                         <th>Ra[Ω]</th>
                         <th>Ocena</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        entries.map (
+                        main?.measurementEntries?.map (
                             entry => (
                                 <tr key={entry.id}>
                                     <td></td>
@@ -873,6 +939,7 @@ export default function AddMeasurementComponent() {
                                     <td>{entry.rs}</td>
                                     <td>{entry.ra}</td>
                                     <td>{handleResult(entry.result)}</td>
+                                    {deleteEntryButton(entry.id)}
                                 </tr>
                             )
                         )
@@ -880,6 +947,7 @@ export default function AddMeasurementComponent() {
                 </tbody>
             </table>
             }
+            {deleteAllEntriesButton()}
         </div>
     )
 }
