@@ -2,8 +2,8 @@ import { useParams, useNavigate } from "react-router-dom"
 import { addEntryToMainApi, addMeasurementMain, retrieveMeasurementMainById } from "../api/MeasurementMainApiService"
 import { useEffect, useRef, useState } from "react"
 import { addMainToRoomApi } from "../api/RoomApiService"
-import { retrieveMeasurementMainTypes } from "../api/MeasurementMainApiService"
-import { addMeasurementEntry, retrieveMeasurementEntries, deleteEntryByIdApi, deleteAllEntriesApi } from "../api/MeasurementEntryApiService"
+import { retrieveMeasurementMainTypes, deleteMeasurementMainApi } from "../api/MeasurementMainApiService"
+import { addMeasurementEntry, deleteEntryByIdApi, deleteAllEntriesApi } from "../api/MeasurementEntryApiService"
 
 export default function AddMeasurementComponent() {
 
@@ -441,9 +441,10 @@ export default function AddMeasurementComponent() {
             <button className="btn btn-danger" onClick = {handleDeleteAllEntriesBtn}>Usuń wszystkie wpisy</button>
         )
     }
-
-    function test(){
-        console.log(main)
+    function handleDeleteMainBtn() {
+        deleteMeasurementMainApi(main.id, id)
+            .then(handleBackButton())
+            .catch(error => console.log(error))
     }
 
     return (
@@ -504,6 +505,7 @@ export default function AddMeasurementComponent() {
                 </table>   
             }
             <button className="btn btn-success m-1" disabled = {mainAdded} onClick={handleAddMainBtn}>Dodaj pomiar do protokołu</button>
+            <button className="btn btn-danger m-1" disabled = {!mainAdded} onClick={handleDeleteMainBtn}>Usuń pomiar</button>
             {/* Add entry */}
 
             { (index == 0) &&
@@ -524,20 +526,20 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol}></input></td>
-                        <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {point}></input></td>
-                        <td><input type = "text" maxLength = {6} className="form-control" ref = {cutout}></input></td>
-                        <td className="col-md-1"><select className="form-select" ref={type}>
+                        <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td>
+                        <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {point} disabled = {!mainAdded}/></td>
+                        <td><input type = "text" maxLength = {6} className="form-control" ref = {cutout} disabled = {!mainAdded}/></td>
+                        <td className="col-md-1"><select className="form-select" ref={type} disabled = {!mainAdded}>
                                     <option value = "B">B</option>
                                     <option value = "C">C</option>
                                     <option value = "D">D</option>
                             </select>
                         </td>
-                        <td><input type = "number" className="form-control" ref = {iNom}></input></td>
-                        <td><input type = "text" className="form-control" disabled value={entry.ia}></input></td>
-                        <td><input type = "number" className="form-control" ref = {zs}></input></td>
-                        <td><input type = "text" className="form-control" disabled value={entry.za}></input></td>
-                        <td><input type = "text" className="form-control" disabled value={entry.ik}></input></td>
+                        <td><input type = "number" className="form-control" ref = {iNom} disabled = {!mainAdded}/></td>
+                        <td><input type = "text" className="form-control" disabled value={entry.ia} /></td>
+                        <td><input type = "number" className="form-control" ref = {zs} disabled = {!mainAdded} /></td>
+                        <td><input type = "text" className="form-control" disabled value={entry.za} /></td>
+                        <td><input type = "text" className="form-control" disabled value={entry.ik} /></td>
                         <td className="col-md-2"><input type = "text" className="form-control" disabled value= {handleResult(entry.result)}/></td>
                     </tr>
                 </tbody>
@@ -565,19 +567,19 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td className="col-md-1"><input type = "text" maxLength = {6} className="form-control" ref = {symbol}/></td>
-                        <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {circuitName}/></td>
-                        <td><input type = "number" className="form-control" ref = {l1l2}></input></td>
-                        <td><input type = "number" className="form-control" ref = {l2l3}></input></td>
-                        <td><input type = "number" className="form-control" ref = {l3l1}></input></td>
-                        <td><input type = "number" className="form-control" ref = {l1pe}></input></td>
-                        <td><input type = "number" className="form-control" ref = {l2pe}></input></td>
-                        <td><input type = "number" className="form-control" ref = {l3pe}></input></td>
-                        <td><input type = "number" className="form-control" ref = {l1n}></input></td>
-                        <td><input type = "number" className="form-control" ref = {l2n}></input></td>
-                        <td><input type = "number" className="form-control" ref = {l3n}></input></td>
-                        <td><input type = "number" className="form-control" ref = {npe}></input></td>
-                        <td className="col-md-1"><input type = "number" className="form-control" ref = {ra}></input></td>
+                        <td className="col-md-1"><input type = "text" maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td>
+                        <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {circuitName} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {l1l2} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {l2l3} disabled = {!mainAdded} /></td>
+                        <td><input type = "number" className="form-control" ref = {l3l1} disabled = {!mainAdded} /></td>
+                        <td><input type = "number" className="form-control" ref = {l1pe} disabled = {!mainAdded} /></td>
+                        <td><input type = "number" className="form-control" ref = {l2pe} disabled = {!mainAdded} /></td>
+                        <td><input type = "number" className="form-control" ref = {l3pe} disabled = {!mainAdded} /></td>
+                        <td><input type = "number" className="form-control" ref = {l1n} disabled = {!mainAdded} /></td>
+                        <td><input type = "number" className="form-control" ref = {l2n} disabled = {!mainAdded} /></td>
+                        <td><input type = "number" className="form-control" ref = {l3n} disabled = {!mainAdded} /></td>
+                        <td><input type = "number" className="form-control" ref = {npe} disabled = {!mainAdded} /></td>
+                        <td className="col-md-1"><input type = "number" className="form-control" ref = {ra} disabled = {!mainAdded} /></td>
                         <td className="col-md-1"><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
                     </tr>
                 </tbody>
@@ -601,15 +603,15 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td className="col-md-1"><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol}></input></td>
-                        <td className="col-md-2"><input type = "text"  maxLength={20} className="form-control" ref = {circuitName}/></td>
-                        <td><input type = "number" className="form-control" ref = {l1l2}/></td>
-                        <td><input type = "number" className="form-control" ref = {l2l3}/></td>
-                        <td><input type = "number" className="form-control" ref = {l3l1}/></td>
-                        <td><input type = "number" className="form-control" ref = {l1pen}/></td>
-                        <td><input type = "number" className="form-control" ref = {l2pen}/></td>
-                        <td><input type = "number" className="form-control" ref = {l3pen}/></td>
-                        <td><input type = "number" className="form-control" ref = {ra}/></td>
+                        <td className="col-md-1"><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded} /></td>
+                        <td className="col-md-2"><input type = "text"  maxLength={20} className="form-control" ref = {circuitName} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {l1l2} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {l2l3} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {l3l1} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {l1pen} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {l2pen} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {l3pen} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {ra} disabled = {!mainAdded}/></td>
                         <td><input type = "number" className="form-control" disabled value={handleResult(entry.result)}/></td>
                     </tr>
                 </tbody>
@@ -634,21 +636,21 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol}/></td>
-                        <td className="col-md-2"><input type = "text" maxLength={20} className="form-control" ref = {point}/></td>
-                        <td><input type = "text" maxLength={8} className="form-control" ref = {cutout}/></td>
-                        <td className="col-md-1"><select className="form-select" ref={type}>
+                        <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td>
+                        <td className="col-md-2"><input type = "text" maxLength={20} className="form-control" ref = {point} disabled = {!mainAdded}/></td>
+                        <td><input type = "text" maxLength={8} className="form-control" ref = {cutout} disabled = {!mainAdded}/></td>
+                        <td className="col-md-1"><select className="form-select" ref={type} disabled = {!mainAdded}>
                                     <option value = '[AC]'>[AC]</option>
                                     <option value = '[A]'>[A]</option>
                                     <option value = '[B]'>[B]</option>
                             </select>
                         </td>
-                        <td><input type = "number" className="form-control" ref = {iNom}/></td>
-                        <td><input type = "number" className="form-control" ref = {ia}/></td>
-                        <td><input type = "number" className="form-control" ref = {ta}/></td>
-                        <td><input type = "number" className="form-control" ref = {trcd}/></td>
-                        <td><input type = "number" className="form-control" ref = {ub}/></td>
-                        <td><input type = "number" className="form-control" ref = {ui}/></td>
+                        <td><input type = "number" className="form-control" ref = {iNom} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {ia} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {ta} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {trcd} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {ub} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {ui} disabled = {!mainAdded}/></td>
                         <td className="col-md-1"><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
                     </tr>
                 </tbody>
@@ -667,11 +669,11 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" size = {5} maxLength = {6} className="form-control" ref = {symbol}/></td>
-                        <td className="col-md-2"><input type = "text" maxLength={20} className="form-control" ref = {point}/></td>
-                        <td><input type = "number" className="form-control" ref = {lm}/></td>
-                        <td><input type = "number" className="form-control" ref = {dm}/></td>
-                        <td><input type = "number" className="form-control" ref = {p}/></td>
+                        <td><input type = "text" size = {5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td>
+                        <td className="col-md-2"><input type = "text" maxLength={20} className="form-control" ref = {point} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {lm} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {dm} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {p} disabled = {!mainAdded}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -689,14 +691,14 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol}/></td>
-                        <td><select className="form-select" ref={continuity}>
+                        <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td>
+                        <td><select className="form-select" ref={continuity} disabled = {!mainAdded}>
                                     <option value = 'PRESERVED'>Zachowana</option>
                                     <option value = 'NOTPRESERVED'>Niezachowana</option>
                             </select>
                         </td>
-                        <td><input type = "number" className="form-control" ref = {rs}/></td>
-                        <td><input type = "number" className="form-control" ref = {ra}/></td>
+                        <td><input type = "number" className="form-control" ref = {rs} disabled = {!mainAdded}/></td>
+                        <td><input type = "number" className="form-control" ref = {ra} disabled = {!mainAdded}/></td>
                         <td><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
                     </tr>
                 </tbody>
