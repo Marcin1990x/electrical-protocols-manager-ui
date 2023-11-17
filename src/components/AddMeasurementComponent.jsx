@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { addMainToRoomApi } from "../api/RoomApiService"
 import { retrieveMeasurementMainTypes, deleteMeasurementMainApi } from "../api/MeasurementMainApiService"
 import { addMeasurementEntry, deleteEntryByIdApi, deleteAllEntriesApi } from "../api/MeasurementEntryApiService"
+import { handleContinuity, handleResult } from "./functions/CommonFunctions"
 
 export default function AddMeasurementComponent() {
 
@@ -74,7 +75,6 @@ export default function AddMeasurementComponent() {
 
 
     const [render, setRender] = useState('')
-
     const [types, setTypes] = useState([])
 
     useEffect ( () => { 
@@ -115,6 +115,22 @@ export default function AddMeasurementComponent() {
             return false
         }
     }
+    function addEntryLogic(entryObj)
+    {
+        addMeasurementEntry(index, entryObj)
+        .then(response => {
+            setMessageVisible(false)
+            console.log(response)
+            setEntry(response.data)
+                addEntryToMainApi(index, main.id, response.data.id)
+                .then(response => {
+                    console.log(response)
+                    setRender(render + 1)
+                })
+                .catch(error => console.log(error))
+        })
+        .catch(error => console.log(error)) 
+    }         
 
     function handleAddEntryBtn() {
 
@@ -130,19 +146,8 @@ export default function AddMeasurementComponent() {
             }
             if(cutout.current.value !== '' && type.current.value !== '' && numberFieldChecker(iNom.current.value) 
             && numberFieldChecker(zs.current.value) && numberFieldChecker(uo.current.value)) {
-                addMeasurementEntry(index, newProtectionMeasurementEntry)
-                .then(response => {
-                    setMessageVisible(false)
-                    console.log(response)
-                    setEntry(response.data)
-                        addEntryToMainApi(index, main.id, response.data.id)
-                        .then(response => {
-                            console.log(response)
-                            setRender(render + 1)
-                        })
-                        .catch(error => console.log(error))
-                })
-                .catch(error => console.log(error))          
+
+                addEntryLogic(newProtectionMeasurementEntry)       
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
@@ -166,21 +171,9 @@ export default function AddMeasurementComponent() {
             if(numberFieldChecker(l1l2.current.value) && numberFieldChecker(l2l3.current.value) && numberFieldChecker(l3l1.current.value)
                 && numberFieldChecker(l1pe.current.value) && numberFieldChecker(l2pe.current.value) && numberFieldChecker(l3pe.current.value)
                 && numberFieldChecker(l1n.current.value) && numberFieldChecker(l2n.current.value) && numberFieldChecker(l3n.current.value) 
-                && numberFieldChecker(npe.current.value) && numberFieldChecker(ra.current.value)
-            ) {
-                addMeasurementEntry(index, newCircuitInsulationTnsEntry)
-                .then(response => {
-                    setMessageVisible(false)
-                    console.log(response)
-                    setEntry(response.data)
-                        addEntryToMainApi(index, mainIndex, response.data.id)
-                        .then(response => {
-                            console.log(response)
-                            setRender(render + 1)
-                        })
-                        .catch(error => console.log(error))
-                })
-                .catch(error => console.log(error))          
+                && numberFieldChecker(npe.current.value) && numberFieldChecker(ra.current.value)) {
+
+                addEntryLogic(newCircuitInsulationTnsEntry)            
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
@@ -199,21 +192,9 @@ export default function AddMeasurementComponent() {
             }
             if(numberFieldChecker(l1l2.current.value) && numberFieldChecker(l2l3.current.value) && numberFieldChecker(l3l1.current.value)
              && numberFieldChecker(l1pen.current.value) && numberFieldChecker(l2pen.current.value) && numberFieldChecker(l3pen.current.value) 
-             && numberFieldChecker(ra.current.value))
-            {
-                addMeasurementEntry(index, newCircuitInsulationTncEntry)
-                .then(response => {
-                    setMessageVisible(false)
-                    console.log(response)
-                    setEntry(response.data)
-                        addEntryToMainApi(index, mainIndex, response.data.id)
-                        .then(response => {
-                            console.log(response)
-                            setRender(render + 1)
-                        })
-                        .catch(error => console.log(error))
-                })
-                .catch(error => console.log(error))          
+             && numberFieldChecker(ra.current.value)){
+            
+                addEntryLogic(newCircuitInsulationTncEntry)         
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
@@ -233,27 +214,15 @@ export default function AddMeasurementComponent() {
             }
             if(cutout.current.value !== '' && type.current.value !== '' && numberFieldChecker(iNom.current.value) && numberFieldChecker(ia.current.value)
              && numberFieldChecker(ta.current.value) && numberFieldChecker(trcd.current.value) && numberFieldChecker(ub.current.value)
-              && numberFieldChecker(ui.current.value))
-            {
-                addMeasurementEntry(index, newResidualCurrentProtectionEntry)
-                .then(response => {
-                    setMessageVisible(false)
-                    console.log(response)
-                    setEntry(response.data)
-                        addEntryToMainApi(index, mainIndex, response.data.id)
-                        .then(response => {
-                            console.log(response)
-                            setRender(render + 1)
-                        })
-                        .catch(error => console.log(error))
-                })
-                .catch(error => console.log(error))          
+              && numberFieldChecker(ui.current.value)) {
+            
+                addEntryLogic(newResidualCurrentProtectionEntry)         
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
         }
         if(index == 4) {
-            const SoilResistanceEntry = {
+            const newSoilResistanceEntry = {
                 symbol : symbol.current.value,
                 measuringPoint : point.current.value,
                 l : lm.current.value,
@@ -261,19 +230,7 @@ export default function AddMeasurementComponent() {
                 p : p.current.value,
             }
             if(numberFieldChecker(lm.current.value) && numberFieldChecker(dm.current.value) && numberFieldChecker(p.current.value)) {
-                addMeasurementEntry(index, SoilResistanceEntry)
-                .then(response => {
-                    setMessageVisible(false)
-                    console.log(response)
-                    setEntry(response.data)
-                        addEntryToMainApi(index, mainIndex, response.data.id)
-                        .then(response => {
-                            console.log(response)
-                            setRender(render + 1)
-                        })
-                        .catch(error => console.log(error))
-                })
-                .catch(error => console.log(error))          
+                addEntryLogic(newSoilResistanceEntry)           
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
@@ -286,19 +243,7 @@ export default function AddMeasurementComponent() {
                 ra : ra.current.value,
             }
             if(continuity.current.value !== '' && numberFieldChecker(rs.current.value) && numberFieldChecker(ra.current.value)) {
-                addMeasurementEntry(index, newContinuityOfSmallResistanceEntry)
-                .then(response => {
-                    setMessageVisible(false)
-                    console.log(response)
-                    setEntry(response.data)
-                        addEntryToMainApi(index, mainIndex, response.data.id)
-                        .then(response => {
-                            console.log(response)
-                            setRender(render + 1)
-                        })
-                        .catch(error => console.log(error))
-                })
-                .catch(error => console.log(error))          
+                addEntryLogic(newContinuityOfSmallResistanceEntry)           
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
@@ -395,20 +340,6 @@ export default function AddMeasurementComponent() {
         }
     }
 
-    function handleResult(result) {
-        if(result == 'NEGATIVE') {
-            return 'Negatywna'
-        } else if (result == 'POSITIVE') {
-            return 'Pozytywna'
-        }
-    }
-    function handleContinuity(continuity) {
-        if(continuity == 'PRESERVED') {
-            return 'Zachowana'
-        } else if (continuity == 'NOTPRESERVED') {
-            return 'Niezachowana'
-        }
-    }
     function handleDeleteEntryBtn(entryId) {
 
         deleteEntryByIdApi(index, entryId, mainIndex)

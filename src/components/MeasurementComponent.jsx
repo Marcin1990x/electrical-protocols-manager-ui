@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { retrieveMeasurementMainById } from "../api/MeasurementMainApiService"
-//import { useGlobal } from "./GlobalData"
+import { handleContinuity, handleResult } from "./functions/CommonFunctions"
 
 export default function MeasurementComponent() {
 
@@ -29,14 +29,6 @@ export default function MeasurementComponent() {
     function handleBackButton() {
         navigate(`/rooms/${id}`)
     }
-    function handleResult(result) {
-        if(result == 'NEGATIVE') {
-            return 'Negatywna'
-        } else if (result == 'POSITIVE') {
-            return 'Pozytywna'
-        }
-    }
-
 
     return (
         <div className="MeasurementComponent">
@@ -167,7 +159,7 @@ export default function MeasurementComponent() {
                                     <td>{entry.l3n}</td>
                                     <td>{entry.npe}</td>
                                     <td>{entry.ra}</td>
-                                    <td>{entry.result}</td>
+                                    <td>{handleResult(entry.result)}</td>
                                 </tr>
                             )
                         )
@@ -207,7 +199,7 @@ export default function MeasurementComponent() {
                                     <td>{entry.l2pen}</td>
                                     <td>{entry.l3pen}</td>
                                     <td>{entry.ra}</td>
-                                    <td>{entry.result}</td>
+                                    <td>{handleResult(entry.result)}</td>
                                 </tr>
                             )
                         )
@@ -249,7 +241,7 @@ export default function MeasurementComponent() {
                                     <td>{entry.trcd}</td>
                                     <td>{entry.ub}</td>
                                     <td>{entry.ui}</td>
-                                    <td>{entry.result}</td>
+                                    <td>{handleResult(entry.result)}</td>
                                 </tr>
                             )
                         )
@@ -306,10 +298,10 @@ export default function MeasurementComponent() {
                                 <tr key={entry.id}>
                                     <td></td>
                                     <td>{entry.symbol}</td>
-                                    <td>{entry.continuity}</td>
+                                    <td>{handleContinuity(entry.continuity)}</td>
                                     <td>{entry.rs}</td>
                                     <td>{entry.ra}</td>
-                                    <td>{entry.result}</td>
+                                    <td>{handleResult(entry.result)}</td>
                                 </tr>
                             )
                         )

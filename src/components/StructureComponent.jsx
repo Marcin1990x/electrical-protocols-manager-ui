@@ -18,6 +18,11 @@ export default function StructureComponent() {
     const [message, setMessage] = useState('')
     const [messageVisible, setMessageVisible] = useState(false)
 
+    function showError(text) {
+        setMessageVisible(true)
+        setMessage(text)
+    }
+
     useEffect ( () => refreshData(), [render])
 
     function handleBuildingNameChange(event) {
@@ -48,13 +53,11 @@ export default function StructureComponent() {
             .catch(error => {
                 console.log(error)
                 if((error.response.data).includes('Error 102')){
-                    setMessage('Możesz utworzyć tylko jeden budynek.')
-                    setMessageVisible(true)
+                    showError('Możesz utworzyć tylko jeden budynek.')
                 }
             })
         } else {
-            setMessageVisible(true)
-            setMessage('Wpisz nazwę budynku.')
+            showError('Wpisz nazwę budynku.')
         }
     }
     function addFloorTable(building){
@@ -105,8 +108,7 @@ export default function StructureComponent() {
             })
             .catch(error => console.log(error))
         } else {
-            setMessageVisible(true)
-            setMessage('Wpisz nazwę piętra.')
+            showError('Wpisz nazwę piętra.')
         }
     }
     function handleAddRoomBtn(id) { // same as above. Refactor with if
@@ -127,8 +129,7 @@ export default function StructureComponent() {
             })
             .catch(error => console.log(error))
         } else {
-            setMessageVisible(true)
-            setMessage('Wpisz nazwę pomieszczenia.')
+            showError('Wpisz nazwę pomieszczenia.')
         }
     }
 
