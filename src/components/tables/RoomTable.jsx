@@ -19,8 +19,8 @@ export default function RoomTable(floor, handleDeleteBtn, handleRoomBtn) {
                                     <div className="structure-element">
                                         {room.roomName}
                                     </div>
-                                    <button className="btn btn-warning btn-sm m-1" onClick = {() => handleRoomBtn(room.id)}>Otwórz</button>
-                                    <button className="btn btn-danger btn-sm m-1" onClick = {() => handleDeleteBtn(room.id, 3, floor.id)}>X</button>
+                                    <button className="btn btn-dark m-1" onClick = {() => handleRoomBtn(room.id)}>Otwórz</button>
+                                    <button className="btn btn-outline-dark m-1" onClick = {() => handleDeleteBtn(room.id, 3, floor.id)}>Usuń</button>
                                 </td>
                             </tr>
                         )

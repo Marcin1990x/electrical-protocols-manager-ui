@@ -8,7 +8,7 @@ import { handleContinuity, handleResult } from "./functions/CommonFunctions"
 
 export default function AddMeasurementComponent() {
 
-    const {id, index} = useParams()
+    const {id, index, projectName} = useParams()
 
     const navigate = useNavigate()
 
@@ -97,10 +97,6 @@ export default function AddMeasurementComponent() {
             })
             .catch(error => console.log(error))
         }
-    }
-
-    function handleBackButton() {
-        navigate(`/rooms/${id}`)
     }
 
     function showError(text) {
@@ -362,26 +358,28 @@ export default function AddMeasurementComponent() {
     //btn to delete entry
     function deleteEntryButton(entryId) {
         return (
-            <td><button className="btn btn-danger btn-sm" onClick = {() => handleDeleteEntryBtn(entryId)}>Usuń</button></td>
+            <td><button className="btn btn-outline-dark btn-sm" onClick = {() => handleDeleteEntryBtn(entryId)}>Usuń</button></td>
         )
     }
     //btn to delete all entries
     function deleteAllEntriesButton() {
         return (
             (main!= null && main.measurementEntries!= null) &&
-            <button className="btn btn-danger" onClick = {handleDeleteAllEntriesBtn}>Usuń wszystkie wpisy</button>
+            <button className="btn btn-outline-dark" onClick = {handleDeleteAllEntriesBtn}>Usuń wszystkie wpisy</button>
         )
     }
     function handleDeleteMainBtn() {
         deleteMeasurementMainApi(main.id, id)
-            .then(handleBackButton())
+            .then(navigate(`/${projectName}/project/structure/rooms/${id}`))
             .catch(error => console.log(error))
     }
 
     return (
         <div className="AddMeasurementComponent">
 
-            <button className = "btn btn-primary btn-lg m-2" onClick = {handleBackButton}>Wstecz</button>
+            <button className = "btn btn-outline-dark w-25 m-2" 
+                onClick = {() => navigate(`/${projectName}/project/structure/rooms/${id}`)}>Wstecz
+            </button>
 
         {/* add room name from authcontext building */}
             <h3>{types[index]}</h3> 
@@ -435,8 +433,8 @@ export default function AddMeasurementComponent() {
                     </tbody>
                 </table>   
             }
-            <button className="btn btn-success m-1" disabled = {mainAdded} onClick={handleAddMainBtn}>Dodaj pomiar do protokołu</button>
-            <button className="btn btn-danger m-1" disabled = {!mainAdded} onClick={handleDeleteMainBtn}>Usuń pomiar</button>
+            <button className="btn btn-dark m-1" disabled = {mainAdded} onClick={handleAddMainBtn}>Dodaj pomiar do protokołu</button>
+            <button className="btn btn-outline-dark m-1" disabled = {!mainAdded} onClick={handleDeleteMainBtn}>Usuń pomiar</button>
             {/* Add entry */}
 
             { (index == 0) &&
@@ -635,7 +633,7 @@ export default function AddMeasurementComponent() {
                 </tbody>
             </table>
             }
-            <button className="btn btn-success" disabled = {!mainAdded} onClick={handleAddEntryBtn}>Dodaj wpis do pomiaru</button> 
+            <button className="btn btn-dark" disabled = {!mainAdded} onClick={handleAddEntryBtn}>Dodaj wpis do pomiaru</button> 
             <hr></hr>
 
             {/* view entry */}

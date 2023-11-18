@@ -6,7 +6,7 @@ import { retrieveRoomApi } from "../api/RoomApiService"
 
 export default function RoomComponent() {
 
-    const {id} = useParams()
+    const {id, projectName} = useParams()
     const [types, setTypes] = useState([])
     const [room, setRoom] = useState({})
     const [render, setRender] = useState(0)
@@ -32,14 +32,10 @@ export default function RoomComponent() {
             .catch(error => console.log(error))
     }
     function handleAddBtn(index) {
-        navigate(`/rooms/${id}/addMeasurement/${index}`)
+        navigate(`addMeasurement/${index}`)
     }
     function handleOpenMainBtn(idMain) {
-        navigate(`/rooms/${id}/measurements/${idMain}`)
-    }
-
-    function handleBackButton() {
-        navigate(`/structure`)
+        navigate(`measurements/${idMain}`)
     }
     function handleDeleteMainBtn(mainId) {
         deleteMeasurementMainApi(mainId, id)
@@ -49,10 +45,25 @@ export default function RoomComponent() {
             })
             .catch(error => console.log(error))
     }
+    function checkForDuplicates(name) {
+        if(room.measurementMains) {
+            for(var i = 0; i < room.measurementMains.length; i++) {
+                if(name === room.measurementMains[i].measurementName) {
+                    return true
+                }
+            }
+        }
+    }
+    function handleAddMainName(added) {
+        if(added === true) {
+            return 'Dodano'
+        }
+        return '+ dodaj'
+    }
 
     return (
         <div className="RoomComponent">
-            <button className = "btn btn-primary btn-lg m-2" onClick = {handleBackButton}>Wstecz</button>
+            <button className = "btn btn-outline-dark m-2 w-25" onClick = {() => navigate(`/${projectName}/project/structure`)}>Wstecz</button>
             <h1>{room.roomCascadeName}</h1>
                     <ul className ="list-group">
                         {
@@ -60,13 +71,15 @@ export default function RoomComponent() {
                                 (type, index) => (
                                     <li>
                                         {type}
-                                        <button className="btn btn-success btn-sm m-1" onClick={() =>handleAddBtn(index)}>+ dodaj</button>
+                                        <button className="btn btn-dark btn-sm m-1" disabled = {checkForDuplicates(type)}
+                                            onClick={() =>handleAddBtn(index)}>{handleAddMainName(checkForDuplicates(type))}</button>
                                     </li>
                                 )
                             )
                         }
                     </ul>
-                <table className="table">
+                    <br></br>
+                <table className="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>Nazwa pomiaru</th>
@@ -80,8 +93,8 @@ export default function RoomComponent() {
                                 main => (
                                     <tr key = {main.id}>
                                         <td>{main.measurementName}</td>
-                                        <td><button className="btn btn-info" onClick={() => handleOpenMainBtn(main.id)}>Otwórz</button></td>
-                                        <td><button className="btn btn-danger" onClick={() => handleDeleteMainBtn(main.id)}>Usuń</button></td>
+                                        <td><button className="btn btn-dark" onClick={() => handleOpenMainBtn(main.id)}>Otwórz</button></td>
+                                        <td><button className="btn btn-outline-dark" onClick={() => handleDeleteMainBtn(main.id)}>Usuń</button></td>
                                     </tr>
                                 )
                             )

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Document, Page, pdfjs } from 'react-pdf'
 import { useState } from "react"
 import pdf from '../test.pdf'
@@ -12,6 +12,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 export default function GeneratePdf() {
 
+    const {projectName} = useParams()
     const navigate = useNavigate()
     const [numPages, setNumPages] = useState()
     const [pageNumber, setPageNumber] = useState(1)
@@ -56,24 +57,24 @@ export default function GeneratePdf() {
 
     return (
         <div className="GeneratePdf">
-            <button className="btn btn-primary btn-lg m-2" onClick={() => navigate(`/project`)}>Wstecz</button>
+            <button className="btn btn-outline-dark w-25 m-2" onClick={() => navigate(`/${projectName}/project`)}>Wstecz</button>
 
-            <h1>Protokół pomiarowy</h1>
+            <h2>Protokół pomiarowy</h2>
             
-            <button className="btn btn-primary btn-lg m-2" onClick={loadDataToProtocol}>Załaduj dane</button>
-            <button className="btn btn-primary btn-lg m-2" onClick={generatePdf}>Generuj Pdf</button>
+            <button className="btn btn-dark btn-lg m-2" onClick={loadDataToProtocol}>Załaduj dane</button>
+            <button className="btn btn-dark btn-lg m-2" onClick={generatePdf}>Generuj Pdf</button>
 
             <br></br>
             <div className="container">
                 <div className="row">
-                    <div className="col">
+                    <div className="col m-5">
                         Strona {pageNumber} z {numPages}
-                        <button className="btn btn-success btn m-1" onClick={increasePageCount}>+</button>
-                        <button className="btn btn-success btn m-1" onClick={decreasePageCount}>-</button>
+                        <button className="btn btn-dark btn m-1" onClick={increasePageCount}>+</button>
+                        <button className="btn btn-outline-dark btn m-1" onClick={decreasePageCount}>-</button>
                         <hr></hr>
                         Rozmiar
-                        <button className="btn btn-success btn m-1" onClick={increasePage}>+</button>
-                        <button className="btn btn-success btn m-1" onClick={decreasePage}>-</button>
+                        <button className="btn btn-dark btn m-1" onClick={increasePage}>+</button>
+                        <button className="btn btn-outline-dark btn m-1" onClick={decreasePage}>-</button>
                         <Document file= {pdf} onLoadSuccess={onDocumentLoadSuccess}>
                             <Page pageNumber={pageNumber} renderTextLayer = {false} renderAnnotationLayer = {false} width={width}/>
                         </Document>

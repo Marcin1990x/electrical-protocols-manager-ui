@@ -8,7 +8,7 @@ export default function MeasurementComponent() {
     const navigate = useNavigate()
 
     const [main, setMain] = useState([])
-    const {id, idMain} = useParams()
+    const {id, idMain, projectName} = useParams()
 
     //discriminator 1
     const [uo, setUo] = useState(0)
@@ -26,18 +26,17 @@ export default function MeasurementComponent() {
             })
             .catch(error => console.log(error))
     }
-    function handleBackButton() {
-        navigate(`/rooms/${id}`)
-    }
-
     return (
         <div className="MeasurementComponent">
-            <hr></hr>
-            <h4>
-                <button className = "btn btn-primary btn-lg m-2" onClick = {handleBackButton}>Wstecz</button>
+            
+                <div>
+                    <button className = "btn btn-outline-dark btn-lg m-2" onClick = {() => navigate(`/${projectName}/project/structure/rooms/${id}`)}>Wstecz</button>
+                </div>
+                <h3>
                 {main.measurementMainCascadeNameWithoutMeasurementName}
-            </h4>
-            <h3> {main.measurementName}</h3>
+                </h3>
+                <hr></hr>
+            <h2>{main.measurementName}</h2>
 
             {(main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porażeniem przez samoczynne wyłączenie') && //fix this shit
             <table className="table">

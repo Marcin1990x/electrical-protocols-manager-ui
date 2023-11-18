@@ -5,8 +5,9 @@
 }
 .structure-element{
     border-radius: 25px;
-    background: #009030;
-    color: white;
+    background: rgb(173, 173, 173);
+    color: rgb(0, 0, 0);
+    font-weight: bold;
     padding: 5px;
     width: 20;
 }

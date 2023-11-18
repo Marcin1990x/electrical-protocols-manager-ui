@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { retrieveDistinctElectriciansApi} from "../api/ElectricianApiService"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { addTitlePageApi, addElectricanToTitlePageApi, removeElectricanFromTitlePageApi, retrievePdfTitlePageData } from "../api/PdfTitlePageApiService"
 
 export default function ProtocolInformationComponent() {
 
-
+    const {projectName} = useParams()
     const [electriciansToAdd, setElectriciansToAdd] = useState([])
     const [render, setRender] = useState(0)
     const [titlePage, setTitlePage] = useState([])
@@ -130,7 +130,8 @@ export default function ProtocolInformationComponent() {
 
     return (
         <div className="ProtocolInformationComponent">
-            <button className="btn btn-primary btn-lg m-2" onClick={() => navigate(`/project`)}>Wstecz</button>
+            <button className="btn btn-outline-dark w-25 m-2" onClick={() => navigate(`/${projectName}/project`)}>Wstecz</button>
+            <hr></hr>
             <div className="message">
                 {messageVisible && message}
             </div>
@@ -195,7 +196,7 @@ export default function ProtocolInformationComponent() {
                         <label><b>Uwagi do orzeczenia:</b></label>
                             <textarea className="form-control" rows="4" ref = {comments}></textarea>
                         </div>
-                        <button className="btn btn-success m-2" onClick={handleSubmitBtn}>Załaduj dane</button>    
+                        <button className="btn btn-dark m-2" onClick={handleSubmitBtn}>Załaduj dane</button>    
             </div>
             </div>
             {titlePage && <label><b>Wykonawcy pomiarów:</b></label> }
@@ -224,7 +225,7 @@ export default function ProtocolInformationComponent() {
                                                     <td>{elec.firstName}</td>
                                                     <td>{elec.lastName}</td>
                                                     <td>
-                                                        <button className="btn btn-success" onClick = {() => handleAddBtn(elec)}>+</button>
+                                                        <button className="btn btn-dark btn-sm" onClick = {() => handleAddBtn(elec)}>+ dodaj</button>
                                                     </td>
                                                 </tr>
                                             )
@@ -251,7 +252,7 @@ export default function ProtocolInformationComponent() {
                                                     <td>{elec.firstName}</td>
                                                     <td>{elec.lastName}</td>
                                                     <td>
-                                                        <button className="btn btn-danger" onClick = {() => handleDeleteBtn(elec)}>-</button>
+                                                        <button className="btn btn-outline-dark btn-sm" onClick = {() => handleDeleteBtn(elec)}>- usuń</button>
                                                     </td>
                                                 </tr>
                                             )

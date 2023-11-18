@@ -110,7 +110,7 @@ export default function ElectriciansComponent() {
 
     return (
         <div className="ElectriciansComponent">
-            <button className="btn btn-primary btn-lg m-2" onClick={() => navigate(`/`)}>Wstecz</button>
+            <button className="btn btn-outline-dark btn-lg m-2" onClick={() => navigate(`/`)}>Wstecz</button>
             <h1>Elektrycy</h1>
             <div className="message">
                 {messageVisible && message}
@@ -140,14 +140,14 @@ export default function ElectriciansComponent() {
                                             <input className="form-control" value = {perm} readOnly></input>
                                     </div>
                                         <div className="col-md-auto">
-                                            <button className="btn btn-danger" onClick={() => handleDeletePermission(perm)}><b>-</b></button>
+                                            <button className="btn btn-outline-dark" onClick={() => handleDeletePermission(perm)}><b>-</b></button>
                                         </div>
                                     </div>
                                 )
                             )
                         }
                         </td>
-                        <td><button className="btn btn-success" onClick={handleAddPermission}><b>+</b></button></td>
+                        <td><button className="btn btn-dark" onClick={handleAddPermission}><b>+</b></button></td>
                         <td><select className="form-select" ref ={position}>
                                     <option value = 'MEASURER'>Pomiarowiec</option>
                                     <option value = 'CHECKER'>Sprawdzający</option>
@@ -155,7 +155,7 @@ export default function ElectriciansComponent() {
                         </td>
                     </tr>
                 </tbody>
-                <button className="btn btn-success m-1" onClick={handleAddElectrician}>Dodaj elektryka</button>
+                <button className="btn btn-dark m-1" onClick={handleAddElectrician}>Dodaj elektryka</button>
             </table>
             <table className="table table-striped">
                 <thead>
@@ -187,8 +187,8 @@ export default function ElectriciansComponent() {
                                     </td>
                                     <td>{handlePosition(electrician.position)}</td>
                                     <td>
-                                        <button className="btn btn-warning m-1 " onClick = {() => handleChangeBtn(electrician)}>Zmień</button>
-                                        <button className="btn btn-danger" onClick = {() => handleDeleteBtn(electrician.id)}>Usuń</button>
+                                        <button className="btn btn-dark m-1 " onClick = {() => handleChangeBtn(electrician)}>Zmień</button>
+                                        <button className="btn btn-outline-dark" onClick = {() => handleDeleteBtn(electrician.id)}>Usuń</button>
                                     </td>
                                 </tr>
                             )

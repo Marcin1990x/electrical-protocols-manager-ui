@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { addBuildingApi, retrieveBuildingsApi, addFloorToBuildingApi, deleteBuildingByIdApi} from "../api/BuildingApiService"
 import { addFloorApi, addRoomToFloorApi, deleteFloorByIdApi } from "../api/FloorApiService"
 import { addRoomApi, deleteRoomByIdApi } from "../api/RoomApiService"
@@ -8,6 +8,7 @@ import FloorTable from "./tables/FloorTable"
 export default function StructureComponent() {
 
     const navigate = useNavigate()
+    const {projectName} = useParams()
 
     const [render, setRender] = useState('')
     const [buildings, setBuildings] = useState([])
@@ -35,7 +36,7 @@ export default function StructureComponent() {
         setRoomName(event.target.value)
     }
     function handleRoomBtn(id) {
-        navigate(`/rooms/${id}`)
+        navigate(`rooms/${id}`)
     }
 
     function handleAddBuildingBtn() {
@@ -144,14 +145,14 @@ export default function StructureComponent() {
 
     return (
         <div className="StructureComponent">
-            <button className="btn btn-primary btn-lg m-2" onClick={() => navigate(`/project`)}>Wstecz</button>
+            <button className="btn btn-outline-dark m-2 w-25" onClick={() => navigate(`/${projectName}/project`)}>Wstecz</button>
             <div className="message">
                 {messageVisible && message}
             </div>
             <div>
                 <table className="table table-bordered">
                     <thead>
-                        <tr className="table-success">
+                        <tr>
                             <th>Budynek</th>
                             <th>Piętro</th>
                             <th>Pomieszczenie</th>
@@ -161,7 +162,7 @@ export default function StructureComponent() {
                         <tr>
                             <td>
                                 <input type="text" className="form-control form-control-sm" defaultValue = "wprowadź nazwę" maxLength = {15} onChange={handleBuildingNameChange} />
-                                <button className="btn btn-success m-2" onClick={handleAddBuildingBtn}>Dodaj budynek</button>
+                                <button className="btn btn-dark m-2" onClick={handleAddBuildingBtn}>Dodaj budynek</button>
                             </td>
                             <td>
                                 <input type="text" className="form-control form-control-sm" defaultValue = "wprowadź nazwę" maxLength = {15} onChange={handleFloorNameChange} />
@@ -178,10 +179,10 @@ export default function StructureComponent() {
                                             <div className="structure-element">
                                                 {building.buildingName}
                                             </div>
-                                            <button className="btn btn-danger btn-sm m-1" onClick = {() => handleDeleteBtn(building.id, 1)}>X</button>
+                                            <button className="btn btn-outline-dark btn-sm m-1" onClick = {() => handleDeleteBtn(building.id, 1)}>Usuń</button>
                                         </td>
                                         <td>
-                                            <button className="btn btn-success" onClick = {() => handleAddFloorBtn(building.id)}>Dodaj piętro</button>
+                                            <button className="btn btn-dark m-2" onClick = {() => handleAddFloorBtn(building.id)}>Dodaj piętro</button>
                                         </td>
                                         <td>
                                             {addFloorTable(building)}

@@ -26,10 +26,10 @@ export default function FloorTable(building, handleAddRoomBtn, handleDeleteBtn, 
                                     <div className="structure-element">
                                         {floor.floorName}
                                     </div>
-                                    <button className="btn btn-danger btn-sm m-1" onClick = {() => handleDeleteBtn(floor.id, 2, building.id)}>X</button>
+                                    <button className="btn btn-outline-dark btn-sm m-1" onClick = {() => handleDeleteBtn(floor.id, 2, building.id)}>Usuń</button>
                                 </td>
                                 <td>
-                                    <button className="btn btn-success" onClick={() =>handleAddRoomBtn(floor.id)}>Dodaj pomieszczenie</button>
+                                    <button className="btn btn-dark m-2" onClick={() =>handleAddRoomBtn(floor.id)}>Dodaj pomieszczenie</button>
                                 </td>
                                 <td>
                                     {addRoomTable(floor)}

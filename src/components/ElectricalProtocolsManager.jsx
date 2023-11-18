@@ -17,15 +17,15 @@ export default function ElectricalProtocolsManager() {
             <ContextProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route path = "/project" element = { <ProjectComponent />} /> 
+                        <Route path = ":projectName/project/" element = { <ProjectComponent />} /> 
                         <Route path = "" element = { <HomeComponent />} />
-                        <Route path = "/structure" element = { <StructureComponent />} />
-                        <Route path = "/generate" element = { <GeneratePdfComponent />} />
-                        <Route path = "/protocolInfo" element = { <ProtocolInformationComponent />} />
+                        <Route path = ":projectName/project/structure" element = { <StructureComponent />} />
+                        <Route path = ":projectName/project/generate" element = { <GeneratePdfComponent />} />
+                        <Route path = ":projectName/project/protocolInfo" element = { <ProtocolInformationComponent />} />
                         <Route path = "/electricians" element = { <ElectriciansComponent />} />
-                        <Route path = "/rooms/:id" element = { <RoomComponent />} />
-                        <Route path = "/rooms/:id/addMeasurement/:index" element = { <AddMeasurementComponent />} />
-                        <Route path = "/rooms/:id/measurements/:idMain" element = { <MeasurementComponent />} />
+                        <Route path = ":projectName/project/structure/rooms/:id" element = { <RoomComponent />} />
+                        <Route path = ":projectName/project/structure/rooms/:id/addMeasurement/:index" element = { <AddMeasurementComponent />} />
+                        <Route path = ":projectName/project/structure/rooms/:id/measurements/:idMain" element = { <MeasurementComponent />} />
                     </Routes>
                 </BrowserRouter>
             </ContextProvider>
