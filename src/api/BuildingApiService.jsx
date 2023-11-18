@@ -8,6 +8,8 @@ export const retrieveBuildingApi = (id) => apiClient.get(`/buildings/${id}`)
 
 export const deleteBuildingByIdApi = (id) => apiClient.delete(`/buildings/${id}`, id)
 
+export const deleteAllBuildingsApi = () => apiClient.delete(`/buildings`)
+
 export const addFloorToBuildingApi = (buildingId, floorId) => apiClient.put(`buildings/${buildingId}`, {}, 
 {
     params: {

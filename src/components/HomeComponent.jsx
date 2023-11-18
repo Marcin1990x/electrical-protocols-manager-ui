@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { retrieveElectriciansFromFileApi } from "../api/ElectricianApiService"
 import { useEffect, useRef, useState } from "react"
+import { deleteAllBuildingsApi } from "../api/BuildingApiService"
 
 export default function HomeComponent() {
 
@@ -18,6 +19,9 @@ export default function HomeComponent() {
     }
 
     function readData() {
+        deleteAllBuildingsApi()
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
         retrieveElectriciansFromFileApi()
             .then(reponse => console.log(reponse))
             .catch(error => console.log(error))
