@@ -16,3 +16,11 @@ export const addFloorToBuildingApi = (buildingId, floorId) => apiClient.put(`bui
         floorId
     }
 })
+
+export const saveBuildingToFileApi = (projectName) => apiClient.get(`/buildings/saveToFile`,
+{
+    params: {
+        projectName
+    }
+})
+export const retrieveProjectsToLoadApi = () => apiClient.get(`/buildings/savedList`)

@@ -1,11 +1,30 @@
 import { useNavigate, useParams } from "react-router-dom"
+import { saveBuildingToFileApi } from "../api/BuildingApiService"
+import { useState } from "react"
 
 export default function ProjectComponent() {
 
     const navigate = useNavigate()
     const {projectName} = useParams()
 
+    const [message, setMessage] = useState('')
+    const [messageVisible, setMessageVisible] = useState(false)
 
+    function showMessage(text) {
+        setMessageVisible(true)
+        setMessage(text)
+    }
+
+    function handleSaveButton() {
+        
+        saveBuildingToFileApi(projectName)
+            .then(response => {
+                console.log(response)
+                if(response.data === projectName)
+                showMessage('Zapisano projekt "' + projectName + '"')
+            })
+            .catch(error => console.log(error))
+    }
     return (
         <div className="ProjectComponent">
             
@@ -41,12 +60,15 @@ export default function ProjectComponent() {
                             <button className="btn btn-dark" onClick={() => navigate(`generate`)}>Generuj PDF protokołu</button>
                         </div>
                         <div className="shadow-sm p-3 mb-2 bg-body rounded">
-                            <button className="btn btn-dark">Zapisz projekt</button>
+                            <button className="btn btn-dark" onClick={() => handleSaveButton()}>Zapisz projekt</button>
+                            <div>
+                                <br></br>
+                                <b>{messageVisible && message}</b>
+                            </div>
                         </div>
                     </div>
                     <div className="col"/>
                 </div>
         </div>
     )
-
 }
