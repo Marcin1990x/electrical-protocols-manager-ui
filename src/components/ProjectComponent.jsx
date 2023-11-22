@@ -42,7 +42,7 @@ export default function ProjectComponent() {
                     <div className="col"/>
                     <div className="col">
                         <div className="shadow-sm p-3 mb-2 bg-body rounded">
-                            <h1>Projekt {projectName}</h1>
+                            <h1>Projekt <i>{projectName}</i></h1>
                         </div>
                     </div>
                     <div className="col"/>

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { retrieveElectriciansFromFileApi } from "../api/ElectricianApiService"
 import { useEffect, useRef, useState } from "react"
-import { deleteAllBuildingsApi, retrieveProjectsToLoadApi } from "../api/BuildingApiService"
+import { deleteAllBuildingsApi, retrieveProjectsToLoadApi, loadProjectApi} from "../api/BuildingApiService"
 
 export default function HomeComponent() {
 
@@ -70,9 +70,14 @@ export default function HomeComponent() {
         }
     }
     function handleLoadBtn() {
-        console.log(projectToLoad.current.value)
+        
         if(projectToLoad.current.value !== ''){
-            navigate(`${projectToLoad.current.value}/project/`)
+            loadProjectApi(projectToLoad.current.value)
+                .then(response => {
+                    navigate(`${projectToLoad.current.value}/project/`)
+                    console.log(response)
+                })
+                .catch(error => console.log(error))
         } else {
             showError('Wybierz projekt do wczytania.')
         }

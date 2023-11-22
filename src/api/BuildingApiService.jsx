@@ -24,3 +24,10 @@ export const saveBuildingToFileApi = (projectName) => apiClient.get(`/buildings/
     }
 })
 export const retrieveProjectsToLoadApi = () => apiClient.get(`/buildings/savedList`)
+
+export const loadProjectApi = (projectName) => apiClient.get(`/buildings/loadFromFileToDB`,
+{
+    params: {
+        projectName
+    }
+})
