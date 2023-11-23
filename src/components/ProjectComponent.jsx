@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { saveBuildingToFileApi } from "../api/BuildingApiService"
+import { saveDataApi, createSqlFileApi } from "../api/SaveLoadApiService"
 import { useState } from "react"
 
 export default function ProjectComponent() {
@@ -17,11 +17,15 @@ export default function ProjectComponent() {
 
     function handleSaveButton() {
         
-        saveBuildingToFileApi(projectName)
+        saveDataApi()
             .then(response => {
                 console.log(response)
-                if(response.data === projectName)
-                showMessage('Zapisano projekt "' + projectName + '"')
+                createSqlFileApi()
+                    .then(response => {
+                        console.log(response)
+                        showMessage('Zapisano projekt')
+                    })
+                    .catch(error => console.log(error))
             })
             .catch(error => console.log(error))
     }
