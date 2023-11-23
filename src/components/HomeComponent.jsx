@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { retrieveElectriciansFromFileApi } from "../api/ElectricianApiService"
 import { useEffect, useRef, useState } from "react"
-import { deleteAllBuildingsApi, retrieveProjectsToLoadApi, loadProjectApi} from "../api/BuildingApiService"
+import { addProjectApi } from "../api/ProjectApiService"
 
 export default function HomeComponent() {
 
@@ -22,9 +22,6 @@ export default function HomeComponent() {
     }
 
     function readData() {
-        deleteAllBuildingsApi()
-            .then(response => console.log(response))
-            .catch(error => console.log(error))
         retrieveElectriciansFromFileApi()
             .then(reponse => console.log(reponse))
             .catch(error => console.log(error))
@@ -52,19 +49,27 @@ export default function HomeComponent() {
             setLoadProject(true)
             setAddName(false)
             setMessageVisible(false)
-            retrieveProjectsToLoadApi()
-                .then(response => {
-                    setProjectNames(response.data)
-                    console.log(response)
-                })
-                .catch(error => console.log(error))
+            // retrieveProjectsToLoadApi()
+            //     .then(response => {
+            //         setProjectNames(response.data)
+            //         console.log(response)
+            //     })
+            //     .catch(error => console.log(error))
         } else {
             setLoadProject(false)
         }
     }
     function handleCreateBtn() {
         if(projectName.current.value !== '') {
-            navigate(`${projectName.current.value}/project/`)
+            const newProject = {
+                projectName: projectName.current.value
+            }
+            addProjectApi(newProject)
+                .then(response => {
+                    navigate(`${projectName.current.value}/project/`)
+                    console.log(response)
+                })    
+                .catch(error => console.log(error))
         } else {
             showError('Musisz wpisać nazwę.')
         }
@@ -72,12 +77,12 @@ export default function HomeComponent() {
     function handleLoadBtn() {
         
         if(projectToLoad.current.value !== ''){
-            loadProjectApi(projectToLoad.current.value)
-                .then(response => {
-                    navigate(`${projectToLoad.current.value}/project/`)
-                    console.log(response)
-                })
-                .catch(error => console.log(error))
+            // loadProjectApi(projectToLoad.current.value)
+            //     .then(response => {
+            //         navigate(`${projectToLoad.current.value}/project/`)
+            //         console.log(response)
+            //     })
+            //     .catch(error => console.log(error))
         } else {
             showError('Wybierz projekt do wczytania.')
         }
