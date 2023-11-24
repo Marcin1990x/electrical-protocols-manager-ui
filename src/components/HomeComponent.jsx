@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { retrieveElectriciansFromFileApi } from "../api/ElectricianApiService"
 import { useEffect, useRef, useState } from "react"
-import { addProjectApi } from "../api/ProjectApiService"
+import { addProjectApi, retrieveProjectsApi } from "../api/ProjectApiService"
 
 export default function HomeComponent() {
 
@@ -10,7 +10,7 @@ export default function HomeComponent() {
     const [loadProject, setLoadProject] = useState(false)
     const projectName = useRef()
     const projectToLoad = useRef()
-    const [projectNames, setProjectNames] = useState([])
+    const [projects, setProjects] = useState([])
     const [message, setMessage] = useState('')
     const [messageVisible, setMessageVisible] = useState(false)
 
@@ -25,6 +25,13 @@ export default function HomeComponent() {
         retrieveElectriciansFromFileApi()
             .then(reponse => console.log(reponse))
             .catch(error => console.log(error))
+
+        retrieveProjectsApi()
+            .then(response => {
+                setProjects(response.data)
+                console.log(response)
+            })
+            .catch(error => console.log(error))    
     }
     function showNameField() {
         if(addName === false){
@@ -36,9 +43,9 @@ export default function HomeComponent() {
         }
     }
     function loadProjectWindowSize() {
-        if(projectNames.length < 5 && projectNames.length > 0) {
-            return projectNames.length
-        } else if(projectNames.length >= 5){
+        if(projects.length < 5 && projects.length > 0) {
+            return projects.length
+        } else if(projects.length >= 5){
             return 5
         } else {
             return 1
@@ -49,18 +56,22 @@ export default function HomeComponent() {
             setLoadProject(true)
             setAddName(false)
             setMessageVisible(false)
-            // retrieveProjectsToLoadApi()
-            //     .then(response => {
-            //         setProjectNames(response.data)
-            //         console.log(response)
-            //     })
-            //     .catch(error => console.log(error))
         } else {
             setLoadProject(false)
         }
     }
+    function checkProjectName(name) {
+        
+        for(let item of projects) {
+            if(item.projectName === name || name === ''){
+                return false
+            }
+        }
+        return true
+    }
+
     function handleCreateBtn() {
-        if(projectName.current.value !== '') {
+        if(checkProjectName(projectName.current.value)) {
             const newProject = {
                 projectName: projectName.current.value
             }
@@ -68,21 +79,19 @@ export default function HomeComponent() {
                 .then(response => {
                     navigate(`${projectName.current.value}/project/`)
                     console.log(response)
+                    setMessageVisible(false)
                 })    
                 .catch(error => console.log(error))
-        } else {
+        } else if(projectName.current.value === '') {
             showError('Musisz wpisać nazwę.')
+        } else {
+            showError('Projekt o takiej nazwie już istnieje.')
         }
     }
     function handleLoadBtn() {
         
         if(projectToLoad.current.value !== ''){
-            // loadProjectApi(projectToLoad.current.value)
-            //     .then(response => {
-            //         navigate(`${projectToLoad.current.value}/project/`)
-            //         console.log(response)
-            //     })
-            //     .catch(error => console.log(error))
+            navigate(`${projectToLoad.current.value}/project/`)
         } else {
             showError('Wybierz projekt do wczytania.')
         }
@@ -126,9 +135,9 @@ export default function HomeComponent() {
                                 <label><b>Wybierz projekt z listy:</b></label>
                                     <select class="form-select m-2" size={loadProjectWindowSize()} multiple aria-label="multiple select example" ref={projectToLoad}>
                                         {
-                                            projectNames.map (
-                                                name => (
-                                                    <option value= {name}>{name}</option>
+                                            projects?.map (
+                                                project => (
+                                                    <option value= {project.projectName}>{project.projectName}</option>
                                                 )
                                             )
                                         }

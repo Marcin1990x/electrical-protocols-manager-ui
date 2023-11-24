@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { addBuildingApi, retrieveBuildingsApi, addFloorToBuildingApi, deleteBuildingByIdApi} from "../api/BuildingApiService"
+import { addBuildingApi, addFloorToBuildingApi, deleteBuildingByIdApi, retrieveBuildingApi} from "../api/BuildingApiService"
 import { addFloorApi, addRoomToFloorApi, deleteFloorByIdApi } from "../api/FloorApiService"
 import { addRoomApi, deleteRoomByIdApi } from "../api/RoomApiService"
 import FloorTable from "./tables/FloorTable"
+import { addBuildingToProjectApi, retrieveProjectByNameApi } from "../api/ProjectApiService"
 
 export default function StructureComponent() {
 
@@ -26,6 +27,24 @@ export default function StructureComponent() {
 
     useEffect ( () => refreshData(), [render])
 
+    function refreshData() {
+
+        retrieveProjectByNameApi(projectName)
+            .then(response => {
+                console.log(response)
+                if(response.data.building === null){
+                    setBuildings(null)
+                } else {                
+                retrieveBuildingApi(response.data.building.id)
+                    .then(response => {
+                        setBuildings(response.data)
+                        console.log(response)})
+                        .catch(error => console.log(error))
+                }
+            })
+            .catch(error => console.log(error))
+    }
+
     function handleBuildingNameChange(event) {
         setBuildingName(event.target.value)
     }
@@ -47,16 +66,16 @@ export default function StructureComponent() {
         if(buildingName !== '') {
             addBuildingApi(newBuilding)
                 .then(response => {  
-                console.log(response)
-                setRender(render - 1)
-                setMessageVisible(false)
+                    addBuildingToProjectApi(projectName, response.data.id)
+                        .then(response => {
+                            setRender(render - 1)
+                            console.log(response)
+                        })
+                        .catch(error => console.log(error))
+                    console.log(response)
+                    setMessageVisible(false)
             })
-            .catch(error => {
-                console.log(error)
-                if((error.response.data).includes('Error 102')){
-                    showError('Możesz utworzyć tylko jeden budynek.')
-                }
-            })
+            .catch(error => console.log(error))
         } else {
             showError('Wpisz nazwę budynku.')
         }
@@ -69,25 +88,25 @@ export default function StructureComponent() {
     function handleDeleteBtn(id, delType, parentId) {
         if(delType === 1) {
             deleteBuildingByIdApi(id)
-            .then(response => {
-                setRender(render + 1)
-                console.log(response)
-            })
-            .catch(error => console.log(error))
+                .then(response => {
+                    setRender(render - 1)
+                    console.log(response)
+                })
+                .catch(error => console.log(error))
         } else if (delType === 2) {
             deleteFloorByIdApi(id, parentId)
-            .then(response => {
-                setRender(render + 1)
-                console.log(response)
-            })
-            .catch(error => console.log(error))
+                .then(response => {
+                    setRender(render + 1)
+                    console.log(response)
+                })
+                .catch(error => console.log(error))
         } else if (delType === 3) {
             deleteRoomByIdApi(id, parentId)
-            .then(response => {
-                setRender(render + 1)
-                console.log(response)
-            })
-            .catch(error => console.log(error))
+                .then(response => {
+                    setRender(render + 1)
+                    console.log(response)
+                })
+                .catch(error => console.log(error))
         }
     }
     function handleAddFloorBtn(id) {
@@ -134,15 +153,6 @@ export default function StructureComponent() {
         }
     }
 
-    function refreshData() {
-        retrieveBuildingsApi()
-        .then(response => {
-            console.log(response)
-            setBuildings(response.data)
-        })
-        .catch(error => console.log(error))
-    }
-
     return (
         <div className="StructureComponent">
             <button className="btn btn-outline-dark m-2 w-25" onClick={() => navigate(`/${projectName}/project`)}>Wstecz</button>
@@ -162,7 +172,7 @@ export default function StructureComponent() {
                         <tr>
                             <td>
                                 <input type="text" className="form-control form-control-sm" defaultValue = "wprowadź nazwę" maxLength = {15} onChange={handleBuildingNameChange} />
-                                <button className="btn btn-dark m-2" onClick={handleAddBuildingBtn}>Dodaj budynek</button>
+                                <button className="btn btn-dark m-2" disabled = {buildings} onClick={handleAddBuildingBtn}>Dodaj budynek</button>
                             </td>
                             <td>
                                 <input type="text" className="form-control form-control-sm" defaultValue = "wprowadź nazwę" maxLength = {15} onChange={handleFloorNameChange} />
@@ -172,7 +182,7 @@ export default function StructureComponent() {
                             </td>
                         </tr>
                         {
-                            buildings.map (
+                            buildings?.map (
                                 building => (
                                     <tr key = {building.id}>
                                         <td>
@@ -190,7 +200,7 @@ export default function StructureComponent() {
                                     </tr>
                                 )
                             )
-                        }
+                        }            
                     </tbody>
                 </table>
             </div>

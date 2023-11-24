@@ -23,7 +23,7 @@ export default function ProjectComponent() {
                 createSqlFileApi()
                     .then(response => {
                         console.log(response)
-                        showMessage('Zapisano projekt')
+                        showMessage('Zapisano strukturę')
                     })
                     .catch(error => console.log(error))
             })
@@ -64,7 +64,7 @@ export default function ProjectComponent() {
                             <button className="btn btn-dark" onClick={() => navigate(`generate`)}>Generuj PDF protokołu</button>
                         </div>
                         <div className="shadow-sm p-3 mb-2 bg-body rounded">
-                            <button className="btn btn-dark" onClick={() => handleSaveButton()}>Zapisz projekt</button>
+                            <button className="btn btn-dark" onClick={() => handleSaveButton()}>Zapisz strukturę</button>
                             <div>
                                 <br></br>
                                 <b>{messageVisible && message}</b>
