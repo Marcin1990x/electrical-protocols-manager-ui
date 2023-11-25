@@ -39,7 +39,7 @@ export default function MeasurementComponent() {
             <h2>{main.measurementName}</h2>
 
             {(main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porażeniem przez samoczynne wyłączenie') && //fix this shit
-            <table className="table">
+            <table className="table table-striped">
                     <thead>
                         <tr>
                             <th>Un[V]</th>
@@ -64,7 +64,7 @@ export default function MeasurementComponent() {
             }
             <hr></hr>
             {(main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porażeniem przez samoczynne wyłączenie') &&
-            <table className="table">
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>Lp.</th>
@@ -104,7 +104,7 @@ export default function MeasurementComponent() {
             </table>
             }
             {(main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodów') &&
-            <table className="table">
+            <table className="table table-striped">
                     <thead>
                         <tr>
                             <th>Uiso[V]</th>
@@ -119,7 +119,7 @@ export default function MeasurementComponent() {
             }
             <hr></hr>
             {(main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodów') &&
-            <table className="table">
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>Lp.</th>
@@ -167,7 +167,7 @@ export default function MeasurementComponent() {
             </table>
             }
             {(main.measurementName == '(TN-C) Badanie rezystancji izolacji obwodów') &&
-            <table className="table">
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>Lp.</th>
@@ -207,7 +207,7 @@ export default function MeasurementComponent() {
             </table>
             }
             {(main.measurementName == 'Parametry zabezpieczeń różnicowoprądowych') &&
-            <table className="table">
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>Lp.</th>
@@ -249,7 +249,7 @@ export default function MeasurementComponent() {
             </table>
             }
             {(main.measurementName == 'Badanie rezystywności gruntu') &&
-            <table className="table">
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>Lp.</th>
@@ -279,7 +279,7 @@ export default function MeasurementComponent() {
             </table>
             }
             {(main.measurementName == 'Badanie ciągłości małych rezystancji') &&
-            <table className="table">
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>Lp.</th>
