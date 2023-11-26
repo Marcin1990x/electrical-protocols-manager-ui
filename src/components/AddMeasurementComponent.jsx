@@ -12,11 +12,13 @@ export default function AddMeasurementComponent() {
 
     const navigate = useNavigate()
 
+    var maxEntries = 20
+
     const [mainAdded, setMainAdded] = useState(false)
     const [mainIndex, setMainIndex] = useState(0)
     const [main, setMain] = useState(null)
     const [entry, setEntry] = useState([])
-
+    const [entriesMax, setEntriesMax] = useState(false)
     const [message, setMessage] = useState('')
     const [messageVisible, setMessageVisible] = useState(false)
 
@@ -78,6 +80,7 @@ export default function AddMeasurementComponent() {
     const [types, setTypes] = useState([])
 
     useEffect ( () => { 
+        checkEntriesQuantity()
         refreshMeasurementName()
         refreshMain()
     }, [render])
@@ -98,6 +101,15 @@ export default function AddMeasurementComponent() {
             .catch(error => console.log(error))
         }
     }
+    function checkEntriesQuantity() {
+        if(main!== null && main.measurementEntries !== null && main.measurementEntries.length === maxEntries){
+            setEntriesMax(true)
+            showError('Maksymalna ilość wpisów ' + maxEntries)
+        } else {
+            setEntriesMax(false)
+            setMessageVisible(false)
+        }
+    }
 
     function showError(text) {
         setMessageVisible(true)
@@ -115,13 +127,13 @@ export default function AddMeasurementComponent() {
     {
         addMeasurementEntry(index, entryObj)
         .then(response => {
-            setMessageVisible(false)
             console.log(response)
             setEntry(response.data)
                 addEntryToMainApi(index, main.id, response.data.id)
                 .then(response => {
                     console.log(response)
                     setRender(render + 1)
+                    //checkEntriesQuantity()
                 })
                 .catch(error => console.log(error))
         })
@@ -349,6 +361,7 @@ export default function AddMeasurementComponent() {
 
         deleteAllEntriesApi(index, mainIndex)
             .then(response => {
+                setMessageVisible(false)
                 console.log(response)
                 setRender(render - 1)
             })
@@ -633,7 +646,7 @@ export default function AddMeasurementComponent() {
                 </tbody>
             </table>
             }
-            <button className="btn btn-dark" disabled = {!mainAdded} onClick={handleAddEntryBtn}>Dodaj wpis do pomiaru</button> 
+            <button className="btn btn-dark" disabled = {!mainAdded || entriesMax} onClick={handleAddEntryBtn}>Dodaj wpis do pomiaru</button> 
             <hr></hr>
 
             {/* view entry */}
@@ -642,6 +655,7 @@ export default function AddMeasurementComponent() {
             <table className="table table-striped">
                 <thead>
                     <tr>
+                        <th>Lp.</th>
                         <th>Symbol</th>
                         <th>Badany punkt</th>
                         <th>Wyłącznik</th>
@@ -658,8 +672,9 @@ export default function AddMeasurementComponent() {
                 <tbody>
                     {
                         main?.measurementEntries?.map (
-                            entry => (
+                            (entry, index) => (
                                 <tr key={entry.id}>
+                                    <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.measuringPoint}</td>
                                     <td>{entry.cutout}</td>
@@ -703,9 +718,9 @@ export default function AddMeasurementComponent() {
                 <tbody>
                     {
                         main?.measurementEntries?.map (
-                            entry => (
+                            (entry, index) => (
                                 <tr key={entry.id}>
-                                    <td></td>
+                                    <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.circuitName}</td>
                                     <td>{entry.l1l2}</td>
@@ -749,9 +764,9 @@ export default function AddMeasurementComponent() {
                 <tbody>
                     {
                         main?.measurementEntries?.map (
-                            entry => (
+                            (entry, index) => (
                                 <tr key={entry.id}>
-                                    <td></td>
+                                    <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.circuitName}</td>
                                     <td>{entry.l1l2}</td>
@@ -792,9 +807,9 @@ export default function AddMeasurementComponent() {
                 <tbody>
                     {
                         main?.measurementEntries?.map (
-                            entry => (
+                            (entry, index) => (
                                 <tr key={entry.id}>
-                                    <td></td>
+                                    <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.measuringPoint}</td>
                                     <td>{entry.circuitBreaker}</td>
@@ -830,9 +845,9 @@ export default function AddMeasurementComponent() {
                 <tbody>
                     {
                         main?.measurementEntries?.map (
-                            entry => (
+                            (entry, index) => (
                                 <tr key={entry.id}>
-                                    <td></td>
+                                    <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.measuringPoint}</td>
                                     <td>{entry.l}</td>
@@ -862,9 +877,9 @@ export default function AddMeasurementComponent() {
                 <tbody>
                     {
                         main?.measurementEntries?.map (
-                            entry => (
+                            (entry, index) => (
                                 <tr key={entry.id}>
-                                    <td></td>
+                                    <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{handleContinuity(entry.continuity)}</td>
                                     <td>{entry.rs}</td>

@@ -83,9 +83,9 @@ export default function MeasurementComponent() {
                 <tbody>
                     {
                         main.measurementEntries?.map (
-                            entry => (
+                            (entry, index) => (
                                 <tr key={entry.id}>
-                                    <td>{entry.index}</td>
+                                    <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.measuringPoint}</td>
                                     <td>{entry.cutout}</td>
@@ -142,9 +142,9 @@ export default function MeasurementComponent() {
                 <tbody>
                     {
                         main.measurementEntries?.map (
-                            entry => (
+                            (entry, index) => (
                                 <tr key={entry.id}>
-                                    <td>{entry.id}</td>
+                                    <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.circuitName}</td>
                                     <td>{entry.l1l2}</td>
@@ -186,9 +186,9 @@ export default function MeasurementComponent() {
                 <tbody>
                     {
                         main.measurementEntries?.map (
-                            entry => (
+                            (entry, index) => (
                                 <tr key={entry.id}>
-                                    <td>{entry.id}</td>
+                                    <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.circuitName}</td>
                                     <td>{entry.l1l2}</td>
@@ -227,9 +227,9 @@ export default function MeasurementComponent() {
                 <tbody>
                     {
                         main.measurementEntries?.map (
-                            entry => (
+                            (entry, index) => (
                                 <tr key={entry.id}>
-                                    <td>{entry.id}</td>
+                                    <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.measuringPoint}</td>
                                     <td>{entry.circuitBreaker}</td>
@@ -263,9 +263,9 @@ export default function MeasurementComponent() {
                 <tbody>
                     {
                         main.measurementEntries?.map (
-                            entry => (
+                            (entry, index) => (
                                 <tr key={entry.id}>
-                                    <td></td>
+                                    <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.measuringPoint}</td>
                                     <td>{entry.l}</td>
@@ -293,9 +293,9 @@ export default function MeasurementComponent() {
                 <tbody>
                     {
                         main.measurementEntries?.map (
-                            entry => (
+                            (entry, index) => (
                                 <tr key={entry.id}>
-                                    <td></td>
+                                    <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{handleContinuity(entry.continuity)}</td>
                                     <td>{entry.rs}</td>

@@ -137,15 +137,16 @@ export default function ProtocolInformationComponent() {
             </div>
             <div className="container"> 
                 <div className="row">
-                    <div className="col">
+                    <div className="col-2"/>
+                    <div className="col-8">
                         <label><b>Tytuł protokołu:</b></label>
-                            <input type = "text" maxLength = {20} className="form-control" ref={title}></input>
+                            <input type = "text" maxLength = {30} className="form-control" ref={title}></input>
                         <label><b>Numer protokołu:</b></label>
                             <input type = "text" maxLength = {20} className="form-control" ref={protocolNumber}></input>
                             <label><b>Zleceniodawca:</b></label>
-                            <input type = "text" maxLength = {30} className="form-control" ref={customer}></input>
+                            <input type = "text" maxLength = {60} className="form-control" ref={customer}></input>
                         <label><b>Miejsce przeprowadzenia pomiarów:</b></label>
-                            <input type = "text" maxLength = {40} className="form-control" ref={address}></input>
+                            <input type = "text" maxLength = {80} className="form-control" ref={address}></input>
                         <label><b>Rodzaj pomiarów:</b></label>
                             <select className="form-select" ref={measurementType}>
                                                 <option value = 'NEW_INSTALLATION'>Nowa instalacja</option>
@@ -180,24 +181,20 @@ export default function ProtocolInformationComponent() {
                                 </div>
                             </div>
                         </div>    
-                        <div>
                             <label><b>Rodzaj instalacji:</b></label>
-                        </div>
-                            <select className="form-select" ref = {installationType}>
-                                                    <option value = 'NEW'>Nowa</option>
-                                                    <option value = 'MODIFICATED'>Modyfikacja</option>
-                                                    <option value = 'EXPANDED'>Rozbudowa</option>
-                                                    <option value = 'EXISTING'>Istniejąca</option>
-                            </select>
-                        <div>
+                                <select className="form-select" ref = {installationType}>
+                                                            <option value = 'NEW'>Nowa</option>
+                                                            <option value = 'MODIFICATED'>Modyfikacja</option>
+                                                            <option value = 'EXPANDED'>Rozbudowa</option>
+                                                            <option value = 'EXISTING'>Istniejąca</option>
+                                </select>  
                             <label><b>Orzeczenie:</b></label>
-                        </div>
-                            <textarea className="form-control" rows="2" ref=  {decisionDescription}></textarea>
-                        <label><b>Uwagi do orzeczenia:</b></label>
-                            <textarea className="form-control" rows="4" ref = {comments}></textarea>
-                        </div>
-                        <button className="btn btn-dark m-2" onClick={handleSubmitBtn}>Załaduj dane</button>    
-            </div>
+                                <textarea className="form-control" rows="2" cols = "10" ref=  {decisionDescription}></textarea>
+                            <label><b>Uwagi do orzeczenia:</b></label>
+                                <textarea className="form-control" rows="4" cols = "80" ref = {comments}></textarea>
+                            <button className="btn btn-dark m-2" onClick={handleSubmitBtn}>Załaduj dane</button> 
+                    </div> 
+                </div>   
             </div>
             {titlePage && <label><b>Wykonawcy pomiarów:</b></label> }
             {titlePage &&

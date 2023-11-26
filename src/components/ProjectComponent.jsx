@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { saveDataApi, createSqlFileApi } from "../api/SaveLoadApiService"
 import { useState } from "react"
+import { deleteProjectByNameApi } from "../api/ProjectApiService"
 
 export default function ProjectComponent() {
 
@@ -15,7 +16,7 @@ export default function ProjectComponent() {
         setMessage(text)
     }
 
-    function handleSaveButton() {
+    function handleSaveBtn() {
         
         saveDataApi()
             .then(response => {
@@ -26,6 +27,14 @@ export default function ProjectComponent() {
                         showMessage('Zapisano strukturę')
                     })
                     .catch(error => console.log(error))
+            })
+            .catch(error => console.log(error))
+    }
+    function handleDeleteBtn() {
+        deleteProjectByNameApi(projectName)
+            .then(response => {
+                navigate('/')
+                console.log(response)
             })
             .catch(error => console.log(error))
     }
@@ -64,11 +73,17 @@ export default function ProjectComponent() {
                             <button className="btn btn-dark" onClick={() => navigate(`generate`)}>Generuj PDF protokołu</button>
                         </div>
                         <div className="shadow-sm p-3 mb-2 bg-body rounded">
-                            <button className="btn btn-dark" onClick={() => handleSaveButton()}>Zapisz strukturę</button>
+                            <button className="btn btn-dark" onClick={() => handleSaveBtn()}>Zapisz strukturę</button>
                             <div>
-                                <br></br>
-                                <b>{messageVisible && message}</b>
+                                {messageVisible && 
+                                    <div>
+                                    <br/><b>{message}</b>
+                                    </div> 
+                                }
                             </div>
+                        </div>
+                        <div className="shadow-sm p-3 mb-2 bg-body rounded">
+                            <button className="btn btn-danger" onClick={() => handleDeleteBtn()}>Usuń projekt</button>
                         </div>
                     </div>
                     <div className="col"/>
