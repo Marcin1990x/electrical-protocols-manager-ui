@@ -21,6 +21,11 @@ export default function ElectriciansComponent() {
     const permissions = useRef()
     const position = useRef()
 
+    function showError(text) {
+        setMessageVisible(true)
+        setMessage(text)
+    }
+
     function refreshData() {
         retrieveElectriciansApi()
             .then(response => {
@@ -47,8 +52,7 @@ export default function ElectriciansComponent() {
             .catch(error => {
                 console.log(error)
                 if((error.response.data).includes('Error 100')){
-                    setMessage('Elektryk dodany do informacji protokołu. Usuń najpierw elektryka z zakładki "informacje do protokołu".')
-                    setMessageVisible(true)
+                    showError('Elektryk dodany do informacji protokołu. Usuń najpierw elektryka z zakładki "informacje do protokołu".')
                 }
             })
     }
@@ -97,14 +101,12 @@ export default function ElectriciansComponent() {
                 .catch(error => {
                     console.log(error)
                     if((error.response.data).includes('Error 101')){
-                        setMessage('Elektryk o nazwisku ' + lastName.current.value + ' już istnieje.')
-                        setMessageVisible(true)
+                        showError('Elektryk o nazwisku ' + lastName.current.value + ' już istnieje.')
                     }
                 })
 
         } else {
-            setMessageVisible(true)
-            setMessage('Wypełnij wszystkie pola.')
+            showError('Wypełnij wszystkie pola.')
         }
     }
 
@@ -131,7 +133,7 @@ export default function ElectriciansComponent() {
                         <td><input type = "text" size = {10} maxLength={15} className="form-control" ref ={firstName}></input></td>
                         <td><input type = "text" size = {10} maxLength={15} className="form-control" ref ={lastName}></input></td>
                         <td><input type = "text" size = {40} maxLength={40} className="form-control" ref ={address}></input></td>
-                        <td><input type = "text" maxLength={15} className="form-control" ref ={permissions}></input>
+                        <td><input type = "text" maxLength={11} className="form-control" ref ={permissions}></input>
                         {
                             permissionsList.map (
                                 perm => (

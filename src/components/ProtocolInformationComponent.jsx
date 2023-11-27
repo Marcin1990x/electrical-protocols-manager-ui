@@ -35,8 +35,12 @@ export default function ProtocolInformationComponent() {
         refreshTitlePageData()
         refreshElectriciansToAdd()
     } , [render])
-    
 
+    function showError(text) {
+        setMessageVisible(true)
+        setMessage(text)
+    }
+    
     function setNextMeasurementDate(event) {
         setNextDateYear(event.target.value)
         setRender(render - 1)
@@ -78,12 +82,17 @@ export default function ProtocolInformationComponent() {
 
     function handleAddBtn(electrician) {
 
+    
+    if(titlePage.electricians.length < 4){    
         addElectricanToTitlePageApi(titlePage.id, electrician.id)
             .then(response => {
                 setRender(render + 1)
                 console.log(response)
             })
             .catch(error => console.log(error))
+        } else {
+            showError('Możesz dodać maksymalnie 4 elektryków.')
+        }
     }
     function handleDeleteBtn(electrician) {
         
@@ -118,14 +127,16 @@ export default function ProtocolInformationComponent() {
                 .then(response => {
                     console.log(response)
                     setTitlePage(response.data)
-                    setMessageVisible(true)
-                    setMessage('Formularz dodano pomyślnie.')
+                    showError('Formularz dodano pomyślnie.')
                 })
                 .catch(error => console.log(error))
         } else {
-            setMessageVisible(true)
-            setMessage('Wypełnij wszystkie pola formularza.')
+            showError('Wypełnij wszystkie pola formularza.')
         }
+     }
+
+     function test() {
+        console.log(decisionDescription.current.value)
      }
 
     return (
@@ -189,9 +200,9 @@ export default function ProtocolInformationComponent() {
                                                             <option value = 'EXISTING'>Istniejąca</option>
                                 </select>  
                             <label><b>Orzeczenie:</b></label>
-                                <textarea className="form-control" rows="2" cols = "10" ref=  {decisionDescription}></textarea>
+                                <input className="form-control" ref=  {decisionDescription}></input>
                             <label><b>Uwagi do orzeczenia:</b></label>
-                                <textarea className="form-control" rows="4" cols = "80" ref = {comments}></textarea>
+                                <textarea className="form-control" rows="4" ref = {comments}></textarea>
                             <button className="btn btn-dark m-2" onClick={handleSubmitBtn}>Załaduj dane</button> 
                     </div> 
                 </div>   
