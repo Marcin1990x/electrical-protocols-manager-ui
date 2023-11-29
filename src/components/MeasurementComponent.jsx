@@ -147,15 +147,15 @@ export default function MeasurementComponent() {
                                     <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.circuitName}</td>
-                                    <td>{entry.l1l2}</td>
-                                    <td>{entry.l2l3}</td>
-                                    <td>{entry.l3l1}</td>
-                                    <td>{entry.l1pe}</td>
-                                    <td>{entry.l2pe}</td>
-                                    <td>{entry.l3pe}</td>
-                                    <td>{entry.l1n}</td>
-                                    <td>{entry.l2n}</td>
-                                    <td>{entry.l3n}</td>
+                                    <td>{(entry.l1l2) != 0 && entry.l1l2}</td>
+                                    <td>{(entry.l2l3) != 0 && entry.l2l3}</td>
+                                    <td>{(entry.l3l1) != 0 && entry.l3l1}</td>
+                                    <td>{(entry.l1pe) != 0 && entry.l1pe}</td>
+                                    <td>{(entry.l2pe) != 0 && entry.l2pe}</td>
+                                    <td>{(entry.l3pe) != 0 && entry.l3pe}</td>
+                                    <td>{(entry.l1n) != 0 && entry.l1n}</td>
+                                    <td>{(entry.l2n) != 0 && entry.l2n}</td>
+                                    <td>{(entry.l3n) != 0 && entry.l3n}</td>
                                     <td>{entry.npe}</td>
                                     <td>{entry.ra}</td>
                                     <td>{handleResult(entry.result)}</td>
@@ -191,12 +191,12 @@ export default function MeasurementComponent() {
                                     <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.circuitName}</td>
-                                    <td>{entry.l1l2}</td>
-                                    <td>{entry.l2l3}</td>
-                                    <td>{entry.l3l1}</td>
-                                    <td>{entry.l1pen}</td>
-                                    <td>{entry.l2pen}</td>
-                                    <td>{entry.l3pen}</td>
+                                    <td>{(entry.l1l2) != 0 && entry.l1l2}</td>
+                                    <td>{(entry.l2l3) != 0 && entry.l2l3}</td>
+                                    <td>{(entry.l3l1) != 0 && entry.l3l1}</td>
+                                    <td>{(entry.l1pen) != 0 && entry.l1pen}</td>
+                                    <td>{(entry.l2pen) != 0 && entry.l2pen}</td>
+                                    <td>{(entry.l3pen) != 0 && entry.l3pen}</td>
                                     <td>{entry.ra}</td>
                                     <td>{handleResult(entry.result)}</td>
                                 </tr>

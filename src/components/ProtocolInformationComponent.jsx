@@ -9,6 +9,7 @@ export default function ProtocolInformationComponent() {
     const [electriciansToAdd, setElectriciansToAdd] = useState([])
     const [render, setRender] = useState(0)
     const [titlePage, setTitlePage] = useState([])
+
     const title = useRef()
     const protocolNumber = useRef()
     const customer = useRef()
@@ -20,14 +21,13 @@ export default function ProtocolInformationComponent() {
     const weather = useRef()
     const decisionDescription = useRef()
     const comments = useRef()
-    const [nextDateYear, setNextDateYear] = useState(5)
 
     const [message, setMessage] = useState('')
     const [messageVisible, setMessageVisible] = useState(false)
 
     const today = new Date()
     var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
-    var nextDate = (today.getFullYear() + parseInt(nextDateYear)) + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+    var nextDate = (today.getFullYear() + parseInt(5)) + '-' + (today.getMonth() + 1) + '-' + today.getDate()
 
     const navigate = useNavigate()
 
@@ -40,11 +40,7 @@ export default function ProtocolInformationComponent() {
         setMessageVisible(true)
         setMessage(text)
     }
-    
-    function setNextMeasurementDate(event) {
-        setNextDateYear(event.target.value)
-        setRender(render - 1)
-    }
+
     function fillTitlePageData(titlePage) {
         if(titlePage) {
             title.current.value = titlePage.title
@@ -60,7 +56,6 @@ export default function ProtocolInformationComponent() {
             comments.current.value = titlePage.comments
         }
     }
-
 
     function refreshElectriciansToAdd() {
         retrieveDistinctElectriciansApi()
@@ -134,11 +129,6 @@ export default function ProtocolInformationComponent() {
             showError('Wypełnij wszystkie pola formularza.')
         }
      }
-
-     function test() {
-        console.log(decisionDescription.current.value)
-     }
-
     return (
         <div className="ProtocolInformationComponent">
             <button className="btn btn-outline-dark w-25 m-2" onClick={() => navigate(`/${projectName}/project`)}>Wstecz</button>
@@ -176,16 +166,7 @@ export default function ProtocolInformationComponent() {
                                     <label><b>Data pomiarów:</b></label>
                                     <input class="form-control" type="date" defaultValue={date} ref={measDate}/>
                                 </div>
-                                <div className="col">
-                                    <label><b>Kolejny pomiar:</b></label>
-                                        <select className="form-select" onChange= {setNextMeasurementDate}> 
-                                                    <option value = '1'>Za rok</option>
-                                                    <option value = '2'>Za 2 lata</option>
-                                                    <option value = '3'>Za 3 lata</option>
-                                                    <option value = '4'>Za 4 lata</option>
-                                                    <option value = '5'>Za 5 lat</option>
-                                        </select>
-                                </div>  
+                                <div className="col"/>
                                 <div className="col">
                                     <label><b>Data następnych pomiarów:</b></label>
                                     <input class="form-control" type="date" defaultValue={nextDate} ref={measNextDate}/>

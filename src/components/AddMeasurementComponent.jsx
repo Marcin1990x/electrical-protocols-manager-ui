@@ -22,7 +22,39 @@ export default function AddMeasurementComponent() {
     const [message, setMessage] = useState('')
     const [messageVisible, setMessageVisible] = useState(false)
 
+    const [firstPhase, setFirstPhase] = useState(false)
+    const [secondPhase, setSecondPhase] = useState(false)
+    const [thirdPhase, setThirdPhase] = useState(false)
+    const [allPhases, setAllPhases] = useState(true)
 
+    function handlePhaseSelect(event) {
+        if(event.target.value === '1') {
+            setFirstPhase(true)
+            setSecondPhase(false)
+            setThirdPhase(false)
+            setAllPhases(false)
+        }
+        else if(event.target.value === '2') {
+            setFirstPhase(false)
+            setSecondPhase(true)
+            setThirdPhase(false)
+            setAllPhases(false)
+        }
+        else if(event.target.value === '3') {
+            setFirstPhase(false)
+            setSecondPhase(false)
+            setThirdPhase(true)
+            setAllPhases(false)
+        }
+        else if(event.target.value === '4') {
+            setFirstPhase(false)
+            setSecondPhase(false)
+            setThirdPhase(false)
+            setAllPhases(true)
+        }
+    }
+
+    
     //discriminator 0
     const un = useRef()
     const ui = useRef() // common with 3
@@ -41,6 +73,7 @@ export default function AddMeasurementComponent() {
     //discriminator 1
     const uiso = useRef() // common with 2
 
+    const phase = useRef() // common with 2
     const circuitName = useRef() // common with 2
     const l1l2 = useRef() // common with 2
     const l2l3 = useRef() // common with 2
@@ -133,7 +166,6 @@ export default function AddMeasurementComponent() {
                 .then(response => {
                     console.log(response)
                     setRender(render + 1)
-                    //checkEntriesQuantity()
                 })
                 .catch(error => console.log(error))
         })
@@ -161,6 +193,8 @@ export default function AddMeasurementComponent() {
             }
         }
         if(index == 1) {
+
+            if(allPhases) {
             const newCircuitInsulationTnsEntry = {
                 symbol: symbol.current.value,
                 circuitName : circuitName.current.value,
@@ -185,26 +219,111 @@ export default function AddMeasurementComponent() {
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
+            } else if (firstPhase) {
+                const newCircuitInsulationTnsEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l1pe : l1pe.current.value,
+                    l1n : l1n.current.value,
+                    npe : npe.current.value,
+                    ra : ra.current.value
+                }
+                if(numberFieldChecker(l1pe.current.value) && numberFieldChecker(l1n.current.value)
+                    && numberFieldChecker(npe.current.value) && numberFieldChecker(ra.current.value)) {
+                    addEntryLogic(newCircuitInsulationTnsEntry)            
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            } else if (secondPhase) {
+                const newCircuitInsulationTnsEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l2pe : l2pe.current.value,
+                    l2n : l2n.current.value,
+                    npe : npe.current.value,
+                    ra : ra.current.value
+                }
+                if(numberFieldChecker(l2pe.current.value) && numberFieldChecker(l2n.current.value)
+                    && numberFieldChecker(npe.current.value) && numberFieldChecker(ra.current.value)) {
+                    addEntryLogic(newCircuitInsulationTnsEntry)            
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            } else if(thirdPhase) {
+                const newCircuitInsulationTnsEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l3pe : l3pe.current.value,
+                    l3n : l3n.current.value,
+                    npe : npe.current.value,
+                    ra : ra.current.value
+                }
+                if(numberFieldChecker(l3pe.current.value) && numberFieldChecker(l3n.current.value)
+                    && numberFieldChecker(npe.current.value) && numberFieldChecker(ra.current.value)) {
+                    addEntryLogic(newCircuitInsulationTnsEntry)            
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            }
         }
         if(index == 2) {
-            const newCircuitInsulationTncEntry = {
-                symbol: symbol.current.value,
-                circuitName : circuitName.current.value,
-                l1l2 : l1l2.current.value,
-                l2l3 : l2l3.current.value,
-                l3l1 : l3l1.current.value,
-                l1pen : l1pen.current.value,
-                l2pen : l2pen.current.value,
-                l3pen : l3pen.current.value,
-                ra : ra.current.value
-            }
-            if(numberFieldChecker(l1l2.current.value) && numberFieldChecker(l2l3.current.value) && numberFieldChecker(l3l1.current.value)
-             && numberFieldChecker(l1pen.current.value) && numberFieldChecker(l2pen.current.value) && numberFieldChecker(l3pen.current.value) 
-             && numberFieldChecker(ra.current.value)){
-            
-                addEntryLogic(newCircuitInsulationTncEntry)         
-            } else {
-                showError('Wypełnij wszystkie pola.')
+
+            if(allPhases) {
+                const newCircuitInsulationTncEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l1l2 : l1l2.current.value,
+                    l2l3 : l2l3.current.value,
+                    l3l1 : l3l1.current.value,
+                    l1pen : l1pen.current.value,
+                    l2pen : l2pen.current.value,
+                    l3pen : l3pen.current.value,
+                    ra : ra.current.value
+                }
+                if(numberFieldChecker(l1l2.current.value) && numberFieldChecker(l2l3.current.value) && numberFieldChecker(l3l1.current.value)
+                && numberFieldChecker(l1pen.current.value) && numberFieldChecker(l2pen.current.value) && numberFieldChecker(l3pen.current.value) 
+                && numberFieldChecker(ra.current.value)){
+                
+                    addEntryLogic(newCircuitInsulationTncEntry)         
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            } else if(firstPhase) {
+                const newCircuitInsulationTncEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l1pen : l1pen.current.value,
+                    ra : ra.current.value
+                }
+                if(numberFieldChecker(l1pen.current.value) && numberFieldChecker(ra.current.value)){
+                    addEntryLogic(newCircuitInsulationTncEntry)         
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            } else if(secondPhase) {
+                const newCircuitInsulationTncEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l2pen : l2pen.current.value,
+                    ra : ra.current.value
+                }
+                if(numberFieldChecker(l2pen.current.value) && numberFieldChecker(ra.current.value)){
+                    addEntryLogic(newCircuitInsulationTncEntry)         
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            } else if(thirdPhase) {
+                const newCircuitInsulationTncEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l1pen : l3pen.current.value,
+                    ra : ra.current.value
+                }
+                if(numberFieldChecker(l3pen.current.value) && numberFieldChecker(ra.current.value)){
+                    addEntryLogic(newCircuitInsulationTncEntry)         
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
             }
         }
         if(index == 3) {
@@ -488,6 +607,15 @@ export default function AddMeasurementComponent() {
             </table>
             }
             { (index == 1) &&
+            <div>
+                <div className="col-2 m-1">
+                <select className="form-select" onChange={handlePhaseSelect} ref={phase}>
+                                    <option value = '4'>Obwód 3 fazowy</option>
+                                    <option value = '1'>Faza 1</option>
+                                    <option value = '2'>Faza 2</option>
+                                    <option value = '3'>Faza 3</option>
+                </select>
+                </div>
                 <table className="table">
                 <thead>
                     <tr>
@@ -511,53 +639,64 @@ export default function AddMeasurementComponent() {
                     <tr>
                         <td className="col-md-1"><input type = "text" maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td>
                         <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {circuitName} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {l1l2} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {l2l3} disabled = {!mainAdded} /></td>
-                        <td><input type = "number" className="form-control" ref = {l3l1} disabled = {!mainAdded} /></td>
-                        <td><input type = "number" className="form-control" ref = {l1pe} disabled = {!mainAdded} /></td>
-                        <td><input type = "number" className="form-control" ref = {l2pe} disabled = {!mainAdded} /></td>
-                        <td><input type = "number" className="form-control" ref = {l3pe} disabled = {!mainAdded} /></td>
-                        <td><input type = "number" className="form-control" ref = {l1n} disabled = {!mainAdded} /></td>
-                        <td><input type = "number" className="form-control" ref = {l2n} disabled = {!mainAdded} /></td>
-                        <td><input type = "number" className="form-control" ref = {l3n} disabled = {!mainAdded} /></td>
+                        <td><input type = "number" className="form-control" ref = {l1l2} disabled = {!(mainAdded && allPhases)}/></td>
+                        <td><input type = "number" className="form-control" ref = {l2l3} disabled = {!(mainAdded && allPhases)} /></td>
+                        <td><input type = "number" className="form-control" ref = {l3l1} disabled = {!(mainAdded && allPhases)} /></td>
+                        <td><input type = "number" className="form-control" ref = {l1pe} disabled = {!(mainAdded && (firstPhase || allPhases))} /></td>
+                        <td><input type = "number" className="form-control" ref = {l2pe} disabled = {!(mainAdded && (secondPhase || allPhases))} /></td>
+                        <td><input type = "number" className="form-control" ref = {l3pe} disabled = {!(mainAdded && (thirdPhase || allPhases))} /></td>
+                        <td><input type = "number" className="form-control" ref = {l1n} disabled = {!(mainAdded && (firstPhase || allPhases))} /></td>
+                        <td><input type = "number" className="form-control" ref = {l2n} disabled = {!(mainAdded && (secondPhase || allPhases))} /></td>
+                        <td><input type = "number" className="form-control" ref = {l3n} disabled = {!(mainAdded && (thirdPhase || allPhases))} /></td>
                         <td><input type = "number" className="form-control" ref = {npe} disabled = {!mainAdded} /></td>
                         <td className="col-md-1"><input type = "number" className="form-control" ref = {ra} disabled = {!mainAdded} /></td>
                         <td className="col-md-1"><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
                     </tr>
                 </tbody>
             </table>
+            </div>
             }
             { (index == 2) &&
+            <div>
+                <div className="col-2 m-1">
+                <select className="form-select" onChange={handlePhaseSelect} ref={phase}>
+                                    <option value = '4'>Obwód 3 fazowy</option>
+                                    <option value = '1'>Faza 1</option>
+                                    <option value = '2'>Faza 2</option>
+                                    <option value = '3'>Faza 3</option>
+                </select>
+                </div>
                 <table className="table">
-                <thead>
-                    <tr>
-                        <th>Symbol</th>
-                        <th>Nazwa obwodu</th>
-                        <th>L1-L2[MΩ]</th>
-                        <th>L2-L3[MΩ]</th>
-                        <th>L3-L1[MΩ]</th>
-                        <th>L1-PEN[MΩ]</th>
-                        <th>L2-PEN[MΩ]</th>
-                        <th>L3-PEN[MΩ]</th>
-                        <th>Ra</th>
-                        <th>Ocena</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td className="col-md-1"><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded} /></td>
-                        <td className="col-md-2"><input type = "text"  maxLength={20} className="form-control" ref = {circuitName} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {l1l2} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {l2l3} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {l3l1} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {l1pen} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {l2pen} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {l3pen} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {ra} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" disabled value={handleResult(entry.result)}/></td>
-                    </tr>
-                </tbody>
-            </table>
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Nazwa obwodu</th>
+                            <th>L1-L2[MΩ]</th>
+                            <th>L2-L3[MΩ]</th>
+                            <th>L3-L1[MΩ]</th>
+                            <th>L1-PEN[MΩ]</th>
+                            <th>L2-PEN[MΩ]</th>
+                            <th>L3-PEN[MΩ]</th>
+                            <th>Ra</th>
+                            <th>Ocena</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td className="col-md-1"><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded} /></td>
+                            <td className="col-md-2"><input type = "text"  maxLength={20} className="form-control" ref = {circuitName} disabled = {!mainAdded}/></td>
+                            <td><input type = "number" className="form-control" ref = {l1l2} disabled = {!(mainAdded && allPhases)}/></td>
+                            <td><input type = "number" className="form-control" ref = {l2l3} disabled = {!(mainAdded && allPhases)}/></td>
+                            <td><input type = "number" className="form-control" ref = {l3l1} disabled = {!(mainAdded && allPhases)}/></td>
+                            <td><input type = "number" className="form-control" ref = {l1pen} disabled = {!(mainAdded && (firstPhase || allPhases))}/></td>
+                            <td><input type = "number" className="form-control" ref = {l2pen} disabled = {!(mainAdded && (secondPhase || allPhases))}/></td>
+                            <td><input type = "number" className="form-control" ref = {l3pen} disabled = {!(mainAdded && (thirdPhase || allPhases))}/></td>
+                            <td><input type = "number" className="form-control" ref = {ra} disabled = {!mainAdded}/></td>
+                            <td><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             }
             { (index == 3) &&
                 <table className="table">
@@ -723,15 +862,15 @@ export default function AddMeasurementComponent() {
                                     <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.circuitName}</td>
-                                    <td>{entry.l1l2}</td>
-                                    <td>{entry.l2l3}</td>
-                                    <td>{entry.l3l1}</td>
-                                    <td>{entry.l1pe}</td>
-                                    <td>{entry.l2pe}</td>
-                                    <td>{entry.l3pe}</td>
-                                    <td>{entry.l1n}</td>
-                                    <td>{entry.l2n}</td>
-                                    <td>{entry.l3n}</td>
+                                    <td>{(entry.l1l2) != 0 && entry.l1l2}</td>
+                                    <td>{(entry.l2l3) != 0 && entry.l2l3}</td>
+                                    <td>{(entry.l3l1) != 0 && entry.l3l1}</td>
+                                    <td>{(entry.l1pe) != 0 && entry.l1pe}</td>
+                                    <td>{(entry.l2pe) != 0 && entry.l2pe}</td>
+                                    <td>{(entry.l3pe) != 0 && entry.l3pe}</td>
+                                    <td>{(entry.l1n) != 0 && entry.l1n}</td>
+                                    <td>{(entry.l2n) != 0 && entry.l2n}</td>
+                                    <td>{(entry.l3n) != 0 && entry.l3n}</td>
                                     <td>{entry.npe}</td>
                                     <td>{entry.ra}</td>
                                     <td>{handleResult(entry.result)}</td>
@@ -769,12 +908,12 @@ export default function AddMeasurementComponent() {
                                     <td>{index + 1}</td>
                                     <td>{entry.symbol}</td>
                                     <td>{entry.circuitName}</td>
-                                    <td>{entry.l1l2}</td>
-                                    <td>{entry.l2l3}</td>
-                                    <td>{entry.l3l1}</td>
-                                    <td>{entry.l1pen}</td>
-                                    <td>{entry.l2pen}</td>
-                                    <td>{entry.l3pen}</td>
+                                    <td>{(entry.l1l2) != 0 && entry.l1l2}</td>
+                                    <td>{(entry.l2l3) != 0 && entry.l2l3}</td>
+                                    <td>{(entry.l3l1) != 0 && entry.l3l1}</td>
+                                    <td>{(entry.l1pen) != 0 && entry.l1pen}</td>
+                                    <td>{(entry.l2pen) != 0 && entry.l2pen}</td>
+                                    <td>{(entry.l3pen) != 0 && entry.l3pen}</td>
                                     <td>{entry.ra}</td>
                                     <td>{handleResult(entry.result)}</td>
                                     {deleteEntryButton(entry.id)}
