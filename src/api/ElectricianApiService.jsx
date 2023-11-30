@@ -6,6 +6,4 @@ export const retrieveElectriciansApi = () => apiClient.get(`/electricians`)
 
 export const retrieveDistinctElectriciansApi = () => apiClient.get(`/electricians/distinct`)
 
-export const retrieveElectriciansFromFileApi = () => apiClient.get(`electricians/loadFromFile`)
-
 export const deleteElectricianByIdApi = (id) => apiClient.delete(`/electricians/${id}`)
