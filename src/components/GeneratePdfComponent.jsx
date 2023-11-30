@@ -99,7 +99,7 @@ export default function GeneratePdf() {
             
             <button className="btn btn-dark btn-lg m-2" onClick={loadDataToProtocol}>Załaduj dane</button>
             <button className="btn btn-dark btn-lg m-2" disabled = {!dataLoaded} onClick={generatePdf}>Generuj podgląd Pdf</button>
-            <button className="btn btn-dark btn-lg m-2" disabled = {!pdfGenerated} onClick={savePdf}>Zapisz Pdf na pulpicie</button>
+            <button className="btn btn-dark btn-lg m-2" disabled = {!pdfGenerated} onClick={savePdf}>Zapisz Pdf</button>
 
             <br></br>
             <div className="container">

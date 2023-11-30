@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
-import { retrieveElectriciansFromFileApi } from "../api/ElectricianApiService"
 import { useEffect, useRef, useState } from "react"
 import { addProjectApi, retrieveProjectsApi } from "../api/ProjectApiService"
+import { closeApplicationApi } from "../api/ApplicationApiService"
 
 export default function HomeComponent() {
 
@@ -22,10 +22,6 @@ export default function HomeComponent() {
     }
 
     function readData() {
-        retrieveElectriciansFromFileApi()
-            .then(reponse => console.log(reponse))
-            .catch(error => console.log(error))
-
         retrieveProjectsApi()
             .then(response => {
                 setProjects(response.data)
@@ -96,6 +92,12 @@ export default function HomeComponent() {
             showError('Wybierz projekt do wczytania.')
         }
     }
+    function handleExitBtn() {
+
+        closeApplicationApi()
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
+    }
 
     return (
         <div className="HomeComponent">
@@ -142,9 +144,7 @@ export default function HomeComponent() {
                                             )
                                         }
                                     </select>
-                                <button className="btn btn-outline-dark m-2" 
-                                    onClick={() => handleLoadBtn()}>Wczytaj
-                                </button>
+                                <button className="btn btn-outline-dark m-2" onClick={() => handleLoadBtn()}>Wczytaj</button>
                                 <div>
                                     <b>{messageVisible && message}</b>
                                 </div>
@@ -154,7 +154,7 @@ export default function HomeComponent() {
                             <button className="btn btn-dark" onClick={() => navigate(`/electricians`)}>Dodaj dane pomiarowca</button>
                         </div>
                         <div className="shadow-sm p-3 mb-2 bg-body rounded">
-                            <button className="btn btn-dark">Wyjdź</button>
+                            <button className="btn btn-dark" onClick={() => handleExitBtn()}>Wyjdź</button>
                         </div>
                     </div>
                     <div className="col"/>
