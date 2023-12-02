@@ -4,4 +4,4 @@ export const getDataForProtocolApi = (projectName) => apiClient.get(`/getData/${
 
 export const generateProtocolApi = () => apiClient.get(`/createPdf`)
 
-export const savePdfApi = () => apiClient.get(`/copyPdf`)
+export const savePdfApi = (fileName) => apiClient.get(`/copyPdf/${fileName}`)

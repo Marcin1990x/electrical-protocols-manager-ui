@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { Document, Page, pdfjs } from 'react-pdf'
-import { useState } from "react"
+import { useRef, useState } from "react"
 import pdf from '../test.pdf'
 import { getDataForProtocolApi, generateProtocolApi, savePdfApi } from "../api/GeneratePdfApi"
 
@@ -21,6 +21,9 @@ export default function GeneratePdf() {
     const [width, setWidth] = useState(1000)
     const [dataLoaded, setDataLoaded] = useState(false)
     const [pdfGenerated, setPdfGenerated] = useState(false)
+    const [saveBtn, setSaveBtn] = useState(false)
+
+    const fileName = useRef()
 
     function showError(text) {
         setMessageVisible(true)
@@ -73,13 +76,28 @@ export default function GeneratePdf() {
             })
             .catch(error => console.log(error))
     }
+    function handleSaveBtn() {
+        if(saveBtn == true){
+            setSaveBtn(false)
+        } else {
+            setSaveBtn(true)
+        }
+    }
+
+
     function savePdf(){
-        savePdfApi()
+        if(!fileName.current.value == '') {
+
+        savePdfApi(fileName.current.value)
             .then(response => {
+                setSaveBtn(false)
                 showError('Zapisano pdf.')
                 console.log(response)
             })
             .catch(error => console.log(error))
+        } else {
+            showError('Wprowadź nazwę pliku.')
+        }
     }
 
     function onDocumentLoadSuccess({numPages}){
@@ -99,7 +117,20 @@ export default function GeneratePdf() {
             
             <button className="btn btn-dark btn-lg m-2" onClick={loadDataToProtocol}>Załaduj dane</button>
             <button className="btn btn-dark btn-lg m-2" disabled = {!dataLoaded} onClick={generatePdf}>Generuj podgląd Pdf</button>
-            <button className="btn btn-dark btn-lg m-2" disabled = {!pdfGenerated} onClick={savePdf}>Zapisz Pdf</button>
+            <br></br>
+            <button className="btn btn-dark btn-lg m-2" disabled = {!pdfGenerated} onClick={handleSaveBtn}>Zapisz Pdf</button>
+            <div className="row">
+                <div className="col-5"/>
+                <div className="col-2 m-2">
+                { saveBtn &&
+                    <div>
+                        <label><b>Wprowadź nazwę pliku: </b></label>
+                        <input type = "text" className="form-control" ref={fileName}></input>
+                        <button className="btn btn-dark m-2" onClick={savePdf}>zapisz</button>
+                    </div>
+                }
+                </div>
+            </div>
 
             <br></br>
             <div className="container">
