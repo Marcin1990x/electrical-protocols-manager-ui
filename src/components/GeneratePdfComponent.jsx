@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { Document, Page, pdfjs } from 'react-pdf'
 import { useRef, useState } from "react"
-import pdf from '../test.pdf'
 import { getDataForProtocolApi, generateProtocolApi, savePdfApi } from "../api/GeneratePdfApi"
+import test from '../test.pdf'
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
@@ -22,6 +22,8 @@ export default function GeneratePdf() {
     const [dataLoaded, setDataLoaded] = useState(false)
     const [pdfGenerated, setPdfGenerated] = useState(false)
     const [saveBtn, setSaveBtn] = useState(false)
+
+    const [filePath, setFilePath] = useState("")
 
     const fileName = useRef()
 
@@ -71,12 +73,16 @@ export default function GeneratePdf() {
         generateProtocolApi()
             .then(response => {
                 console.log(response)
+                setFilePath(response.data)
                 setPdfGenerated(true)
                 showError('Wygenerowano plik protokołu.')
             })
             .catch(error => console.log(error))
     }
+
     function handleSaveBtn() {
+
+        console.log(filePath)
         if(saveBtn == true){
             setSaveBtn(false)
         } else {
@@ -114,30 +120,40 @@ export default function GeneratePdf() {
             <div className="message">
                 <b>{messageVisible && message}</b>
             </div>
-            
-            <button className="btn btn-dark btn-lg m-2" onClick={loadDataToProtocol}>Załaduj dane</button>
-            <button className="btn btn-dark btn-lg m-2" disabled = {!dataLoaded} onClick={generatePdf}>Generuj podgląd Pdf</button>
-            <br></br>
-            <button className="btn btn-dark btn-lg m-2" disabled = {!pdfGenerated} onClick={handleSaveBtn}>Zapisz Pdf</button>
+            <div className="row">
+                <div className="col"/>
+                <div className="col-2">
+                    <button className="btn btn-dark btn-lg m-2" onClick={loadDataToProtocol}>Załaduj dane</button>
+                </div>
+                <div className="col-2">
+                    <button className="btn btn-dark btn-lg m-2" disabled = {!dataLoaded} onClick={generatePdf}>Generuj podgląd Pdf</button>
+                </div>
+                <div className="col"/>
+            </div>    
+            <div className="row">
+                <div className="col">
+                    <button className="btn btn-dark btn-lg m-2" disabled = {!pdfGenerated} onClick={handleSaveBtn}>Zapisz Pdf</button>
+                </div>  
+            </div>      
             <div className="row">
                 <div className="col-5"/>
                 <div className="col-2 m-2">
-                { saveBtn &&
-                    <div>
-                        <label><b>Wprowadź nazwę pliku: </b></label>
-                        <input type = "text" className="form-control" ref={fileName}></input>
-                        <button className="btn btn-dark m-2" onClick={savePdf}>zapisz</button>
-                    </div>
-                }
+                    { saveBtn &&
+                        <div>
+                            <label><b>Wprowadź nazwę pliku: </b></label>
+                            <input type = "text" className="form-control" ref={fileName}></input>
+                            <button className="btn btn-dark m-2" onClick={savePdf}>zapisz</button>
+                        </div>
+                    }
                 </div>
             </div>
+            
 
             <br></br>
             <div className="container">
                 <div className="row">
                 { pdfGenerated &&
-                    <div className="col m-5">
-                    
+                    <div>
                         Strona {pageNumber} z {numPages}
                         <button className="btn btn-dark btn m-1" onClick={increasePageCount}>+</button>
                         <button className="btn btn-outline-dark btn m-1" onClick={decreasePageCount}>-</button>
@@ -145,9 +161,15 @@ export default function GeneratePdf() {
                         Rozmiar
                         <button className="btn btn-dark btn m-1" onClick={increasePage}>+</button>
                         <button className="btn btn-outline-dark btn m-1" onClick={decreasePage}>-</button>
-                        <Document file= {pdf} onLoadSuccess={onDocumentLoadSuccess}>
-                            <Page pageNumber={pageNumber} renderTextLayer = {false} renderAnnotationLayer = {false} width={width}/>
-                        </Document>
+                        <div className="row">
+                            <div className="col-2"/>
+                                <div className="col">
+                                    <Document file = {test} onLoadSuccess={onDocumentLoadSuccess}>
+                                        <Page pageNumber={pageNumber} renderTextLayer = {false} renderAnnotationLayer = {false} width={width}/>
+                                    </Document>
+                                </div>
+                            <div className="col-2"/>
+                        </div>
                     </div>
                 }
                 </div>
