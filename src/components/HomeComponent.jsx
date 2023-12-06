@@ -101,7 +101,6 @@ export default function HomeComponent() {
 
     return (
         <div className="HomeComponent">
-            
                 <div className="row">
                     <div className="col"/>
                     <div className="col">
@@ -161,5 +160,4 @@ export default function HomeComponent() {
                 </div>
         </div>
     )
-
 }
