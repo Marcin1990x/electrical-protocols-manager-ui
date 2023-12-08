@@ -4,6 +4,7 @@ import { useRef, useState } from "react"
 import { getDataForProtocolApi, generateProtocolApi, savePdfApi } from "../api/GeneratePdfApi"
 import test from '../test.pdf'
 
+
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
     import.meta.url,

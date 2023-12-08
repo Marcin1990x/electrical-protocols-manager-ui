@@ -73,7 +73,7 @@ export default function HomeComponent() {
             }
             addProjectApi(newProject)
                 .then(response => {
-                    navigate(`${projectName.current.value}/project/`)
+                    navigate(`${projectName.current.value}/project`)
                     console.log(response)
                     setMessageVisible(false)
                 })    
@@ -87,18 +87,11 @@ export default function HomeComponent() {
     function handleLoadBtn() {
         
         if(projectToLoad.current.value !== ''){
-            navigate(`${projectToLoad.current.value}/project/`)
+            navigate(`${projectToLoad.current.value}/project`)
         } else {
             showError('Wybierz projekt do wczytania.')
         }
     }
-    function handleExitBtn() {
-
-        closeApplicationApi()
-            .then(response => console.log(response))
-            .catch(error => console.log(error))
-    }
-
     return (
         <div className="HomeComponent">
                 <div className="row">
@@ -150,10 +143,10 @@ export default function HomeComponent() {
                             </div>
                         }
                         <div className="shadow-sm p-3 mb-2 bg-body rounded">
-                            <button className="btn btn-dark" onClick={() => navigate(`/electricians`)}>Dodaj dane pomiarowca</button>
+                            <button className="btn btn-dark" onClick={() => navigate(`/electricians`)}>Pomiarowcy</button>
                         </div>
                         <div className="shadow-sm p-3 mb-2 bg-body rounded">
-                            <button className="btn btn-dark" onClick={() => handleExitBtn()}>Wyjdź</button>
+                            <button className="btn btn-dark" onClick={() => navigate(`/exit`)}>Wyjdź</button>
                         </div>
                     </div>
                     <div className="col"/>

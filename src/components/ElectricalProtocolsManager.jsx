@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes} from "react-router-dom"
 import StructureComponent from './StructureComponent'
 import RoomComponent from "./RoomComponent"
 import AddMeasurementComponent from "./AddMeasurementComponent"
@@ -10,6 +10,8 @@ import ElectriciansComponent from "./ElectriciansComponent"
 import ProtocolInformationComponent from "./ProtocolInformationComponent"
 import GeneratePdfComponent from "./GeneratePdfComponent"
 import HeaderComponent from "./HeaderComponent"
+import ErrorComponent from "./ErrorComponent"
+import ExitComponent from "./ExitComponent"
 
 export default function ElectricalProtocolsManager() {
 
@@ -19,7 +21,9 @@ export default function ElectricalProtocolsManager() {
                 <BrowserRouter>
                     <HeaderComponent/>
                         <Routes>
-                            <Route path = ":projectName/project/" element = { <ProjectComponent />} /> 
+                            <Route path = "*" element = { <ErrorComponent/>} /> 
+                            <Route path = "/exit" element = { <ExitComponent />} /> 
+                            <Route path = ":projectName/project" element = { <ProjectComponent />} /> 
                             <Route path = "" element = { <HomeComponent />} />
                             <Route path = ":projectName/project/structure" element = { <StructureComponent />} />
                             <Route path = ":projectName/project/generate" element = { <GeneratePdfComponent />} />
