@@ -1,8 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { saveDataApi, createSqlFileApi } from "../api/SaveLoadApiService"
 import { useEffect, useState } from "react"
-import ErrorComponent from "./ErrorComponent"
-
 
 export default function HeaderComponent(){
 

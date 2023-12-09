@@ -1,9 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { Document, Page, pdfjs } from 'react-pdf'
 import { useRef, useState } from "react"
-import { getDataForProtocolApi, generateProtocolApi, savePdfApi } from "../api/GeneratePdfApi"
-import test from '../test.pdf'
-
+import { getDataForProtocolApi, generateProtocolApi, savePdfApi, getPdf } from "../api/GeneratePdfApi"
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
@@ -24,7 +22,7 @@ export default function GeneratePdf() {
     const [pdfGenerated, setPdfGenerated] = useState(false)
     const [saveBtn, setSaveBtn] = useState(false)
 
-    const [filePath, setFilePath] = useState("")
+    const [pdfResponse, setPdfResponse] = useState()
 
     const fileName = useRef()
 
@@ -74,16 +72,16 @@ export default function GeneratePdf() {
         generateProtocolApi()
             .then(response => {
                 console.log(response)
-                setFilePath(response.data)
                 setPdfGenerated(true)
                 showError('Wygenerowano plik protokołu.')
+                getPdf()
+                    .then(response => setPdfResponse(response.data))
+                    .catch(error => console.log(error))
             })
             .catch(error => console.log(error))
     }
 
     function handleSaveBtn() {
-
-        console.log(filePath)
         if(saveBtn == true){
             setSaveBtn(false)
         } else {
@@ -91,8 +89,8 @@ export default function GeneratePdf() {
         }
     }
 
-
     function savePdf(){
+
         if(!fileName.current.value == '') {
 
         savePdfApi(fileName.current.value)
@@ -110,8 +108,6 @@ export default function GeneratePdf() {
     function onDocumentLoadSuccess({numPages}){
         setNumPages(numPages);
     }
-
-
     return (
         <div className="GeneratePdf">
             <button className="btn btn-outline-dark w-25 m-2" onClick={() => navigate(`/${projectName}/project`)}>Wstecz</button>
@@ -165,7 +161,7 @@ export default function GeneratePdf() {
                         <div className="row">
                             <div className="col-2"/>
                                 <div className="col">
-                                    <Document file = {test} onLoadSuccess={onDocumentLoadSuccess}>
+                                    <Document file = {pdfResponse} onLoadSuccess={onDocumentLoadSuccess}>
                                         <Page pageNumber={pageNumber} renderTextLayer = {false} renderAnnotationLayer = {false} width={width}/>
                                     </Document>
                                 </div>
