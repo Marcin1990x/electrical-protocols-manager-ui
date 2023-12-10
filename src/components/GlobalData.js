@@ -1,4 +1,4 @@
-import { createContext, useContext} from "react"
+import { createContext, useContext, useState} from "react"
 import { sendHeartbeats } from "../api/ApplicationApiService"
 
 export const Context = createContext()
@@ -11,7 +11,7 @@ export default function ContextProvider({children}) {
     }, 2000)
 
     return (
-        <Context.Provider value = {1} >
+        <Context.Provider value = {{  }} >
             {children}
         </Context.Provider>
     )

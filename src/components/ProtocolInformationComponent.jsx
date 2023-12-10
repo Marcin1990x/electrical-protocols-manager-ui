@@ -77,7 +77,6 @@ export default function ProtocolInformationComponent() {
 
     function handleAddBtn(electrician) {
 
-    
     if(titlePage.electricians.length < 4){    
         addElectricanToTitlePageApi(titlePage.id, electrician.id)
             .then(response => {

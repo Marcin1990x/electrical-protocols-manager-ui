@@ -37,6 +37,10 @@ export default function HeaderComponent(){
         }
     }
 
+    function handleExitBtn() {
+        navigate(`/exit`)
+    }
+
     return(
     <div className="headerComponent">
         { !isDisabled('exit') &&
@@ -61,7 +65,7 @@ export default function HeaderComponent(){
                             <li className="nav-item fs-5">
                                 <div>
                                     <button className="btn btn-dark btn-sm m-1" onClick={() => handleSaveBtn()}>Zapisz strukturę</button>
-                                    <button className="btn btn-danger btn-sm m-1" onClick={() => navigate('/exit')}>Wyjdź</button>
+                                    <button className="btn btn-danger btn-sm m-1" onClick={handleExitBtn}>Wyjdź</button>
                                 </div>
                             </li>
                         </ul>

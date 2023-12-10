@@ -7,6 +7,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.js',
     import.meta.url,
   ).toString()
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
 
 
 export default function GeneratePdf() {
@@ -161,8 +163,8 @@ export default function GeneratePdf() {
                         <div className="row">
                             <div className="col-2"/>
                                 <div className="col">
-                                    <Document file = {pdfResponse} onLoadSuccess={onDocumentLoadSuccess}>
-                                        <Page pageNumber={pageNumber} renderTextLayer = {false} renderAnnotationLayer = {false} width={width}/>
+                                    <Document file = {pdfResponse} onLoadError={console.error} onLoadSuccess={onDocumentLoadSuccess}>
+                                        <Page pageNumber={pageNumber}  renderTextLayer = {false} renderAnnotationLayer = {false} width={width}/>
                                     </Document>
                                 </div>
                             <div className="col-2"/>

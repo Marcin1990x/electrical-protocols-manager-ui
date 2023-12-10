@@ -3,10 +3,9 @@ import { closeApplicationApi } from "../api/ApplicationApiService"
 
 export default function ExitComponent() {
 
-    useEffect(() => closeApplication, [])
+    useEffect(() => closeApplication(), [] )
 
     function closeApplication() {
-
         closeApplicationApi()
             .then(response => console.log(response))
             .catch(error => console.log(error))
