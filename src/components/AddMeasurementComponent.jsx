@@ -5,6 +5,8 @@ import { addMainToRoomApi } from "../api/RoomApiService"
 import { retrieveMeasurementMainTypes, deleteMeasurementMainApi } from "../api/MeasurementMainApiService"
 import { addMeasurementEntry, deleteEntryByIdApi, deleteAllEntriesApi } from "../api/MeasurementEntryApiService"
 import { handleContinuity, handleResult } from "./functions/CommonFunctions"
+import MainInput from "./elements/MainInput"
+import EntryInput from "./elements/EntryInput"
 
 export default function AddMeasurementComponent() {
 
@@ -404,6 +406,9 @@ export default function AddMeasurementComponent() {
             }
         }
         if(index == 1 || index == 2) {
+
+            console.log(uiso.current.value)
+
             const newCircuitInsulationMain = {
                 uiso : uiso.current.value
             }
@@ -535,20 +540,25 @@ export default function AddMeasurementComponent() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type = "number" className="form-control" disabled = {mainAdded} ref={un}
-                                data-toggle="tooltip" data-placement="top" title="Wartość skuteczna napięcia znamionowego prądu przemiennego pomiędzy przewodami liniowymi"></input></td>
-                            <td><input type = "number" className="form-control" disabled = {mainAdded} ref={ui}
-                                data-toggle="tooltip" data-placement="top" title="Wartość bezpiecznego napięcia napięcia (50V / 25V) prądu przemiennego [V]"></input></td>
-                            <td><input type = "number" className="form-control" disabled = {mainAdded} ref={ko}></input></td>
-                            <td><input type = "number" className="form-control" disabled = {mainAdded} ref={ta}></input></td>
+                            {/* <td><input type = "number" className = "form-control" disabled = {mainAdded} ref={un}
+                                data-toggle = "tooltip" data-placement = "top" title = "Wartość skuteczna napięcia znamionowego prądu przemiennego pomiędzy przewodami liniowymi"/></td> */}
+                            <td><MainInput disabled = {mainAdded} inputRef = {un} title = "Wartość skuteczna napięcia znamionowego prądu przemiennego pomiędzy przewodami liniowymi"/></td>
+                            {/* <td><input type = "number" className = "form-control" disabled = {mainAdded} ref={ui}
+                                data-toggle = "tooltip" data-placement = "top" title = "Wartość bezpiecznego napięcia napięcia (50V / 25V) prądu przemiennego [V]"/></td> */}
+                            <td><MainInput disabled = {mainAdded} inputRef = {ui} title = "Wartość bezpiecznego napięcia napięcia (50V / 25V) prądu przemiennego [V]"/></td>
+                            {/* <td><input type = "number" className = "form-control" disabled = {mainAdded} ref={ko}/></td>  */}
+                            <td><MainInput disabled = {mainAdded} inputRef = {ko}/></td>       
+                            {/* <td><input type = "number" className = "form-control" disabled = {mainAdded} ref={ta}/></td> */}
+                            <td><MainInput disabled = {mainAdded} inputRef = {ta}/></td>
                             <td><select className="form-select" disabled = {mainAdded} ref={networkType}>
                                     <option value = "TNS">TNS</option>
                                     <option value = "TNC">TNS</option>
                                     <option value = "TNS">TN-C-S</option>
                                 </select>
                             </td>
-                            <td><input type = "number" className="form-control" disabled = {mainAdded} ref={uo}
-                                data-toggle="tooltip" data-placement="top" title="Wartość skuteczna napięcia znamionowego prądu przemiennego względem ziemi [V]"></input></td>
+                            <td><MainInput disabled = {mainAdded} inputRef = {uo} title = "Wartość skuteczna napięcia znamionowego prądu przemiennego względem ziemi [V]"/></td>
+                            {/* <td><input type = "number" className = "form-control" disabled = {mainAdded} ref={uo}
+                                data-toggle = "tooltip" data-placement = "top" title = "Wartość skuteczna napięcia znamionowego prądu przemiennego względem ziemi [V]"/></td> */}
                         </tr>
                     </tbody>
                 </table>   
@@ -562,7 +572,8 @@ export default function AddMeasurementComponent() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type = "number" className="form-control" disabled = {mainAdded} ref={uiso}></input></td>
+                            <td><MainInput disabled={mainAdded} inputRef={uiso}/></td>
+                            {/* <td><input type = "number" className = "form-control" disabled = {mainAdded} ref={uiso}/></td> */}
                         </tr>
                     </tbody>
                 </table>   
@@ -589,10 +600,14 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td>
-                        <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {point} disabled = {!mainAdded}/></td>
-                        <td><input type = "text" maxLength = {6} className="form-control" ref = {cutout} disabled = {!mainAdded}
-                            data-toggle="tooltip" data-placement="top" title="Nazwa elementu zabezpieczającego obwód"/></td>
+                        {/* <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td> */}
+                        <td><EntryInput type = "text" disabled = {!mainAdded} inputRef = {symbol} size = {5} maxLength = {6}/></td>
+                        {/* <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {point} disabled = {!mainAdded}/></td> */}
+                        <td className="col-md-2"><EntryInput type = "text" disabled = {!mainAdded} inputRef = {point} maxLength = {20}/></td>
+                        {/* <td><input type = "text" maxLength = {6} className="form-control" ref = {cutout} disabled = {!mainAdded}
+                            data-toggle="tooltip" data-placement="top" title="Nazwa elementu zabezpieczającego obwód"/></td> */}
+                        <td><EntryInput type = "text" disabled = {!mainAdded} inputRef = {cutout} maxLength = {6} 
+                            title = "Nazwa elementu zabezpieczającego obwód"/></td>
                         <td className="col-md-1"><select className="form-select" ref={type} disabled = {!mainAdded} 
                             data-toggle="tooltip" data-placement="top" title="Charakterystyka bezpiecznika">
                                     <option value = "B">B</option>
@@ -600,10 +615,14 @@ export default function AddMeasurementComponent() {
                                     <option value = "D">D</option>
                             </select>
                         </td>
-                        <td><input type = "number" className="form-control" ref = {iNom} disabled = {!mainAdded}
-                            data-toggle="tooltip" data-placement="top" title="Prąd nominalny bezpiecznika"/></td>
+                        {/* <td><input type = "number" className="form-control" ref = {iNom} disabled = {!mainAdded}
+                            data-toggle="tooltip" data-placement="top" title="Prąd nominalny bezpiecznika"/></td> */}
+                        <td><EntryInput type = "number" disabled = {!mainAdded} inputRef = {iNom}
+                            title = "Prąd nominalny bezpiecznika"/></td>
                         <td><input type = "text" className="form-control" disabled value={entry.ia} 
                             data-toggle="tooltip" data-placement="top" title="Prąd powodujący wyzwolenie bezpiecznika"/></td>
+                        {/* <td><EntryInput type = "text" disabled = {true}
+                            title = "Prąd powodujący wyzwolenie bezpiecznika" value = {entry.ia}/></td> */}
                         <td><input type = "number" className="form-control" ref = {zs} disabled = {!mainAdded} 
                             data-toggle="tooltip" data-placement="top" title="Zmierzona impedancja pętli zwarciowej"/></td>
                         <td><input type = "text" className="form-control" disabled value={entry.za} 
