@@ -6,9 +6,71 @@ import { retrieveMeasurementMainTypes, deleteMeasurementMainApi } from "../api/M
 import { addMeasurementEntry, deleteEntryByIdApi, deleteAllEntriesApi } from "../api/MeasurementEntryApiService"
 import { handleContinuity, handleResult } from "./functions/CommonFunctions"
 import MainInput from "./elements/MainInput"
-import EntryInput from "./elements/EntryInput"
+import {EntryInputRef, EntryInputVal} from "./elements/EntryInput"
 
 export default function AddMeasurementComponent() {
+
+    const main0TextPL = [
+        "Wartość skuteczna napięcia znamionowego prądu przemiennego pomiędzy przewodami liniowymi",
+        "Wartość bezpiecznego napięcia napięcia (50V / 25V) prądu przemiennego [V]",
+        "Wartość skuteczna napięcia znamionowego prądu przemiennego względem ziemi [V]"
+    ]
+    const entry0TextPL = [
+        "Nazwa elementu zabezpieczającego obwód",
+        "Charakterystyka bezpiecznika",
+        "Prąd nominalny bezpiecznika",
+        "Prąd powodujący wyzwolenie bezpiecznika",
+        "Zmierzona impedancja pętli zwarciowej",
+        "Wartość wymagana impedancji pętli zwarciowej: Za = (Uo/Ia)",
+        "Prąd zwarcia wyliczony: Ik = Uo/Zs",
+        "Ocena pomiaru: - pozytywna gdy: Zs<=Za lub Ud<=UI"
+    ]
+    const entry1TextPL = [
+        "L1-L2 [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L1 i L2",
+        "L2-L3 [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L2 i L3",
+        "L3-L1 [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L3 i L1",
+        "L1-PE [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L1 i PE",
+        "L2-PE [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L2 i PE",
+        "L3-PE [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L3 i PE",
+        "L1-N [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L1 i N",
+        "L2-N [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L2 i N",
+        "L3-N [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L3 i N",
+        "N-PE [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami N i PE",
+        "Ra [MΩ] : Wartość rezystancji wymaganej",
+        "Ocena : Ocena pomiaru: pozytywna gdy każda zmierzona rezystancja jest większa od Ra"
+    ]
+    const entry2TextPL = [
+        "L1-L2 [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L1 i L2",
+        "L2-L3 [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L2 i L3",
+        "L3-L1 [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L3 i L1",
+        "L1-PEN [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L1 i PEN",
+        "L2-PEN [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L2 i PEN",
+        "L3-PEN [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L3 i PEN",
+        "Ra [MΩ] : Wartość rezystancji wymaganej",
+        "Ocena : Ocena pomiaru: pozytywna gdy każda zmierzona rezystancja jest większa od Ra"
+    ]
+    const entry3TextPL = [
+        "Wyłącznik RCD : Nazwa elementu zabezpieczającego obwód",
+        "Typ : Charakterystyka bezpiecznika",
+        "In [mA] : Różnicowy prąd wyłączający",
+        "Ia [mA] : Prąd powodujący wyłączenie RCD",
+        "ta [ms] : Wymagany czas wyłączenia RCD",
+        "trcd [ms] : Zmierzony czas wyłączenia RCD",
+        "Ub [V] : Napięcie dotykowe zmierzone",
+        "Ui [V] : Dopuszczalne napięcie dotykowe bezpieczne",
+        "Ocena : Ocena pomiaru: - pozytywna gdy: Ub <= Ui, tRCD < ta, 1/2In < Ia < In"
+    ]
+    const entry4TextPL = [
+        "L [m] : Odleglość między sondami",
+        "d [m] : Głębokość pomiaru",
+        "p [Ωm] : Rezystywność gruntu"
+    ]
+    const entry5TextPL = [
+        "Rs [Ω] : Wartość rezystancji przewodu PE",
+        "Ra [Ω] : Wartość rezystancji wymaganej dla przewodu PE",
+        "Ocena : Ocena pomiaru: pozytywna, gdy Rs <= Ra"
+    ]
+    const entry0LabelsPL = ["Symbol", "Badany punkt", "Wyłącznik", "Typ", "In[A]", "Ia[A]", "Zs[Ω]", "Za[Ω]", "Ik[A]", "Ocena"]
 
     const {id, index, projectName} = useParams()
 
@@ -318,7 +380,7 @@ export default function AddMeasurementComponent() {
                 const newCircuitInsulationTncEntry = {
                     symbol: symbol.current.value,
                     circuitName : circuitName.current.value,
-                    l1pen : l3pen.current.value,
+                    l3pen : l3pen.current.value,
                     ra : ra.current.value
                 }
                 if(numberFieldChecker(l3pen.current.value) && numberFieldChecker(ra.current.value)){
@@ -406,8 +468,6 @@ export default function AddMeasurementComponent() {
             }
         }
         if(index == 1 || index == 2) {
-
-            console.log(uiso.current.value)
 
             const newCircuitInsulationMain = {
                 uiso : uiso.current.value
@@ -540,15 +600,9 @@ export default function AddMeasurementComponent() {
                     </thead>
                     <tbody>
                         <tr>
-                            {/* <td><input type = "number" className = "form-control" disabled = {mainAdded} ref={un}
-                                data-toggle = "tooltip" data-placement = "top" title = "Wartość skuteczna napięcia znamionowego prądu przemiennego pomiędzy przewodami liniowymi"/></td> */}
-                            <td><MainInput disabled = {mainAdded} inputRef = {un} title = "Wartość skuteczna napięcia znamionowego prądu przemiennego pomiędzy przewodami liniowymi"/></td>
-                            {/* <td><input type = "number" className = "form-control" disabled = {mainAdded} ref={ui}
-                                data-toggle = "tooltip" data-placement = "top" title = "Wartość bezpiecznego napięcia napięcia (50V / 25V) prądu przemiennego [V]"/></td> */}
-                            <td><MainInput disabled = {mainAdded} inputRef = {ui} title = "Wartość bezpiecznego napięcia napięcia (50V / 25V) prądu przemiennego [V]"/></td>
-                            {/* <td><input type = "number" className = "form-control" disabled = {mainAdded} ref={ko}/></td>  */}
+                            <td><MainInput disabled = {mainAdded} inputRef = {un} title = {main0TextPL[0]}/></td>
+                            <td><MainInput disabled = {mainAdded} inputRef = {ui} title = {main0TextPL[1]}/></td>
                             <td><MainInput disabled = {mainAdded} inputRef = {ko}/></td>       
-                            {/* <td><input type = "number" className = "form-control" disabled = {mainAdded} ref={ta}/></td> */}
                             <td><MainInput disabled = {mainAdded} inputRef = {ta}/></td>
                             <td><select className="form-select" disabled = {mainAdded} ref={networkType}>
                                     <option value = "TNS">TNS</option>
@@ -556,9 +610,7 @@ export default function AddMeasurementComponent() {
                                     <option value = "TNS">TN-C-S</option>
                                 </select>
                             </td>
-                            <td><MainInput disabled = {mainAdded} inputRef = {uo} title = "Wartość skuteczna napięcia znamionowego prądu przemiennego względem ziemi [V]"/></td>
-                            {/* <td><input type = "number" className = "form-control" disabled = {mainAdded} ref={uo}
-                                data-toggle = "tooltip" data-placement = "top" title = "Wartość skuteczna napięcia znamionowego prądu przemiennego względem ziemi [V]"/></td> */}
+                            <td><MainInput disabled = {mainAdded} inputRef = {uo} title = {main0TextPL[2]}/></td>
                         </tr>
                     </tbody>
                 </table>   
@@ -573,7 +625,6 @@ export default function AddMeasurementComponent() {
                     <tbody>
                         <tr>
                             <td><MainInput disabled={mainAdded} inputRef={uiso}/></td>
-                            {/* <td><input type = "number" className = "form-control" disabled = {mainAdded} ref={uiso}/></td> */}
                         </tr>
                     </tbody>
                 </table>   
@@ -586,51 +637,28 @@ export default function AddMeasurementComponent() {
                 <table className="table">
                 <thead>
                     <tr>
-                        <th>Symbol</th>
-                        <th>Badany punkt</th>
-                        <th>Wyłącznik</th>
-                        <th>Typ</th>
-                        <th>In[A]</th>
-                        <th>Ia[A]</th>
-                        <th>Zs[Ω]</th>
-                        <th>Za[Ω]</th>
-                        <th>Ik[A]</th>
-                        <th>Ocena</th>
+                        {entry0LabelsPL.map ( label => (<th>{label}</th> ) ) }
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        {/* <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td> */}
-                        <td><EntryInput type = "text" disabled = {!mainAdded} inputRef = {symbol} size = {5} maxLength = {6}/></td>
-                        {/* <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {point} disabled = {!mainAdded}/></td> */}
-                        <td className="col-md-2"><EntryInput type = "text" disabled = {!mainAdded} inputRef = {point} maxLength = {20}/></td>
-                        {/* <td><input type = "text" maxLength = {6} className="form-control" ref = {cutout} disabled = {!mainAdded}
-                            data-toggle="tooltip" data-placement="top" title="Nazwa elementu zabezpieczającego obwód"/></td> */}
-                        <td><EntryInput type = "text" disabled = {!mainAdded} inputRef = {cutout} maxLength = {6} 
-                            title = "Nazwa elementu zabezpieczającego obwód"/></td>
+                        <td><EntryInputRef type = "text" disabled = {!mainAdded} inputRef = {symbol} size = {5} maxLength = {6}/></td>
+                        <td className="col-md-2"><EntryInputRef type = "text" disabled = {!mainAdded} inputRef = {point} maxLength = {20}/></td>
+                        <td><EntryInputRef type = "text" disabled = {!mainAdded} inputRef = {cutout} maxLength = {6} title = {entry0TextPL[0]}/></td>
                         <td className="col-md-1"><select className="form-select" ref={type} disabled = {!mainAdded} 
-                            data-toggle="tooltip" data-placement="top" title="Charakterystyka bezpiecznika">
+                            data-toggle="tooltip" data-placement="top" title = {entry0TextPL[1]}>
                                     <option value = "B">B</option>
                                     <option value = "C">C</option>
                                     <option value = "D">D</option>
                             </select>
                         </td>
-                        {/* <td><input type = "number" className="form-control" ref = {iNom} disabled = {!mainAdded}
-                            data-toggle="tooltip" data-placement="top" title="Prąd nominalny bezpiecznika"/></td> */}
-                        <td><EntryInput type = "number" disabled = {!mainAdded} inputRef = {iNom}
-                            title = "Prąd nominalny bezpiecznika"/></td>
-                        <td><input type = "text" className="form-control" disabled value={entry.ia} 
-                            data-toggle="tooltip" data-placement="top" title="Prąd powodujący wyzwolenie bezpiecznika"/></td>
-                        {/* <td><EntryInput type = "text" disabled = {true}
-                            title = "Prąd powodujący wyzwolenie bezpiecznika" value = {entry.ia}/></td> */}
-                        <td><input type = "number" className="form-control" ref = {zs} disabled = {!mainAdded} 
-                            data-toggle="tooltip" data-placement="top" title="Zmierzona impedancja pętli zwarciowej"/></td>
-                        <td><input type = "text" className="form-control" disabled value={entry.za} 
-                            data-toggle="tooltip" data-placement="top" title="Wartość wymagana impedancji pętli zwarciowej: Za = (Uo/Ia)"/></td>
-                        <td><input type = "text" className="form-control" disabled value={entry.ik} 
-                            data-toggle="tooltip" data-placement="top" title="Prąd zwarcia wyliczony: Ik = Uo/Zs"/></td>
-                        <td className="col-md-2"><input type = "text" className="form-control" disabled value= {handleResult(entry.result)}
-                            data-toggle="tooltip" data-placement="top" title="Ocena pomiaru: - pozytywna gdy: Zs<=Za lub Ud<=UI"/></td>
+                        <td><EntryInputRef type = "number" disabled = {!mainAdded} inputRef = {iNom} title = {entry0TextPL[2]}/></td>
+                        <td><EntryInputVal type = "text" disabled = {true} value = {entry.ia} title = {entry0TextPL[3]}/></td>
+                        <td><EntryInputRef type = "number" disabled = {!mainAdded} inputRef = {zs} title = {entry0TextPL[4]}/></td>
+                        <td><EntryInputVal type = "text" disabled = {true} value = {entry.za} title = {entry0TextPL[5]}/></td>
+                        <td><EntryInputVal type = "text" disabled = {true} value = {entry.ik} title = {entry0TextPL[6]}/></td>
+                        <td className="col-md-2"><EntryInputVal type = "text" disabled = {true} value = {handleResult(entry.result)} 
+                            title = {entry0TextPL[7]}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -638,7 +666,7 @@ export default function AddMeasurementComponent() {
             { (index == 1) &&
             <div>
                 <div className="col-2 m-1">
-                <select className="form-select" onChange={handlePhaseSelect} ref={phase}>
+                <select className="form-select" onChange = {handlePhaseSelect} ref={phase}>
                                     <option value = '4'>Obwód 3 fazowy</option>
                                     <option value = '1'>Faza 1</option>
                                     <option value = '2'>Faza 2</option>
@@ -666,20 +694,20 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td className="col-md-1"><input type = "text" maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td>
-                        <td className="col-md-2"><input type = "text" maxLength = {20} className="form-control" ref = {circuitName} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {l1l2} disabled = {!(mainAdded && allPhases)}/></td>
-                        <td><input type = "number" className="form-control" ref = {l2l3} disabled = {!(mainAdded && allPhases)} /></td>
-                        <td><input type = "number" className="form-control" ref = {l3l1} disabled = {!(mainAdded && allPhases)} /></td>
-                        <td><input type = "number" className="form-control" ref = {l1pe} disabled = {!(mainAdded && (firstPhase || allPhases))} /></td>
-                        <td><input type = "number" className="form-control" ref = {l2pe} disabled = {!(mainAdded && (secondPhase || allPhases))} /></td>
-                        <td><input type = "number" className="form-control" ref = {l3pe} disabled = {!(mainAdded && (thirdPhase || allPhases))} /></td>
-                        <td><input type = "number" className="form-control" ref = {l1n} disabled = {!(mainAdded && (firstPhase || allPhases))} /></td>
-                        <td><input type = "number" className="form-control" ref = {l2n} disabled = {!(mainAdded && (secondPhase || allPhases))} /></td>
-                        <td><input type = "number" className="form-control" ref = {l3n} disabled = {!(mainAdded && (thirdPhase || allPhases))} /></td>
-                        <td><input type = "number" className="form-control" ref = {npe} disabled = {!mainAdded} /></td>
-                        <td className="col-md-1"><input type = "number" className="form-control" ref = {ra} disabled = {!mainAdded} /></td>
-                        <td className="col-md-1"><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
+                        <td className="col-md-1"><EntryInputRef type = "text" maxLength = {6} disabled = {!mainAdded} inputRef = {symbol}/></td>
+                        <td className="col-md-2"><EntryInputRef type = "text" maxLength = {20} disabled = {!mainAdded} inputRef = {circuitName}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {l1l2} title = {entry1TextPL[0]} disabled = {!(mainAdded && allPhases)}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {l2l3} title = {entry1TextPL[1]} disabled = {!(mainAdded && allPhases)}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {l3l1} title = {entry1TextPL[2]} disabled = {!(mainAdded && allPhases)}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {l1pe} title = {entry1TextPL[3]} disabled = {!(mainAdded && (firstPhase || allPhases))}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {l2pe} title = {entry1TextPL[4]} disabled = {!(mainAdded && (secondPhase || allPhases))}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {l3pe} title = {entry1TextPL[5]} disabled = {!(mainAdded && (thirdPhase || allPhases))}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {l1n} title = {entry1TextPL[6]} disabled = {!(mainAdded && (firstPhase || allPhases))}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {l2n} title = {entry1TextPL[7]} disabled = {!(mainAdded && (secondPhase || allPhases))}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {l3n} title = {entry1TextPL[8]} disabled = {!(mainAdded && (thirdPhase || allPhases))}/></td>
+                        <td><EntryInputRef type = "number" disabled = {!mainAdded} inputRef = {npe} title = {entry1TextPL[9]}/></td>
+                        <td className="col-md-1"><EntryInputRef type = "number" disabled = {!mainAdded} inputRef = {ra} title = {entry1TextPL[10]}/></td>
+                        <td className="col-md-1"><EntryInputVal type = "text" disabled = {true} value = {handleResult(entry.result)} title = {entry1TextPL[11]}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -712,16 +740,16 @@ export default function AddMeasurementComponent() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td className="col-md-1"><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded} /></td>
-                            <td className="col-md-2"><input type = "text"  maxLength={20} className="form-control" ref = {circuitName} disabled = {!mainAdded}/></td>
-                            <td><input type = "number" className="form-control" ref = {l1l2} disabled = {!(mainAdded && allPhases)}/></td>
-                            <td><input type = "number" className="form-control" ref = {l2l3} disabled = {!(mainAdded && allPhases)}/></td>
-                            <td><input type = "number" className="form-control" ref = {l3l1} disabled = {!(mainAdded && allPhases)}/></td>
-                            <td><input type = "number" className="form-control" ref = {l1pen} disabled = {!(mainAdded && (firstPhase || allPhases))}/></td>
-                            <td><input type = "number" className="form-control" ref = {l2pen} disabled = {!(mainAdded && (secondPhase || allPhases))}/></td>
-                            <td><input type = "number" className="form-control" ref = {l3pen} disabled = {!(mainAdded && (thirdPhase || allPhases))}/></td>
-                            <td><input type = "number" className="form-control" ref = {ra} disabled = {!mainAdded}/></td>
-                            <td><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
+                            <td className="col-md-1"><EntryInputRef type = "text" size = {5} maxLength = {6} disabled = {!mainAdded} inputRef = {symbol}/></td>
+                            <td className="col-md-2"><EntryInputRef type = "text" maxLength = {20} disabled = {!mainAdded} inputRef = {circuitName}/></td>
+                            <td><EntryInputRef type = "number" inputRef = {l1l2} title = {entry2TextPL[0]} disabled = {!(mainAdded && allPhases)}/></td>
+                            <td><EntryInputRef type = "number" inputRef = {l2l3} title = {entry2TextPL[1]} disabled = {!(mainAdded && allPhases)}/></td>
+                            <td><EntryInputRef type = "number" inputRef = {l3l1} title = {entry2TextPL[2]} disabled = {!(mainAdded && allPhases)}/></td>
+                            <td><EntryInputRef type = "number" inputRef = {l1pen} title = {entry2TextPL[3]} disabled = {!(mainAdded && (firstPhase || allPhases))}/></td>
+                            <td><EntryInputRef type = "number" inputRef = {l2pen} title = {entry2TextPL[4]} disabled = {!(mainAdded && (secondPhase || allPhases))}/></td>
+                            <td><EntryInputRef type = "number" inputRef = {l3pen} title = {entry2TextPL[5]} disabled = {!(mainAdded && (thirdPhase || allPhases))}/></td>
+                            <td><EntryInputRef type = "number" disabled = {!mainAdded} inputRef = {ra} title = {entry2TextPL[6]}/></td>
+                            <td><EntryInputVal type = "text" disabled = {true} value = {handleResult(entry.result)} title = {entry1TextPL[7]}/></td>
                         </tr>
                     </tbody>
                 </table>
@@ -746,22 +774,23 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td>
-                        <td className="col-md-2"><input type = "text" maxLength={20} className="form-control" ref = {point} disabled = {!mainAdded}/></td>
-                        <td><input type = "text" maxLength={8} className="form-control" ref = {cutout} disabled = {!mainAdded}/></td>
-                        <td className="col-md-1"><select className="form-select" ref={type} disabled = {!mainAdded}>
+                        <td><EntryInputRef type = "text" size = {5} maxLength = {6} inputRef = {symbol} disabled = {!mainAdded}/></td>
+                        <td className="col-md-2"><EntryInputRef type = "text" maxLength = {20} inputRef = {point} disabled = {!mainAdded}/></td>
+                        <td><EntryInputRef type = "text" maxLength = {8} inputRef = {cutout} disabled = {!mainAdded} title = {entry3TextPL[0]}/></td>
+                        <td className="col-md-1"><select className="form-select" ref={type} disabled = {!mainAdded} 
+                            data-toggle="tooltip" data-placement="top" title = {entry3TextPL[1]}>
                                     <option value = '[AC]'>[AC]</option>
                                     <option value = '[A]'>[A]</option>
                                     <option value = '[B]'>[B]</option>
                             </select>
                         </td>
-                        <td><input type = "number" className="form-control" ref = {iNom} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {ia} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {ta} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {trcd} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {ub} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {ui} disabled = {!mainAdded}/></td>
-                        <td className="col-md-1"><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {iNom} disabled = {!mainAdded} title = {entry3TextPL[2]}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {ia} disabled = {!mainAdded} title = {entry3TextPL[3]}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {ta} disabled = {!mainAdded} title = {entry3TextPL[4]}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {trcd} disabled = {!mainAdded} title = {entry3TextPL[5]}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {ub} disabled = {!mainAdded} title = {entry3TextPL[6]}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {ui} disabled = {!mainAdded} title = {entry3TextPL[7]}/></td>
+                        <td><EntryInputVal type = "text" disabled = {true} value = {handleResult(entry.result)} title = {entry3TextPL[8]}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -779,11 +808,11 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" size = {5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td>
-                        <td className="col-md-2"><input type = "text" maxLength={20} className="form-control" ref = {point} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {lm} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {dm} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {p} disabled = {!mainAdded}/></td>
+                        <td><EntryInputRef type = "text" size = {5} maxLength = {6} inputRef = {symbol} disabled = {!mainAdded}/></td>
+                        <td className="col-md-2"><EntryInputRef type = "text" maxLength = {20} inputRef = {point} disabled = {!mainAdded}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {lm} disabled = {!mainAdded} title = {entry4TextPL[0]}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {dm} disabled = {!mainAdded} title = {entry4TextPL[1]}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {p} disabled = {!mainAdded} title = {entry4TextPL[2]}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -801,15 +830,15 @@ export default function AddMeasurementComponent() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type = "text" size={5} maxLength = {6} className="form-control" ref = {symbol} disabled = {!mainAdded}/></td>
+                        <td><EntryInputRef type = "text" size = {5} maxLength = {6} inputRef = {symbol} disabled = {!mainAdded}/></td>
                         <td><select className="form-select" ref={continuity} disabled = {!mainAdded}>
                                     <option value = 'PRESERVED'>Zachowana</option>
                                     <option value = 'NOTPRESERVED'>Niezachowana</option>
                             </select>
                         </td>
-                        <td><input type = "number" className="form-control" ref = {rs} disabled = {!mainAdded}/></td>
-                        <td><input type = "number" className="form-control" ref = {ra} disabled = {!mainAdded}/></td>
-                        <td><input type = "text" className="form-control" disabled value={handleResult(entry.result)}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {rs} disabled = {!mainAdded} title = {entry5TextPL[0]}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {ra} disabled = {!mainAdded} title = {entry5TextPL[1]}/></td>
+                        <td><EntryInputVal type = "text" disabled = {true} value = {handleResult(entry.result)} title = {entry5TextPL[2]}/></td>
                     </tr>
                 </tbody>
             </table>
@@ -824,16 +853,7 @@ export default function AddMeasurementComponent() {
                 <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Symbol</th>
-                        <th>Badany punkt</th>
-                        <th>Wyłącznik</th>
-                        <th>Typ</th>
-                        <th>In[A]</th>
-                        <th>Ia[A]</th>
-                        <th>Zs[Ω]</th>
-                        <th>Za[Ω]</th>
-                        <th>Ik[A]</th>
-                        <th>Ocena</th>
+                            {entry0LabelsPL.map ( label => (<th>{label}</th> ) ) }
                         <th></th>
                     </tr>
                 </thead>

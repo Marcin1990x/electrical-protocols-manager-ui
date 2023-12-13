@@ -1,9 +1,14 @@
 import React from "react";
 
-const EntryInput  = ({type, disabled, inputRef, title, size, maxLength, viewValue}) => {
+export const EntryInputRef  = ({type, disabled, inputRef, title, size, maxLength}) => {
     return (
         <input type = {type} className = "form-control" size = {size} maxLength = {maxLength} disabled = {disabled} ref = {inputRef} 
-            data-toggle = "tooltip" data-placement = "top" title = {title} value = {viewValue}/>
+            data-toggle = "tooltip" data-placement = "top" title = {title}/>
     )
 }
-export default EntryInput;
+export const EntryInputVal  = ({type, disabled, title, size, maxLength, value}) => {
+    return (
+        <input type = {type} className = "form-control" size = {size} maxLength = {maxLength} disabled = {disabled} 
+            data-toggle = "tooltip" data-placement = "top" title = {title} value = {value}/>
+    )
+}
