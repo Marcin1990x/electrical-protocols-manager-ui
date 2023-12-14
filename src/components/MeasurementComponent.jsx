@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { retrieveMeasurementMainById } from "../api/MeasurementMainApiService"
 import { handleContinuity, handleResult } from "./functions/CommonFunctions"
+import { entry0LabelsPL, entry1LabelsPL, entry2LabelsPL, entry3LabelsPL, entry4LabelsPL, entry5LabelsPL } from "./text/LabelsPL"
 
 export default function MeasurementComponent() {
 
@@ -68,16 +69,7 @@ export default function MeasurementComponent() {
                 <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Symbol</th>
-                        <th>Badany punkt</th>
-                        <th>Wyłącznik</th>
-                        <th>Typ</th>
-                        <th>In[A]</th>
-                        <th>Ia[A]</th>
-                        <th>Zs[Ω]</th>
-                        <th>Za[Ω]</th>
-                        <th>Ik[A]</th>
-                        <th>Ocena</th>
+                        {entry0LabelsPL.map ( label => (<th>{label}</th> ) ) }
                     </tr>
                 </thead>
                 <tbody>
@@ -123,20 +115,7 @@ export default function MeasurementComponent() {
                 <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Symbol</th>
-                        <th>Nazwa obwodu</th>
-                        <th>L1-L2[MΩ]</th>
-                        <th>L2-L3[MΩ]</th>
-                        <th>L3-L1[MΩ]</th>
-                        <th>L1-PE[MΩ]</th>
-                        <th>L2-PE[MΩ]</th>
-                        <th>L3-PE[MΩ]</th>
-                        <th>L1-N[MΩ]</th>
-                        <th>L2-N[MΩ]</th>
-                        <th>L3-N[MΩ]</th>
-                        <th>N-PE[MΩ]</th>
-                        <th>Ra</th>
-                        <th>Ocena</th>
+                        {entry1LabelsPL.map ( label => (<th>{label}</th> ) ) }
                     </tr>
                 </thead>
                 <tbody>
@@ -171,16 +150,7 @@ export default function MeasurementComponent() {
                 <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Symbol</th>
-                        <th>Nazwa obwodu</th>
-                        <th>L1-L2[MΩ]</th>
-                        <th>L2-L3[MΩ]</th>
-                        <th>L3-L1[MΩ]</th>
-                        <th>L1-PEN[MΩ]</th>
-                        <th>L2-PEN[MΩ]</th>
-                        <th>L3-PEN[MΩ]</th>
-                        <th>Ra</th>
-                        <th>Ocena</th>
+                        {entry2LabelsPL.map ( label => (<th>{label}</th> ) ) }
                     </tr>
                 </thead>
                 <tbody>
@@ -211,17 +181,7 @@ export default function MeasurementComponent() {
                 <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Symbol</th>
-                        <th>Badany punkt</th>
-                        <th>Wyłącznik RCD</th>
-                        <th>Typ</th>
-                        <th>In[mA]</th>
-                        <th>Ia[mA]</th>
-                        <th>ta[ms]</th>
-                        <th>t rcd[ms]</th>
-                        <th>Ub[V]</th>
-                        <th>Ui[V]</th>
-                        <th>Ocena</th>
+                        {entry3LabelsPL.map ( label => (<th>{label}</th> ) ) }
                     </tr>
                 </thead>
                 <tbody>
@@ -253,11 +213,7 @@ export default function MeasurementComponent() {
                 <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Symbol</th>
-                        <th>Badany punkt</th>
-                        <th>L[m]</th>
-                        <th>d[m]</th>
-                        <th>p[Ωm]</th>
+                        {entry4LabelsPL.map ( label => (<th>{label}</th> ) ) }
                     </tr>
                 </thead>
                 <tbody>
@@ -283,11 +239,7 @@ export default function MeasurementComponent() {
                 <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Symbol</th>
-                        <th>Ciągłość</th>
-                        <th>Rs[Ω]</th>
-                        <th>Ra[Ω]</th>
-                        <th>Ocena</th>
+                        {entry5LabelsPL.map ( label => (<th>{label}</th> ) ) }
                     </tr>
                 </thead>
                 <tbody>

@@ -7,70 +7,10 @@ import { addMeasurementEntry, deleteEntryByIdApi, deleteAllEntriesApi } from "..
 import { handleContinuity, handleResult } from "./functions/CommonFunctions"
 import MainInput from "./elements/MainInput"
 import {EntryInputRef, EntryInputVal} from "./elements/EntryInput"
+import { entry0LabelsPL, entry1LabelsPL, entry2LabelsPL, entry3LabelsPL, entry4LabelsPL, entry5LabelsPL} from "./text/LabelsPL"
+import { main0TextPL, entry0TextPL, entry1TextPL, entry2TextPL, entry3TextPL, entry4TextPL, entry5TextPL } from "./text/TooltipsPL"
 
 export default function AddMeasurementComponent() {
-
-    const main0TextPL = [
-        "Wartość skuteczna napięcia znamionowego prądu przemiennego pomiędzy przewodami liniowymi",
-        "Wartość bezpiecznego napięcia napięcia (50V / 25V) prądu przemiennego [V]",
-        "Wartość skuteczna napięcia znamionowego prądu przemiennego względem ziemi [V]"
-    ]
-    const entry0TextPL = [
-        "Nazwa elementu zabezpieczającego obwód",
-        "Charakterystyka bezpiecznika",
-        "Prąd nominalny bezpiecznika",
-        "Prąd powodujący wyzwolenie bezpiecznika",
-        "Zmierzona impedancja pętli zwarciowej",
-        "Wartość wymagana impedancji pętli zwarciowej: Za = (Uo/Ia)",
-        "Prąd zwarcia wyliczony: Ik = Uo/Zs",
-        "Ocena pomiaru: - pozytywna gdy: Zs<=Za lub Ud<=UI"
-    ]
-    const entry1TextPL = [
-        "L1-L2 [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L1 i L2",
-        "L2-L3 [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L2 i L3",
-        "L3-L1 [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L3 i L1",
-        "L1-PE [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L1 i PE",
-        "L2-PE [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L2 i PE",
-        "L3-PE [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L3 i PE",
-        "L1-N [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L1 i N",
-        "L2-N [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L2 i N",
-        "L3-N [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L3 i N",
-        "N-PE [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami N i PE",
-        "Ra [MΩ] : Wartość rezystancji wymaganej",
-        "Ocena : Ocena pomiaru: pozytywna gdy każda zmierzona rezystancja jest większa od Ra"
-    ]
-    const entry2TextPL = [
-        "L1-L2 [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L1 i L2",
-        "L2-L3 [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L2 i L3",
-        "L3-L1 [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L3 i L1",
-        "L1-PEN [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L1 i PEN",
-        "L2-PEN [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L2 i PEN",
-        "L3-PEN [MΩ] : Zmierzona rezystancja izolacji pomiędzy obwodami L3 i PEN",
-        "Ra [MΩ] : Wartość rezystancji wymaganej",
-        "Ocena : Ocena pomiaru: pozytywna gdy każda zmierzona rezystancja jest większa od Ra"
-    ]
-    const entry3TextPL = [
-        "Wyłącznik RCD : Nazwa elementu zabezpieczającego obwód",
-        "Typ : Charakterystyka bezpiecznika",
-        "In [mA] : Różnicowy prąd wyłączający",
-        "Ia [mA] : Prąd powodujący wyłączenie RCD",
-        "ta [ms] : Wymagany czas wyłączenia RCD",
-        "trcd [ms] : Zmierzony czas wyłączenia RCD",
-        "Ub [V] : Napięcie dotykowe zmierzone",
-        "Ui [V] : Dopuszczalne napięcie dotykowe bezpieczne",
-        "Ocena : Ocena pomiaru: - pozytywna gdy: Ub <= Ui, tRCD < ta, 1/2In < Ia < In"
-    ]
-    const entry4TextPL = [
-        "L [m] : Odleglość między sondami",
-        "d [m] : Głębokość pomiaru",
-        "p [Ωm] : Rezystywność gruntu"
-    ]
-    const entry5TextPL = [
-        "Rs [Ω] : Wartość rezystancji przewodu PE",
-        "Ra [Ω] : Wartość rezystancji wymaganej dla przewodu PE",
-        "Ocena : Ocena pomiaru: pozytywna, gdy Rs <= Ra"
-    ]
-    const entry0LabelsPL = ["Symbol", "Badany punkt", "Wyłącznik", "Typ", "In[A]", "Ia[A]", "Zs[Ω]", "Za[Ω]", "Ik[A]", "Ocena"]
 
     const {id, index, projectName} = useParams()
 
@@ -606,8 +546,8 @@ export default function AddMeasurementComponent() {
                             <td><MainInput disabled = {mainAdded} inputRef = {ta}/></td>
                             <td><select className="form-select" disabled = {mainAdded} ref={networkType}>
                                     <option value = "TNS">TNS</option>
-                                    <option value = "TNC">TNS</option>
-                                    <option value = "TNS">TN-C-S</option>
+                                    <option value = "TNC">TNC</option>
+                                    <option value = "TNC_S">TN-C-S</option>
                                 </select>
                             </td>
                             <td><MainInput disabled = {mainAdded} inputRef = {uo} title = {main0TextPL[2]}/></td>
@@ -676,20 +616,7 @@ export default function AddMeasurementComponent() {
                 <table className="table">
                 <thead>
                     <tr>
-                        <th>Symbol</th>
-                        <th>Nazwa obwodu</th>
-                        <th>L1-L2[MΩ]</th>
-                        <th>L2-L3[MΩ]</th>
-                        <th>L3-L1[MΩ]</th>
-                        <th>L1-PE[MΩ]</th>
-                        <th>L2-PE[MΩ]</th>
-                        <th>L3-PE[MΩ]</th>
-                        <th>L1-N[MΩ]</th>
-                        <th>L2-N[MΩ]</th>
-                        <th>L3-N[MΩ]</th>
-                        <th>N-PE[MΩ]</th>
-                        <th>Ra</th>
-                        <th>Ocena</th>
+                        {entry1LabelsPL.map ( label => (<th>{label}</th> ) ) }
                     </tr>
                 </thead>
                 <tbody>
@@ -726,16 +653,7 @@ export default function AddMeasurementComponent() {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>Symbol</th>
-                            <th>Nazwa obwodu</th>
-                            <th>L1-L2[MΩ]</th>
-                            <th>L2-L3[MΩ]</th>
-                            <th>L3-L1[MΩ]</th>
-                            <th>L1-PEN[MΩ]</th>
-                            <th>L2-PEN[MΩ]</th>
-                            <th>L3-PEN[MΩ]</th>
-                            <th>Ra</th>
-                            <th>Ocena</th>
+                            {entry2LabelsPL.map ( label => (<th>{label}</th> ) ) }
                         </tr>
                     </thead>
                     <tbody>
@@ -759,17 +677,7 @@ export default function AddMeasurementComponent() {
                 <table className="table">
                 <thead>
                     <tr>
-                        <th>Symbol</th>
-                        <th>Badany punkt</th>
-                        <th>Wyłącznik RCD</th>
-                        <th>Typ</th>
-                        <th>In[mA]</th>
-                        <th>Ia[mA]</th>
-                        <th>ta[ms]</th>
-                        <th>t rcd[ms]</th>
-                        <th>Ub[V]</th>
-                        <th>Ui[V]</th>
-                        <th>Ocena</th>
+                        {entry3LabelsPL.map ( label => (<th>{label}</th> ) ) }
                     </tr>
                 </thead>
                 <tbody>
@@ -799,11 +707,7 @@ export default function AddMeasurementComponent() {
                 <table className="table">
                 <thead>
                     <tr>
-                        <th>Symbol</th>
-                        <th>Badany punkt</th>
-                        <th>L[m]</th>
-                        <th>d[m]</th>
-                        <th>p[Ωm]</th>
+                        {entry4LabelsPL.map ( label => (<th>{label}</th> ) ) }
                     </tr>
                 </thead>
                 <tbody>
@@ -821,11 +725,7 @@ export default function AddMeasurementComponent() {
                 <table className="table">
                 <thead>
                     <tr>
-                        <th>Symbol</th>
-                        <th>Ciągłość</th>
-                        <th>Rs[Ω]</th>
-                        <th>Ra[Ω]</th>
-                        <th>Ocena</th>
+                        {entry5LabelsPL.map ( label => (<th>{label}</th> ) ) }
                     </tr>
                 </thead>
                 <tbody>
@@ -886,20 +786,7 @@ export default function AddMeasurementComponent() {
                 <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Symbol</th>
-                        <th>Nazwa obwodu</th>
-                        <th>L1-L2[MΩ]</th>
-                        <th>L2-L3[MΩ]</th>
-                        <th>L3-L1[MΩ]</th>
-                        <th>L1-PE[MΩ]</th>
-                        <th>L2-PE[MΩ]</th>
-                        <th>L3-PE[MΩ]</th>
-                        <th>L1-N[MΩ]</th>
-                        <th>L2-N[MΩ]</th>
-                        <th>L3-N[MΩ]</th>
-                        <th>N-PE[MΩ]</th>
-                        <th>Ra</th>
-                        <th>Ocena</th>
+                        {entry1LabelsPL.map ( label => (<th>{label}</th> ) ) }
                         <th></th>
                     </tr>
                 </thead>
@@ -936,16 +823,7 @@ export default function AddMeasurementComponent() {
                 <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Symbol</th>
-                        <th>Nazwa obwodu</th>
-                        <th>L1-L2[MΩ]</th>
-                        <th>L2-L3[MΩ]</th>
-                        <th>L3-L1[MΩ]</th>
-                        <th>L1-PEN[MΩ]</th>
-                        <th>L2-PEN[MΩ]</th>
-                        <th>L3-PEN[MΩ]</th>
-                        <th>Ra</th>
-                        <th>Ocena</th>
+                        {entry2LabelsPL.map ( label => (<th>{label}</th> ) ) }
                         <th></th>
                     </tr>
                 </thead>
@@ -978,17 +856,7 @@ export default function AddMeasurementComponent() {
                 <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Symbol</th>
-                        <th>Badany punkt</th>
-                        <th>Wyłącznik RCD</th>
-                        <th>Typ</th>
-                        <th>In[mA]</th>
-                        <th>Ia[mA]</th>
-                        <th>ta[ms]</th>
-                        <th>t rcd[ms]</th>
-                        <th>Ub[V]</th>
-                        <th>Ui[V]</th>
-                        <th>Ocena</th>
+                        {entry3LabelsPL.map ( label => (<th>{label}</th> ) ) }
                         <th></th>
                     </tr>
                 </thead>
@@ -1022,11 +890,7 @@ export default function AddMeasurementComponent() {
                 <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Symbol</th>
-                        <th>Badany punkt</th>
-                        <th>L[m]</th>
-                        <th>d[m]</th>
-                        <th>p[Ωm]</th>
+                        {entry4LabelsPL.map ( label => (<th>{label}</th> ) ) }
                         <th></th>
                     </tr>
                 </thead>
@@ -1054,11 +918,7 @@ export default function AddMeasurementComponent() {
                 <thead>
                     <tr>
                         <th>Lp.</th>
-                        <th>Symbol</th>
-                        <th>Ciągłość</th>
-                        <th>Rs[Ω]</th>
-                        <th>Ra[Ω]</th>
-                        <th>Ocena</th>
+                        {entry5LabelsPL.map ( label => (<th>{label}</th> ) ) }
                         <th></th>
                     </tr>
                 </thead>
