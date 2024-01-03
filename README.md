@@ -1,9 +1,12 @@
 # Electrical protocols manager
+
+<hr>
+
 ## Application description
 
 Application Electrical protocols manager allows user to create PDF protocol from
-electrical measurements done in building. User can create building structure, add electricians, 
-add 6 different types of measurements, add title page information, generate complete 
+electrical measurements done in building. User can create building structure, add electricians,
+add 6 different types of measurements, add title page information, generate complete
 protocol from this data and save it as PDF file in application directory.
 
 Application is prepared to use locally on computer. It runs with embedded Tomcat server
@@ -13,21 +16,21 @@ and use H2 database to manage data when application is working.
 
 It is my first bigger application which is used by my colleagues in real. I mainly focused
 on backend because it is what I want more to do in the future.
-About the backend: 
+<br> About the backend: <br>
 I did a lot of refactoring because when programming I learned a lot at the same time so application
 changed its shape many times. I tried to write as clean code as I'm able at this moment.
 I know that it is still many work to do to make this code cleaner, more maintainable and scalable.
-There are only few tests written, there is need to cover all the code. Now I know and understand 
+There are only few tests written, there is need to cover all the code. Now I know and understand
 that tests should be written in parallel with the code.
-About the frontend:
+<br> About the frontend: <br>
 It was written by me to just work. There is a lot of ugly code to refactor but like I wrote above
 I'm focusing on the backend site.
 
 ## Application functionalities
 - creating building structure: building, floors, rooms
-- adding 6 types of different measurements to room: each measurement contains of general 
-measurement data and measurement entries with measured values and automatically calculated
-results
+- adding 6 types of different measurements to room: each measurement contains of general
+  measurement data and measurement entries with measured values and automatically calculated
+  results
 - adding electricians to application which can be later add to protocol
 - adding title page information about measurements condition to protocol
 - generating PDF protocol file with preview in application
@@ -56,7 +59,7 @@ https://github.com/Marcin1990x/electrical-protocols-manager-ui
 
 ## To run the application in development mode, follow these steps :
 - download both backend and frontend repositories from links above
-- install NODE js and npm 
+- install NODE js and npm
 - open and run backend application using IntelliJ IDEA
 - open frontend application using VS Code, run 'npm install' in console, next run 'npm start' in console
 - application UI will open in your default browser
@@ -65,7 +68,7 @@ https://github.com/Marcin1990x/electrical-protocols-manager-ui
 - download both backend and frontend repositories from links above
 - copy frontend files to "/frontend" folder in backend main directory - create folder /frontend
 - open backend repository using Intellij IDEA and run 'mvn package' - it will create
-complete JAR file with all files needed to run both backend and frontend (build procedure added in pom.xml file)
+  complete JAR file with all files needed to run both backend and frontend (build procedure added in pom.xml file)
 - to run application correctly with JAR file you need to copy font files to JAR folder (arial.ttf, arialbd.ttf),
-theoryImages folder and create empty pdf folder
+  theoryImages folder and create empty pdf folder
 
