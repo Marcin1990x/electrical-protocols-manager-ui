@@ -16,7 +16,7 @@ export default function AddMeasurementComponent() {
 
     const navigate = useNavigate()
 
-    var maxEntries = 20
+    var maxEntries = 37
 
     const [mainAdded, setMainAdded] = useState(false)
     const [mainIndex, setMainIndex] = useState(0)
@@ -117,7 +117,7 @@ export default function AddMeasurementComponent() {
     const [types, setTypes] = useState([])
 
     useEffect ( () => { 
-        checkEntriesQuantity()
+        controlEntriesQuantity()
         refreshMeasurementName()
         refreshMain()
     }, [render])
@@ -138,8 +138,8 @@ export default function AddMeasurementComponent() {
             .catch(error => console.log(error))
         }
     }
-    function checkEntriesQuantity() {
-        if(main!== null && main.measurementEntries !== null && main.measurementEntries.length === maxEntries){
+    function controlEntriesQuantity() {
+        if(reachedMaxEntriesQuantity(main)){
             setEntriesMax(true)
             showError('Maksymalna ilość wpisów ' + maxEntries)
         } else {
@@ -147,18 +147,17 @@ export default function AddMeasurementComponent() {
             setMessageVisible(false)
         }
     }
+    function reachedMaxEntriesQuantity(measurement) {
+        return measurement!== null && measurement.measurementEntries !== null && measurement.measurementEntries.length === maxEntries
+    }
 
     function showError(text) {
         setMessageVisible(true)
         setMessage(text)
     }
 
-    function numberFieldChecker(value) {
-        if(value !== '' && value > 0){
-            return true
-        } else {
-            return false
-        }
+    function isFieldValueCorrect(value) {
+        return value !== '' && value > 0
     }
     function addEntryLogic(entryObj)
     {
@@ -188,8 +187,8 @@ export default function AddMeasurementComponent() {
                 iNom : iNom.current.value,
                 zs : zs.current.value
             }
-            if(cutout.current.value !== '' && type.current.value !== '' && numberFieldChecker(iNom.current.value) 
-            && numberFieldChecker(zs.current.value) && numberFieldChecker(uo.current.value)) {
+            if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) 
+            && isFieldValueCorrect(zs.current.value) && isFieldValueCorrect(uo.current.value)) {
 
                 addEntryLogic(newProtectionMeasurementEntry)       
             } else {
@@ -214,10 +213,10 @@ export default function AddMeasurementComponent() {
                 npe : npe.current.value,
                 ra : ra.current.value
             }
-            if(numberFieldChecker(l1l2.current.value) && numberFieldChecker(l2l3.current.value) && numberFieldChecker(l3l1.current.value)
-                && numberFieldChecker(l1pe.current.value) && numberFieldChecker(l2pe.current.value) && numberFieldChecker(l3pe.current.value)
-                && numberFieldChecker(l1n.current.value) && numberFieldChecker(l2n.current.value) && numberFieldChecker(l3n.current.value) 
-                && numberFieldChecker(npe.current.value) && numberFieldChecker(ra.current.value)) {
+            if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
+                && isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l3pe.current.value)
+                && isFieldValueCorrect(l1n.current.value) && isFieldValueCorrect(l2n.current.value) && isFieldValueCorrect(l3n.current.value) 
+                && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
 
                 addEntryLogic(newCircuitInsulationTnsEntry)            
             } else {
@@ -232,8 +231,8 @@ export default function AddMeasurementComponent() {
                     npe : npe.current.value,
                     ra : ra.current.value
                 }
-                if(numberFieldChecker(l1pe.current.value) && numberFieldChecker(l1n.current.value)
-                    && numberFieldChecker(npe.current.value) && numberFieldChecker(ra.current.value)) {
+                if(isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l1n.current.value)
+                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
                     addEntryLogic(newCircuitInsulationTnsEntry)            
                 } else {
                     showError('Wypełnij wszystkie pola.')
@@ -247,8 +246,8 @@ export default function AddMeasurementComponent() {
                     npe : npe.current.value,
                     ra : ra.current.value
                 }
-                if(numberFieldChecker(l2pe.current.value) && numberFieldChecker(l2n.current.value)
-                    && numberFieldChecker(npe.current.value) && numberFieldChecker(ra.current.value)) {
+                if(isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l2n.current.value)
+                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
                     addEntryLogic(newCircuitInsulationTnsEntry)            
                 } else {
                     showError('Wypełnij wszystkie pola.')
@@ -262,8 +261,8 @@ export default function AddMeasurementComponent() {
                     npe : npe.current.value,
                     ra : ra.current.value
                 }
-                if(numberFieldChecker(l3pe.current.value) && numberFieldChecker(l3n.current.value)
-                    && numberFieldChecker(npe.current.value) && numberFieldChecker(ra.current.value)) {
+                if(isFieldValueCorrect(l3pe.current.value) && isFieldValueCorrect(l3n.current.value)
+                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
                     addEntryLogic(newCircuitInsulationTnsEntry)            
                 } else {
                     showError('Wypełnij wszystkie pola.')
@@ -284,9 +283,9 @@ export default function AddMeasurementComponent() {
                     l3pen : l3pen.current.value,
                     ra : ra.current.value
                 }
-                if(numberFieldChecker(l1l2.current.value) && numberFieldChecker(l2l3.current.value) && numberFieldChecker(l3l1.current.value)
-                && numberFieldChecker(l1pen.current.value) && numberFieldChecker(l2pen.current.value) && numberFieldChecker(l3pen.current.value) 
-                && numberFieldChecker(ra.current.value)){
+                if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
+                && isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(l3pen.current.value) 
+                && isFieldValueCorrect(ra.current.value)){
                 
                     addEntryLogic(newCircuitInsulationTncEntry)         
                 } else {
@@ -299,7 +298,7 @@ export default function AddMeasurementComponent() {
                     l1pen : l1pen.current.value,
                     ra : ra.current.value
                 }
-                if(numberFieldChecker(l1pen.current.value) && numberFieldChecker(ra.current.value)){
+                if(isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(ra.current.value)){
                     addEntryLogic(newCircuitInsulationTncEntry)         
                 } else {
                     showError('Wypełnij wszystkie pola.')
@@ -311,7 +310,7 @@ export default function AddMeasurementComponent() {
                     l2pen : l2pen.current.value,
                     ra : ra.current.value
                 }
-                if(numberFieldChecker(l2pen.current.value) && numberFieldChecker(ra.current.value)){
+                if(isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(ra.current.value)){
                     addEntryLogic(newCircuitInsulationTncEntry)         
                 } else {
                     showError('Wypełnij wszystkie pola.')
@@ -323,7 +322,7 @@ export default function AddMeasurementComponent() {
                     l3pen : l3pen.current.value,
                     ra : ra.current.value
                 }
-                if(numberFieldChecker(l3pen.current.value) && numberFieldChecker(ra.current.value)){
+                if(isFieldValueCorrect(l3pen.current.value) && isFieldValueCorrect(ra.current.value)){
                     addEntryLogic(newCircuitInsulationTncEntry)         
                 } else {
                     showError('Wypełnij wszystkie pola.')
@@ -343,9 +342,9 @@ export default function AddMeasurementComponent() {
                 ub : ub.current.value,
                 ui : ui.current.value
             }
-            if(cutout.current.value !== '' && type.current.value !== '' && numberFieldChecker(iNom.current.value) && numberFieldChecker(ia.current.value)
-             && numberFieldChecker(ta.current.value) && numberFieldChecker(trcd.current.value) && numberFieldChecker(ub.current.value)
-              && numberFieldChecker(ui.current.value)) {
+            if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) && isFieldValueCorrect(ia.current.value)
+             && isFieldValueCorrect(ta.current.value) && isFieldValueCorrect(trcd.current.value) && isFieldValueCorrect(ub.current.value)
+              && isFieldValueCorrect(ui.current.value)) {
             
                 addEntryLogic(newResidualCurrentProtectionEntry)         
             } else {
@@ -360,7 +359,7 @@ export default function AddMeasurementComponent() {
                 d : dm.current.value,
                 p : p.current.value,
             }
-            if(numberFieldChecker(lm.current.value) && numberFieldChecker(dm.current.value) && numberFieldChecker(p.current.value)) {
+            if(isFieldValueCorrect(lm.current.value) && isFieldValueCorrect(dm.current.value) && isFieldValueCorrect(p.current.value)) {
                 addEntryLogic(newSoilResistanceEntry)           
             } else {
                 showError('Wypełnij wszystkie pola.')
@@ -373,7 +372,7 @@ export default function AddMeasurementComponent() {
                 rs : rs.current.value,
                 ra : ra.current.value,
             }
-            if(continuity.current.value !== '' && numberFieldChecker(rs.current.value) && numberFieldChecker(ra.current.value)) {
+            if(continuity.current.value !== '' && isFieldValueCorrect(rs.current.value) && isFieldValueCorrect(ra.current.value)) {
                 addEntryLogic(newContinuityOfSmallResistanceEntry)           
             } else {
                 showError('Wypełnij wszystkie pola.')
@@ -390,8 +389,8 @@ export default function AddMeasurementComponent() {
                 ta : ta.current.value,
                 networkType : networkType.current.value,
             }
-            if(numberFieldChecker(un.current.value) && numberFieldChecker(ui.current.value) && numberFieldChecker(ko.current.value)
-            && numberFieldChecker(ta.current.value) && networkType.current.value !== ''&& numberFieldChecker(uo.current.value)) {
+            if(isFieldValueCorrect(un.current.value) && isFieldValueCorrect(ui.current.value) && isFieldValueCorrect(ko.current.value)
+            && isFieldValueCorrect(ta.current.value) && networkType.current.value !== ''&& isFieldValueCorrect(uo.current.value)) {
                 setMainAdded(true)
                 addMeasurementMain(index, newProtectionMeasurementMain)
                 .then(response => {
@@ -412,7 +411,7 @@ export default function AddMeasurementComponent() {
             const newCircuitInsulationMain = {
                 uiso : uiso.current.value
             }
-            if(numberFieldChecker(uiso.current.value)) {
+            if(isFieldValueCorrect(uiso.current.value)) {
                 setMainAdded(true)
                 addMeasurementMain(index, newCircuitInsulationMain)
                 .then(response => {

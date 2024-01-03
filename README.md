@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+# Electrical protocols manager
+## Application description
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Application Electrical protocols manager allows user to create PDF protocol from
+electrical measurements done in building. User can create building structure, add electricians, 
+add 6 different types of measurements, add title page information, generate complete 
+protocol from this data and save it as PDF file in application directory.
 
-## Available Scripts
+Application is prepared to use locally on computer. It runs with embedded Tomcat server
+and use H2 database to manage data when application is working.
 
-In the project directory, you can run:
+## Application functionalities
+- creating building structure: building, floors, rooms
+- adding 6 types of different measurements to room: each measurement contains of general 
+measurement data and measurement entries with measured values and automatically calculated
+results
+- adding electricians to application which can be later add to protocol
+- adding title page information about measurements condition to protocol
+- generating PDF protocol file with preview in application
+- saving generated PDF in application directory with name given by user
+- saving all application data to file which is loading on application startup
 
-### `npm start`
+## Backend repository
+https://github.com/Marcin1990x/electrical-protocols-manager
+## Frontend repository
+https://github.com/Marcin1990x/electrical-protocols-manager-ui
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Application is developed using following technologies:
+<p align="left">
+    <img src="https://ultimateqa.com/wp-content/uploads/2020/12/Java-logo-icon-1.png" alt="java" width="80" height="50"/> 
+    <img src="https://e4developer.com/wp-content/uploads/2018/01/spring-boot.png" alt="spring" width="90" height="50"/> 
+    <img src="https://www.tutorialkart.com/wp-content/uploads/2017/08/apache_pdfbox.png" alt="java" width="" height="50"/>
+    <img src="https://s3.ap-southeast-1.amazonaws.com/arrowhitech.com/wp-content/uploads/2021/09/01031030/ReactJS.png" alt="java" width="" height="50"/>
+    <img src="https://jaki-jezyk-programowania.pl/img/technologies/javascript.png" alt="java" width="" height="50"/>
+    <img src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png" alt="java" width="" height="50"/>
+    <img src="https://react-pdf.org/images/og-banner.png" alt="java" width="" height="50"/>
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" alt="mysql" width="50" height="50"/>
+    <img src="https://junit.org/junit4/images/junit5-banner.png" alt="java" width="90" height="50"/>
+    <img src="https://javadoc.io/static/org.mockito/mockito-core/1.9.5/org/mockito/logo.jpg" alt="java" width="90" height="50"/>
+    <img src="https://avatars.githubusercontent.com/u/1595737?s=200&v=4" alt="java" width="50" height="50"/>
+</p>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## To run the application in development mode, follow these steps :
+- download both backend and frontend repositories from links above
+- install NODE js and npm 
+- open and run backend application using IntelliJ IDEA
+- open frontend application using VS Code, run 'npm install' in console, next run 'npm start' in console
+- application UI will open in your default browser
 
-### `npm test`
+## To run the application from JAR file as standalone application
+- download both backend and frontend repositories from links above
+- copy frontend files to "/frontend" folder in backend main directory - create folder /frontend
+- open backend repository using Intellij IDEA and run 'mvn package' - it will create
+complete JAR file with all files needed to run both backend and frontend (build procedure added in pom.xml file)
+- to run application correctly with JAR file you need to copy font files to JAR folder (arial.ttf, arialbd.ttf),
+theoryImages folder and create empty pdf folder
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
