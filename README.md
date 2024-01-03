@@ -9,6 +9,20 @@ protocol from this data and save it as PDF file in application directory.
 Application is prepared to use locally on computer. It runs with embedded Tomcat server
 and use H2 database to manage data when application is working.
 
+## Development comments
+
+It is my first bigger application which is used by my colleagues in real. I mainly focused
+on backend because it is what I want more to do in the future.
+About the backend: 
+I did a lot of refactoring because when programming I learned a lot at the same time so application
+changed its shape many times. I tried to write as clean code as I'm able at this moment.
+I know that it is still many work to do to make this code cleaner, more maintainable and scalable.
+There are only few tests written, there is need to cover all the code. Now I know and understand 
+that tests should be written in parallel with the code.
+About the frontend:
+It was written by me to just work. There is a lot of ugly code to refactor but like I wrote above
+I'm focusing on the backend site.
+
 ## Application functionalities
 - creating building structure: building, floors, rooms
 - adding 6 types of different measurements to room: each measurement contains of general 
