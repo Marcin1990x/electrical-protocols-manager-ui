@@ -14,7 +14,7 @@ and use H2 database to manage data when application is working.
 
 ## Development comments
 
-It is my first bigger application which is used by my colleagues in real. I mainly focused
+It is my first bigger application which is used electricians in real. I mainly focused
 on backend because it is what I want more to do in the future.
 <br> About the backend: <br>
 I did a lot of refactoring because when programming I learned a lot at the same time so application
@@ -36,6 +36,16 @@ I'm focusing on the backend site.
 - generating PDF protocol file with preview in application
 - saving generated PDF in application directory with name given by user
 - saving all application data to file which is loading on application startup
+
+## Generated PDF protocol includes:
+- title page with electricians information, protocol title, protocol number, client's data,
+  measurement dates and conditions, comments
+- each measurement on separate page, room by room. Measurement general information and entries
+  values with results
+- legend page with description of all added measurements
+- pages with theory for measurements
+- page with electricians data
+- page with calculated statistics
 
 ## Backend repository
 https://github.com/Marcin1990x/electrical-protocols-manager
@@ -71,4 +81,29 @@ https://github.com/Marcin1990x/electrical-protocols-manager-ui
   complete JAR file with all files needed to run both backend and frontend (build procedure added in pom.xml file)
 - to run application correctly with JAR file you need to copy font files to JAR folder (arial.ttf, arialbd.ttf),
   theoryImages folder and create empty pdf folder
+
+## Example protocol
+
+https://github.com/Marcin1990x/electrical-protocols-manager/blob/master/pdf/example-protocol.pdf
+
+## User interface
+
+- home page <br>
+  <img src="https://github.com/Marcin1990x/electrical-protocols-manager/blob/master/repo-screens/homepage.png?raw=true" width="1765" height="712"/>
+- project page <br>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/projectpage.png"  width="1675" height="763"/>
+- electricians page <br>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/electricianspage.png" width="1920" height="521"/>
+- title page <br>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/protocoltitlepage.png" width="1137" height="817"/>
+- structure page <br>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/structurepage.png" width="1879" height="879"/>
+- room page <br>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/roompage.png" width="1735" height="671"/>
+- measurement add page <br>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/addmeasurementpage.png" width="1916" height="709"/>
+- measurement page <br>
+  <img src="https://github.com/Marcin1990x/electrical-protocols-manager/blob/master/repo-screens/measurementpage.png?raw=true" width="1859" height="601"/>
+- pdf generate page <br>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/generationpdfpage.png" width="1145" height="851"/>
 
