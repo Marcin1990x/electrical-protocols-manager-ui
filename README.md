@@ -89,21 +89,21 @@ https://github.com/Marcin1990x/electrical-protocols-manager/blob/master/pdf/exam
 ## User interface
 
 - home page <br>
-  <img src="https://github.com/Marcin1990x/electrical-protocols-manager/blob/master/repo-screens/homepage.png?raw=true" width="1765" height="712"/>
+  <img src="https://github.com/Marcin1990x/electrical-protocols-manager/blob/master/repo-screens/homepage.png?raw=true" width="880" height="356"/>
 - project page <br>
-  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/projectpage.png"  width="1675" height="763"/>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/projectpage.png"  width="837" height="381"/>
 - electricians page <br>
-  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/electricianspage.png" width="1920" height="521"/>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/electricianspage.png" width="960" height="260"/>
 - title page <br>
-  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/protocoltitlepage.png" width="1137" height="817"/>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/protocoltitlepage.png" width="567" height="409"/>
 - structure page <br>
-  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/structurepage.png" width="1879" height="879"/>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/structurepage.png" width="940" height="440"/>
 - room page <br>
-  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/roompage.png" width="1735" height="671"/>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/roompage.png" width="862" height="335"/>
 - measurement add page <br>
-  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/addmeasurementpage.png" width="1916" height="709"/>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/addmeasurementpage.png" width="958" height="354"/>
 - measurement page <br>
-  <img src="https://github.com/Marcin1990x/electrical-protocols-manager/blob/master/repo-screens/measurementpage.png?raw=true" width="1859" height="601"/>
+  <img src="https://github.com/Marcin1990x/electrical-protocols-manager/blob/master/repo-screens/measurementpage.png?raw=true" width="930" height="300"/>
 - pdf generate page <br>
-  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/generationpdfpage.png" width="1145" height="851"/>
+  <img src="https://raw.githubusercontent.com/Marcin1990x/electrical-protocols-manager/master/repo-screens/generationpdfpage.png" width="570" height="425"/>
 
