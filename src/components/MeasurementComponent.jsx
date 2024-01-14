@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { retrieveMeasurementMainById } from "../api/MeasurementMainApiService"
-import { handleContinuity, handleResult } from "./functions/CommonFunctions"
+import { handleContinuity, handleResult, setDiscriminatorIndex } from "./functions/CommonFunctions"
 import { entry0LabelsPL, entry1LabelsPL, entry2LabelsPL, entry3LabelsPL, entry4LabelsPL, entry5LabelsPL } from "./text/LabelsPL"
 
 export default function MeasurementComponent() {
@@ -10,28 +10,34 @@ export default function MeasurementComponent() {
 
     const [main, setMain] = useState([])
     const {id, idMain, projectName} = useParams()
+    const [mainIndex, setMainIndex] = useState(0)
 
     //discriminator 1
     const [uo, setUo] = useState(0)
     //discriminator 1
     
-    useEffect( () => refreshData(), [])
+    useEffect( () => { 
+        refreshData()
+    }, [])
 
     function refreshData() {
 
         retrieveMeasurementMainById(idMain)
             .then(response => {
                 setMain(response.data)
+                setMainIndex(setDiscriminatorIndex(response.data.measurementName))
                 setUo(response.data.measurementEntries[0].uo)
                 console.log(response)
             })
             .catch(error => console.log(error))
     }
+
     return (
-        <div className="MeasurementComponent">
-            
+        <div className="MeasurementComponent">            
                 <div>
                     <button className = "btn btn-outline-dark btn-lg m-2" onClick = {() => navigate(`/${projectName}/project/structure/rooms/${id}`)}>Wstecz</button>
+                    <button className = "btn btn-dark btn-lg m-2" 
+                        onClick = {() => navigate(`/${projectName}/project/structure/rooms/${id}/editMeasurement/${idMain}`)}>Edytuj pomiary</button>
                 </div>
                 <h3>
                 {main.measurementMainCascadeNameWithoutMeasurementName}
@@ -39,7 +45,7 @@ export default function MeasurementComponent() {
                 <hr></hr>
             <h2>{main.measurementName}</h2>
 
-            {(main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porażeniem przez samoczynne wyłączenie') && //fix this shit
+            {(mainIndex == 0) &&
             <table className="table table-striped">
                     <thead>
                         <tr>
@@ -64,7 +70,7 @@ export default function MeasurementComponent() {
             </table> 
             }
             <hr></hr>
-            {(main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porażeniem przez samoczynne wyłączenie') &&
+            {(mainIndex == 0) &&
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -95,7 +101,7 @@ export default function MeasurementComponent() {
                 </tbody>
             </table>
             }
-            {(main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodów') &&
+            {(mainIndex == 1) &&
             <table className="table table-striped">
                     <thead>
                         <tr>
@@ -110,7 +116,7 @@ export default function MeasurementComponent() {
             </table> 
             }
             <hr></hr>
-            {(main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodów') &&
+            {(mainIndex == 1) &&
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -145,7 +151,7 @@ export default function MeasurementComponent() {
                 </tbody>
             </table>
             }
-            {(main.measurementName == '(TN-C) Badanie rezystancji izolacji obwodów') &&
+            {(mainIndex == 2) &&
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -176,7 +182,7 @@ export default function MeasurementComponent() {
                 </tbody>
             </table>
             }
-            {(main.measurementName == 'Parametry zabezpieczeń różnicowoprądowych') &&
+            {(mainIndex == 3) &&
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -208,7 +214,7 @@ export default function MeasurementComponent() {
                 </tbody>
             </table>
             }
-            {(main.measurementName == 'Badanie rezystywności gruntu') &&
+            {(mainIndex == 4) &&
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -234,7 +240,7 @@ export default function MeasurementComponent() {
                 </tbody>
             </table>
             }
-            {(main.measurementName == 'Badanie ciągłości małych rezystancji') &&
+            {(mainIndex == 5) &&
             <table className="table table-striped">
                 <thead>
                     <tr>

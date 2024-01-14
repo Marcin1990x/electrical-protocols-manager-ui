@@ -12,6 +12,7 @@ import GeneratePdfComponent from "./GeneratePdfComponent"
 import HeaderComponent from "./HeaderComponent"
 import ErrorComponent from "./ErrorComponent"
 import ExitComponent from "./ExitComponent"
+import EditMeasurementComponent from "./EditMeasurementComponent"
 
 export default function ElectricalProtocolsManager() {
 
@@ -31,6 +32,7 @@ export default function ElectricalProtocolsManager() {
                             <Route path = "/electricians" element = { <ElectriciansComponent />} />
                             <Route path = ":projectName/project/structure/rooms/:id" element = { <RoomComponent />} />
                             <Route path = ":projectName/project/structure/rooms/:id/addMeasurement/:index" element = { <AddMeasurementComponent />} />
+                            <Route path = ":projectName/project/structure/rooms/:id/editMeasurement/:idMain" element = { <EditMeasurementComponent />} />
                             <Route path = ":projectName/project/structure/rooms/:id/measurements/:idMain" element = { <MeasurementComponent />} />
                         </Routes>
                 </BrowserRouter>
