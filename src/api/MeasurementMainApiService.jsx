@@ -20,5 +20,7 @@ export const addEntryToMainApi = (type, mainId, entryId) => apiClient.put(`${typ
     }
 })
 
+export const updateMeasurementMainApi = (type, mainId,  measurement) => apiClient.put(`${type}/mains/edit=${mainId}`, measurement)
+
 
 

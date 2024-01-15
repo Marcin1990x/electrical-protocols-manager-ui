@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom"
-import { addEntryToMainApi, addMeasurementMain, retrieveMeasurementMainById } from "../api/MeasurementMainApiService"
+import { addEntryToMainApi, addMeasurementMain, retrieveMeasurementMainById, updateMeasurementMainApi } from "../api/MeasurementMainApiService"
 import { useEffect, useRef, useState } from "react"
 import { addMainToRoomApi } from "../api/RoomApiService"
 import { retrieveMeasurementMainTypes, deleteMeasurementMainApi } from "../api/MeasurementMainApiService"
@@ -12,13 +12,14 @@ import { main0TextPL, entry0TextPL, entry1TextPL, entry2TextPL, entry3TextPL, en
 
 export default function EditMeasurementComponent() {
 
-    const {id, index, projectName, idMain} = useParams()
+    const {id, projectName, idMain} = useParams()
 
     const navigate = useNavigate()
 
     var maxEntries = 37
 
     const [mainIndex, setMainIndex] = useState(0)
+    const [discriminator, setDiscriminator] = useState(10)
     const [main, setMain] = useState([])
     const [entry, setEntry] = useState([])
     const [entriesMax, setEntriesMax] = useState(false)
@@ -132,7 +133,7 @@ export default function EditMeasurementComponent() {
         retrieveMeasurementMainById(idMain)
             .then(response => {
                 setMain(response.data)
-                setMainIndex(setDiscriminatorIndex(response.data.measurementName))
+                setDiscriminator(setDiscriminatorIndex(response.data.measurementName))
                 setUoTest(response.data.measurementEntries[0].uo)
                 console.log(response)
             })
@@ -162,228 +163,228 @@ export default function EditMeasurementComponent() {
     }
     function addEntryLogic(entryObj)
     {
-        addMeasurementEntry(index, entryObj)
-        .then(response => {
-            console.log(response)
-            setEntry(response.data)
-                addEntryToMainApi(index, main.id, response.data.id)
-                .then(response => {
-                    console.log(response)
-                    setRender(render + 1)
-                })
-                .catch(error => console.log(error))
-        })
-        .catch(error => console.log(error)) 
+        // addMeasurementEntry(index, entryObj)
+        // .then(response => {
+        //     console.log(response)
+        //     setEntry(response.data)
+        //         addEntryToMainApi(index, main.id, response.data.id)
+        //         .then(response => {
+        //             console.log(response)
+        //             setRender(render + 1)
+        //         })
+        //         .catch(error => console.log(error))
+        // })
+        // .catch(error => console.log(error)) 
     }         
 
     function handleAddEntryBtn() {
 
-        if(index == 0) {
-            const newProtectionMeasurementEntry = {
-                symbol : symbol.current.value,
-                uo : uo.current.value,
-                measuringPoint : point.current.value,
-                cutout : cutout.current.value,
-                type : type.current.value,
-                iNom : iNom.current.value,
-                zs : zs.current.value
-            }
-            if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) 
-            && isFieldValueCorrect(zs.current.value) && isFieldValueCorrect(uo.current.value)) {
+        // if(index == 0) {
+        //     const newProtectionMeasurementEntry = {
+        //         symbol : symbol.current.value,
+        //         uo : uo.current.value,
+        //         measuringPoint : point.current.value,
+        //         cutout : cutout.current.value,
+        //         type : type.current.value,
+        //         iNom : iNom.current.value,
+        //         zs : zs.current.value
+        //     }
+        //     if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) 
+        //     && isFieldValueCorrect(zs.current.value) && isFieldValueCorrect(uo.current.value)) {
 
-                addEntryLogic(newProtectionMeasurementEntry)       
-            } else {
-                showError('Wypełnij wszystkie pola.')
-            }
-        }
-        if(index == 1) {
+        //         addEntryLogic(newProtectionMeasurementEntry)       
+        //     } else {
+        //         showError('Wypełnij wszystkie pola.')
+        //     }
+        // }
+        // if(index == 1) {
 
-            if(allPhases) {
-            const newCircuitInsulationTnsEntry = {
-                symbol: symbol.current.value,
-                circuitName : circuitName.current.value,
-                l1l2 : l1l2.current.value,
-                l2l3 : l2l3.current.value,
-                l3l1 : l3l1.current.value,
-                l1pe : l1pe.current.value,
-                l2pe : l2pe.current.value,
-                l3pe : l3pe.current.value,
-                l1n : l1n.current.value,
-                l2n : l2n.current.value,
-                l3n : l3n.current.value,
-                npe : npe.current.value,
-                ra : ra.current.value
-            }
-            if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
-                && isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l3pe.current.value)
-                && isFieldValueCorrect(l1n.current.value) && isFieldValueCorrect(l2n.current.value) && isFieldValueCorrect(l3n.current.value) 
-                && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
+        //     if(allPhases) {
+        //     const newCircuitInsulationTnsEntry = {
+        //         symbol: symbol.current.value,
+        //         circuitName : circuitName.current.value,
+        //         l1l2 : l1l2.current.value,
+        //         l2l3 : l2l3.current.value,
+        //         l3l1 : l3l1.current.value,
+        //         l1pe : l1pe.current.value,
+        //         l2pe : l2pe.current.value,
+        //         l3pe : l3pe.current.value,
+        //         l1n : l1n.current.value,
+        //         l2n : l2n.current.value,
+        //         l3n : l3n.current.value,
+        //         npe : npe.current.value,
+        //         ra : ra.current.value
+        //     }
+        //     if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
+        //         && isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l3pe.current.value)
+        //         && isFieldValueCorrect(l1n.current.value) && isFieldValueCorrect(l2n.current.value) && isFieldValueCorrect(l3n.current.value) 
+        //         && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
 
-                addEntryLogic(newCircuitInsulationTnsEntry)            
-            } else {
-                showError('Wypełnij wszystkie pola.')
-            }
-            } else if (firstPhase) {
-                const newCircuitInsulationTnsEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l1pe : l1pe.current.value,
-                    l1n : l1n.current.value,
-                    npe : npe.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l1n.current.value)
-                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-                    addEntryLogic(newCircuitInsulationTnsEntry)            
-                } else {
-                    showError('Wypełnij wszystkie pola.')
-                }
-            } else if (secondPhase) {
-                const newCircuitInsulationTnsEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l2pe : l2pe.current.value,
-                    l2n : l2n.current.value,
-                    npe : npe.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l2n.current.value)
-                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-                    addEntryLogic(newCircuitInsulationTnsEntry)            
-                } else {
-                    showError('Wypełnij wszystkie pola.')
-                }
-            } else if(thirdPhase) {
-                const newCircuitInsulationTnsEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l3pe : l3pe.current.value,
-                    l3n : l3n.current.value,
-                    npe : npe.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l3pe.current.value) && isFieldValueCorrect(l3n.current.value)
-                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-                    addEntryLogic(newCircuitInsulationTnsEntry)            
-                } else {
-                    showError('Wypełnij wszystkie pola.')
-                }
-            }
-        }
-        if(index == 2) {
+        //         addEntryLogic(newCircuitInsulationTnsEntry)            
+        //     } else {
+        //         showError('Wypełnij wszystkie pola.')
+        //     }
+        //     } else if (firstPhase) {
+        //         const newCircuitInsulationTnsEntry = {
+        //             symbol: symbol.current.value,
+        //             circuitName : circuitName.current.value,
+        //             l1pe : l1pe.current.value,
+        //             l1n : l1n.current.value,
+        //             npe : npe.current.value,
+        //             ra : ra.current.value
+        //         }
+        //         if(isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l1n.current.value)
+        //             && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
+        //             addEntryLogic(newCircuitInsulationTnsEntry)            
+        //         } else {
+        //             showError('Wypełnij wszystkie pola.')
+        //         }
+        //     } else if (secondPhase) {
+        //         const newCircuitInsulationTnsEntry = {
+        //             symbol: symbol.current.value,
+        //             circuitName : circuitName.current.value,
+        //             l2pe : l2pe.current.value,
+        //             l2n : l2n.current.value,
+        //             npe : npe.current.value,
+        //             ra : ra.current.value
+        //         }
+        //         if(isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l2n.current.value)
+        //             && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
+        //             addEntryLogic(newCircuitInsulationTnsEntry)            
+        //         } else {
+        //             showError('Wypełnij wszystkie pola.')
+        //         }
+        //     } else if(thirdPhase) {
+        //         const newCircuitInsulationTnsEntry = {
+        //             symbol: symbol.current.value,
+        //             circuitName : circuitName.current.value,
+        //             l3pe : l3pe.current.value,
+        //             l3n : l3n.current.value,
+        //             npe : npe.current.value,
+        //             ra : ra.current.value
+        //         }
+        //         if(isFieldValueCorrect(l3pe.current.value) && isFieldValueCorrect(l3n.current.value)
+        //             && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
+        //             addEntryLogic(newCircuitInsulationTnsEntry)            
+        //         } else {
+        //             showError('Wypełnij wszystkie pola.')
+        //         }
+        //     }
+        // }
+        // if(index == 2) {
 
-            if(allPhases) {
-                const newCircuitInsulationTncEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l1l2 : l1l2.current.value,
-                    l2l3 : l2l3.current.value,
-                    l3l1 : l3l1.current.value,
-                    l1pen : l1pen.current.value,
-                    l2pen : l2pen.current.value,
-                    l3pen : l3pen.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
-                && isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(l3pen.current.value) 
-                && isFieldValueCorrect(ra.current.value)){
+        //     if(allPhases) {
+        //         const newCircuitInsulationTncEntry = {
+        //             symbol: symbol.current.value,
+        //             circuitName : circuitName.current.value,
+        //             l1l2 : l1l2.current.value,
+        //             l2l3 : l2l3.current.value,
+        //             l3l1 : l3l1.current.value,
+        //             l1pen : l1pen.current.value,
+        //             l2pen : l2pen.current.value,
+        //             l3pen : l3pen.current.value,
+        //             ra : ra.current.value
+        //         }
+        //         if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
+        //         && isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(l3pen.current.value) 
+        //         && isFieldValueCorrect(ra.current.value)){
                 
-                    addEntryLogic(newCircuitInsulationTncEntry)         
-                } else {
-                    showError('Wypełnij wszystkie pola.')
-                }
-            } else if(firstPhase) {
-                const newCircuitInsulationTncEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l1pen : l1pen.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(ra.current.value)){
-                    addEntryLogic(newCircuitInsulationTncEntry)         
-                } else {
-                    showError('Wypełnij wszystkie pola.')
-                }
-            } else if(secondPhase) {
-                const newCircuitInsulationTncEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l2pen : l2pen.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(ra.current.value)){
-                    addEntryLogic(newCircuitInsulationTncEntry)         
-                } else {
-                    showError('Wypełnij wszystkie pola.')
-                }
-            } else if(thirdPhase) {
-                const newCircuitInsulationTncEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l3pen : l3pen.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l3pen.current.value) && isFieldValueCorrect(ra.current.value)){
-                    addEntryLogic(newCircuitInsulationTncEntry)         
-                } else {
-                    showError('Wypełnij wszystkie pola.')
-                }
-            }
-        }
-        if(index == 3) {
-            const newResidualCurrentProtectionEntry = {
-                symbol: symbol.current.value,
-                measuringPoint : point.current.value,
-                circuitBreaker : cutout.current.value,
-                rcdType : type.current.value,
-                iNom : iNom.current.value,
-                ia : ia.current.value,
-                ta : ta.current.value,
-                trcd : trcd.current.value,
-                ub : ub.current.value,
-                ui : ui.current.value
-            }
-            if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) && isFieldValueCorrect(ia.current.value)
-             && isFieldValueCorrect(ta.current.value) && isFieldValueCorrect(trcd.current.value) && isFieldValueCorrect(ub.current.value)
-              && isFieldValueCorrect(ui.current.value)) {
+        //             addEntryLogic(newCircuitInsulationTncEntry)         
+        //         } else {
+        //             showError('Wypełnij wszystkie pola.')
+        //         }
+        //     } else if(firstPhase) {
+        //         const newCircuitInsulationTncEntry = {
+        //             symbol: symbol.current.value,
+        //             circuitName : circuitName.current.value,
+        //             l1pen : l1pen.current.value,
+        //             ra : ra.current.value
+        //         }
+        //         if(isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(ra.current.value)){
+        //             addEntryLogic(newCircuitInsulationTncEntry)         
+        //         } else {
+        //             showError('Wypełnij wszystkie pola.')
+        //         }
+        //     } else if(secondPhase) {
+        //         const newCircuitInsulationTncEntry = {
+        //             symbol: symbol.current.value,
+        //             circuitName : circuitName.current.value,
+        //             l2pen : l2pen.current.value,
+        //             ra : ra.current.value
+        //         }
+        //         if(isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(ra.current.value)){
+        //             addEntryLogic(newCircuitInsulationTncEntry)         
+        //         } else {
+        //             showError('Wypełnij wszystkie pola.')
+        //         }
+        //     } else if(thirdPhase) {
+        //         const newCircuitInsulationTncEntry = {
+        //             symbol: symbol.current.value,
+        //             circuitName : circuitName.current.value,
+        //             l3pen : l3pen.current.value,
+        //             ra : ra.current.value
+        //         }
+        //         if(isFieldValueCorrect(l3pen.current.value) && isFieldValueCorrect(ra.current.value)){
+        //             addEntryLogic(newCircuitInsulationTncEntry)         
+        //         } else {
+        //             showError('Wypełnij wszystkie pola.')
+        //         }
+        //     }
+        // }
+        // if(index == 3) {
+        //     const newResidualCurrentProtectionEntry = {
+        //         symbol: symbol.current.value,
+        //         measuringPoint : point.current.value,
+        //         circuitBreaker : cutout.current.value,
+        //         rcdType : type.current.value,
+        //         iNom : iNom.current.value,
+        //         ia : ia.current.value,
+        //         ta : ta.current.value,
+        //         trcd : trcd.current.value,
+        //         ub : ub.current.value,
+        //         ui : ui.current.value
+        //     }
+        //     if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) && isFieldValueCorrect(ia.current.value)
+        //      && isFieldValueCorrect(ta.current.value) && isFieldValueCorrect(trcd.current.value) && isFieldValueCorrect(ub.current.value)
+        //       && isFieldValueCorrect(ui.current.value)) {
             
-                addEntryLogic(newResidualCurrentProtectionEntry)         
-            } else {
-                showError('Wypełnij wszystkie pola.')
-            }
-        }
-        if(index == 4) {
-            const newSoilResistanceEntry = {
-                symbol : symbol.current.value,
-                measuringPoint : point.current.value,
-                l : lm.current.value,
-                d : dm.current.value,
-                p : p.current.value,
-            }
-            if(isFieldValueCorrect(lm.current.value) && isFieldValueCorrect(dm.current.value) && isFieldValueCorrect(p.current.value)) {
-                addEntryLogic(newSoilResistanceEntry)           
-            } else {
-                showError('Wypełnij wszystkie pola.')
-            }
-        }
-        if(index == 5) {
-            const newContinuityOfSmallResistanceEntry = {
-                symbol : symbol.current.value,
-                continuity : continuity.current.value,
-                rs : rs.current.value,
-                ra : ra.current.value,
-            }
-            if(continuity.current.value !== '' && isFieldValueCorrect(rs.current.value) && isFieldValueCorrect(ra.current.value)) {
-                addEntryLogic(newContinuityOfSmallResistanceEntry)           
-            } else {
-                showError('Wypełnij wszystkie pola.')
-            }
-        }
+        //         addEntryLogic(newResidualCurrentProtectionEntry)         
+        //     } else {
+        //         showError('Wypełnij wszystkie pola.')
+        //     }
+        // }
+        // if(index == 4) {
+        //     const newSoilResistanceEntry = {
+        //         symbol : symbol.current.value,
+        //         measuringPoint : point.current.value,
+        //         l : lm.current.value,
+        //         d : dm.current.value,
+        //         p : p.current.value,
+        //     }
+        //     if(isFieldValueCorrect(lm.current.value) && isFieldValueCorrect(dm.current.value) && isFieldValueCorrect(p.current.value)) {
+        //         addEntryLogic(newSoilResistanceEntry)           
+        //     } else {
+        //         showError('Wypełnij wszystkie pola.')
+        //     }
+        // }
+        // if(index == 5) {
+        //     const newContinuityOfSmallResistanceEntry = {
+        //         symbol : symbol.current.value,
+        //         continuity : continuity.current.value,
+        //         rs : rs.current.value,
+        //         ra : ra.current.value,
+        //     }
+        //     if(continuity.current.value !== '' && isFieldValueCorrect(rs.current.value) && isFieldValueCorrect(ra.current.value)) {
+        //         addEntryLogic(newContinuityOfSmallResistanceEntry)           
+        //     } else {
+        //         showError('Wypełnij wszystkie pola.')
+        //     }
+        // }
     }
-    function handleAddMainBtn() {
+    function handleUpdateMainBtn() {
 
-        if(index == 0 ) {
-            const newProtectionMeasurementMain = {
+        if(discriminator == 0 ) {
+            const updatedProtectionMeasurementMain = {
                 un : un.current.value,
                 ui : ui.current.value,
                 ko : ko.current.value,
@@ -392,12 +393,10 @@ export default function EditMeasurementComponent() {
             }
             if(isFieldValueCorrect(un.current.value) && isFieldValueCorrect(ui.current.value) && isFieldValueCorrect(ko.current.value)
             && isFieldValueCorrect(ta.current.value) && networkType.current.value !== ''&& isFieldValueCorrect(uo.current.value)) {
-                addMeasurementMain(index, newProtectionMeasurementMain)
+                updateMeasurementMainApi(discriminator, main.id, updatedProtectionMeasurementMain)
                 .then(response => {
-                    setMainIndex(response.data.id)
                     setMain(response.data)
                     setMessageVisible(false)
-                    addMainToRoomApi(id, response.data.id)
                     .then(response => console.log(response))
                     .catch(error => console.log(error))
                 })
@@ -406,18 +405,16 @@ export default function EditMeasurementComponent() {
                 showError('Wypełnij wszystkie pola.')
             }
         }
-        if(index == 1 || index == 2) {
+        if(discriminator == 1 || discriminator == 2) {
 
-            const newCircuitInsulationMain = {
+            const updatedCircuitInsulationMain = {
                 uiso : uiso.current.value
             }
             if(isFieldValueCorrect(uiso.current.value)) {
-                addMeasurementMain(index, newCircuitInsulationMain)
+                updateMeasurementMainApi(discriminator, main.id, updatedCircuitInsulationMain)
                 .then(response => {
-                    setMainIndex(response.data.id)
                     setMain(response.data)
                     setMessageVisible(false)
-                    addMainToRoomApi(id, response.data.id)
                     .then(response => console.log(response))
                     .catch(error => console.log(error))
                 })
@@ -426,82 +423,40 @@ export default function EditMeasurementComponent() {
                 showError('Wypełnij wszystkie pola.')
             }
         }
-        if(index == 3) {
-            const newResidualCurrentProtectionMain = {}
-
-            addMeasurementMain(index, newResidualCurrentProtectionMain)
-                .then(response => {
-                setMainIndex(response.data.id)
-                setMain(response.data)
-                addMainToRoomApi(id, response.data.id)
-                  .then(response => console.log(response))
-                  .catch(error => console.log(error))
-                })
-                  .catch(error => console.log(error))
-        }
-        if(index == 4) {
-            const newSoilResistanceMain = {}
-
-            addMeasurementMain(index, newSoilResistanceMain)
-                .then(response => {
-                setMainIndex(response.data.id)
-                setMain(response.data)
-                addMainToRoomApi(id, response.data.id)
-                  .then(response => console.log(response))
-                  .catch(error => console.log(error))
-                })
-                  .catch(error => console.log(error))
-        }
-        if(index == 5) {
-            const newContinuityOfSmallResistanceMain = {}
-
-            addMeasurementMain(index, newContinuityOfSmallResistanceMain)
-                .then(response => {
-                setMainIndex(response.data.id)
-                setMain(response.data)
-                addMainToRoomApi(id, response.data.id)
-                  .then(response => console.log(response))
-                  .catch(error => console.log(error))
-                })
-                  .catch(error => console.log(error))
-        }
     }
 
-    function handleDeleteEntryBtn(entryId) {
+    // function handleDeleteEntryBtn(entryId) {
 
-        deleteEntryByIdApi(index, entryId, mainIndex)
-            .then(response => {
-                console.log(response)
-                setRender(render + 1)
-            })
-            .catch(error => console.log(error))
-    }
-    function handleDeleteAllEntriesBtn() {
+    //     deleteEntryByIdApi(index, entryId, mainIndex)
+    //         .then(response => {
+    //             console.log(response)
+    //             setRender(render + 1)
+    //         })
+    //         .catch(error => console.log(error))
+    // }
+    // function handleDeleteAllEntriesBtn() {
 
-        deleteAllEntriesApi(index, mainIndex)
-            .then(response => {
-                setMessageVisible(false)
-                console.log(response)
-                setRender(render - 1)
-            })
-            .catch(error => console.log(error))
-    }
+    //     deleteAllEntriesApi(index, mainIndex)
+    //         .then(response => {
+    //             setMessageVisible(false)
+    //             console.log(response)
+    //             setRender(render - 1)
+    //         })
+    //         .catch(error => console.log(error))
+    // }
 
     //btn to delete entry
     function deleteEntryButton(entryId) {
-        return (
-            <td><button className="btn btn-outline-dark btn-sm" onClick = {() => handleDeleteEntryBtn(entryId)}>Usuń</button></td>
-        )
+        // return (
+        //     <td><button className="btn btn-outline-dark btn-sm" onClick = {() => handleDeleteEntryBtn(entryId)}>Usuń</button></td>
+        // )
     }
     //btn to delete all entries
     function deleteAllEntriesButton() {
-        return (
-            (main!= null && main.measurementEntries!= null) &&
-            <button className="btn btn-outline-dark" onClick = {handleDeleteAllEntriesBtn}>Usuń wszystkie wpisy</button>
-        )
-    }
-    function handleUpdateMainBtn() {
-        //update measurement main functions
+        // return (
+        //     (main!= null && main.measurementEntries!= null) &&
+        //     <button className="btn btn-outline-dark" onClick = {handleDeleteAllEntriesBtn}>Usuń wszystkie wpisy</button>
+        // )
     }
     return (
         <div className="EditMeasurementComponent">
