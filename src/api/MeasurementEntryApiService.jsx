@@ -16,3 +16,4 @@ export const deleteAllEntriesApi = (type, mainId) => apiClient.delete(`/${type}/
         mainId
     }
 })
+export const updateMeasurementEntryApi = (type, entryId,  entry) => apiClient.put(`${type}/entries/edit=${entryId}`, entry)

@@ -153,6 +153,20 @@ export default function MeasurementComponent() {
             }
             {(mainIndex == 2) &&
             <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Uiso[V]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{main.uiso}</td>
+                        </tr>
+                    </tbody>
+            </table> 
+            }
+            {(mainIndex == 2) &&
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>Lp.</th>

@@ -1,9 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom"
-import { addEntryToMainApi, addMeasurementMain, retrieveMeasurementMainById, updateMeasurementMainApi } from "../api/MeasurementMainApiService"
+import { addEntryToMainApi, retrieveMeasurementMainById, updateMeasurementMainApi } from "../api/MeasurementMainApiService"
 import { useEffect, useRef, useState } from "react"
-import { addMainToRoomApi } from "../api/RoomApiService"
-import { retrieveMeasurementMainTypes, deleteMeasurementMainApi } from "../api/MeasurementMainApiService"
-import { addMeasurementEntry, deleteEntryByIdApi, deleteAllEntriesApi } from "../api/MeasurementEntryApiService"
+import { retrieveMeasurementMainTypes} from "../api/MeasurementMainApiService"
+import { addMeasurementEntry, deleteEntryByIdApi, deleteAllEntriesApi, updateMeasurementEntryApi } from "../api/MeasurementEntryApiService"
 import { handleContinuity, handleResult, setDiscriminatorIndex } from "./functions/CommonFunctions"
 import MainInput from "./elements/MainInput"
 import {EntryInputRef, EntryInputVal} from "./elements/EntryInput"
@@ -25,6 +24,8 @@ export default function EditMeasurementComponent() {
     const [entriesMax, setEntriesMax] = useState(false)
     const [message, setMessage] = useState('')
     const [messageVisible, setMessageVisible] = useState(false)
+    const [editEntryOn, setEditEntryOn] = useState(false)
+    const [entryInEdit, setEntryInEdit] = useState([])
 
     const [firstPhase, setFirstPhase] = useState(false)
     const [secondPhase, setSecondPhase] = useState(false)
@@ -163,223 +164,232 @@ export default function EditMeasurementComponent() {
     }
     function addEntryLogic(entryObj)
     {
-        // addMeasurementEntry(index, entryObj)
-        // .then(response => {
-        //     console.log(response)
-        //     setEntry(response.data)
-        //         addEntryToMainApi(index, main.id, response.data.id)
-        //         .then(response => {
-        //             console.log(response)
-        //             setRender(render + 1)
-        //         })
-        //         .catch(error => console.log(error))
-        // })
-        // .catch(error => console.log(error)) 
-    }         
+        addMeasurementEntry(discriminator, entryObj)
+        .then(response => {
+            console.log(response)
+            setEntry(response.data)
+                addEntryToMainApi(discriminator, main.id, response.data.id)
+                .then(response => {
+                    console.log(response)
+                    setRender(render + 1)
+                })
+                .catch(error => console.log(error))
+        })
+        .catch(error => console.log(error)) 
+    }        
+    function updateEntryLogic(entryObj)
+    {
+        updateMeasurementEntryApi(discriminator, entryInEdit.id, entryObj)
+            .then(response => {
+                console.log(response)
+                setRender(render + 1)
+                })
+            .catch(error => console.log(error))
+    }   
 
     function handleAddEntryBtn() {
 
-        // if(index == 0) {
-        //     const newProtectionMeasurementEntry = {
-        //         symbol : symbol.current.value,
-        //         uo : uo.current.value,
-        //         measuringPoint : point.current.value,
-        //         cutout : cutout.current.value,
-        //         type : type.current.value,
-        //         iNom : iNom.current.value,
-        //         zs : zs.current.value
-        //     }
-        //     if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) 
-        //     && isFieldValueCorrect(zs.current.value) && isFieldValueCorrect(uo.current.value)) {
+        if(discriminator == 0) {
+            const newProtectionMeasurementEntry = {
+                symbol : symbol.current.value,
+                uo : uo.current.value,
+                measuringPoint : point.current.value,
+                cutout : cutout.current.value,
+                type : type.current.value,
+                iNom : iNom.current.value,
+                zs : zs.current.value
+            }
+            if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) 
+            && isFieldValueCorrect(zs.current.value) && isFieldValueCorrect(uo.current.value)) {
 
-        //         addEntryLogic(newProtectionMeasurementEntry)       
-        //     } else {
-        //         showError('Wypełnij wszystkie pola.')
-        //     }
-        // }
-        // if(index == 1) {
+                addEntryLogic(newProtectionMeasurementEntry)       
+            } else {
+                showError('Wypełnij wszystkie pola.')
+            }
+        }
+        if(discriminator == 1) {
 
-        //     if(allPhases) {
-        //     const newCircuitInsulationTnsEntry = {
-        //         symbol: symbol.current.value,
-        //         circuitName : circuitName.current.value,
-        //         l1l2 : l1l2.current.value,
-        //         l2l3 : l2l3.current.value,
-        //         l3l1 : l3l1.current.value,
-        //         l1pe : l1pe.current.value,
-        //         l2pe : l2pe.current.value,
-        //         l3pe : l3pe.current.value,
-        //         l1n : l1n.current.value,
-        //         l2n : l2n.current.value,
-        //         l3n : l3n.current.value,
-        //         npe : npe.current.value,
-        //         ra : ra.current.value
-        //     }
-        //     if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
-        //         && isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l3pe.current.value)
-        //         && isFieldValueCorrect(l1n.current.value) && isFieldValueCorrect(l2n.current.value) && isFieldValueCorrect(l3n.current.value) 
-        //         && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
+            if(allPhases) {
+            const newCircuitInsulationTnsEntry = {
+                symbol: symbol.current.value,
+                circuitName : circuitName.current.value,
+                l1l2 : l1l2.current.value,
+                l2l3 : l2l3.current.value,
+                l3l1 : l3l1.current.value,
+                l1pe : l1pe.current.value,
+                l2pe : l2pe.current.value,
+                l3pe : l3pe.current.value,
+                l1n : l1n.current.value,
+                l2n : l2n.current.value,
+                l3n : l3n.current.value,
+                npe : npe.current.value,
+                ra : ra.current.value
+            }
+            if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
+                && isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l3pe.current.value)
+                && isFieldValueCorrect(l1n.current.value) && isFieldValueCorrect(l2n.current.value) && isFieldValueCorrect(l3n.current.value) 
+                && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
 
-        //         addEntryLogic(newCircuitInsulationTnsEntry)            
-        //     } else {
-        //         showError('Wypełnij wszystkie pola.')
-        //     }
-        //     } else if (firstPhase) {
-        //         const newCircuitInsulationTnsEntry = {
-        //             symbol: symbol.current.value,
-        //             circuitName : circuitName.current.value,
-        //             l1pe : l1pe.current.value,
-        //             l1n : l1n.current.value,
-        //             npe : npe.current.value,
-        //             ra : ra.current.value
-        //         }
-        //         if(isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l1n.current.value)
-        //             && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-        //             addEntryLogic(newCircuitInsulationTnsEntry)            
-        //         } else {
-        //             showError('Wypełnij wszystkie pola.')
-        //         }
-        //     } else if (secondPhase) {
-        //         const newCircuitInsulationTnsEntry = {
-        //             symbol: symbol.current.value,
-        //             circuitName : circuitName.current.value,
-        //             l2pe : l2pe.current.value,
-        //             l2n : l2n.current.value,
-        //             npe : npe.current.value,
-        //             ra : ra.current.value
-        //         }
-        //         if(isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l2n.current.value)
-        //             && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-        //             addEntryLogic(newCircuitInsulationTnsEntry)            
-        //         } else {
-        //             showError('Wypełnij wszystkie pola.')
-        //         }
-        //     } else if(thirdPhase) {
-        //         const newCircuitInsulationTnsEntry = {
-        //             symbol: symbol.current.value,
-        //             circuitName : circuitName.current.value,
-        //             l3pe : l3pe.current.value,
-        //             l3n : l3n.current.value,
-        //             npe : npe.current.value,
-        //             ra : ra.current.value
-        //         }
-        //         if(isFieldValueCorrect(l3pe.current.value) && isFieldValueCorrect(l3n.current.value)
-        //             && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-        //             addEntryLogic(newCircuitInsulationTnsEntry)            
-        //         } else {
-        //             showError('Wypełnij wszystkie pola.')
-        //         }
-        //     }
-        // }
-        // if(index == 2) {
+                addEntryLogic(newCircuitInsulationTnsEntry)            
+            } else {
+                showError('Wypełnij wszystkie pola.')
+            }
+            } else if (firstPhase) {
+                const newCircuitInsulationTnsEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l1pe : l1pe.current.value,
+                    l1n : l1n.current.value,
+                    npe : npe.current.value,
+                    ra : ra.current.value
+                }
+                if(isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l1n.current.value)
+                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
+                    addEntryLogic(newCircuitInsulationTnsEntry)            
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            } else if (secondPhase) {
+                const newCircuitInsulationTnsEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l2pe : l2pe.current.value,
+                    l2n : l2n.current.value,
+                    npe : npe.current.value,
+                    ra : ra.current.value
+                }
+                if(isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l2n.current.value)
+                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
+                    addEntryLogic(newCircuitInsulationTnsEntry)            
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            } else if(thirdPhase) {
+                const newCircuitInsulationTnsEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l3pe : l3pe.current.value,
+                    l3n : l3n.current.value,
+                    npe : npe.current.value,
+                    ra : ra.current.value
+                }
+                if(isFieldValueCorrect(l3pe.current.value) && isFieldValueCorrect(l3n.current.value)
+                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
+                    addEntryLogic(newCircuitInsulationTnsEntry)            
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            }
+        }
+        if(discriminator == 2) {
 
-        //     if(allPhases) {
-        //         const newCircuitInsulationTncEntry = {
-        //             symbol: symbol.current.value,
-        //             circuitName : circuitName.current.value,
-        //             l1l2 : l1l2.current.value,
-        //             l2l3 : l2l3.current.value,
-        //             l3l1 : l3l1.current.value,
-        //             l1pen : l1pen.current.value,
-        //             l2pen : l2pen.current.value,
-        //             l3pen : l3pen.current.value,
-        //             ra : ra.current.value
-        //         }
-        //         if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
-        //         && isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(l3pen.current.value) 
-        //         && isFieldValueCorrect(ra.current.value)){
+            if(allPhases) {
+                const newCircuitInsulationTncEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l1l2 : l1l2.current.value,
+                    l2l3 : l2l3.current.value,
+                    l3l1 : l3l1.current.value,
+                    l1pen : l1pen.current.value,
+                    l2pen : l2pen.current.value,
+                    l3pen : l3pen.current.value,
+                    ra : ra.current.value
+                }
+                if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
+                && isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(l3pen.current.value) 
+                && isFieldValueCorrect(ra.current.value)){
                 
-        //             addEntryLogic(newCircuitInsulationTncEntry)         
-        //         } else {
-        //             showError('Wypełnij wszystkie pola.')
-        //         }
-        //     } else if(firstPhase) {
-        //         const newCircuitInsulationTncEntry = {
-        //             symbol: symbol.current.value,
-        //             circuitName : circuitName.current.value,
-        //             l1pen : l1pen.current.value,
-        //             ra : ra.current.value
-        //         }
-        //         if(isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(ra.current.value)){
-        //             addEntryLogic(newCircuitInsulationTncEntry)         
-        //         } else {
-        //             showError('Wypełnij wszystkie pola.')
-        //         }
-        //     } else if(secondPhase) {
-        //         const newCircuitInsulationTncEntry = {
-        //             symbol: symbol.current.value,
-        //             circuitName : circuitName.current.value,
-        //             l2pen : l2pen.current.value,
-        //             ra : ra.current.value
-        //         }
-        //         if(isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(ra.current.value)){
-        //             addEntryLogic(newCircuitInsulationTncEntry)         
-        //         } else {
-        //             showError('Wypełnij wszystkie pola.')
-        //         }
-        //     } else if(thirdPhase) {
-        //         const newCircuitInsulationTncEntry = {
-        //             symbol: symbol.current.value,
-        //             circuitName : circuitName.current.value,
-        //             l3pen : l3pen.current.value,
-        //             ra : ra.current.value
-        //         }
-        //         if(isFieldValueCorrect(l3pen.current.value) && isFieldValueCorrect(ra.current.value)){
-        //             addEntryLogic(newCircuitInsulationTncEntry)         
-        //         } else {
-        //             showError('Wypełnij wszystkie pola.')
-        //         }
-        //     }
-        // }
-        // if(index == 3) {
-        //     const newResidualCurrentProtectionEntry = {
-        //         symbol: symbol.current.value,
-        //         measuringPoint : point.current.value,
-        //         circuitBreaker : cutout.current.value,
-        //         rcdType : type.current.value,
-        //         iNom : iNom.current.value,
-        //         ia : ia.current.value,
-        //         ta : ta.current.value,
-        //         trcd : trcd.current.value,
-        //         ub : ub.current.value,
-        //         ui : ui.current.value
-        //     }
-        //     if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) && isFieldValueCorrect(ia.current.value)
-        //      && isFieldValueCorrect(ta.current.value) && isFieldValueCorrect(trcd.current.value) && isFieldValueCorrect(ub.current.value)
-        //       && isFieldValueCorrect(ui.current.value)) {
+                    addEntryLogic(newCircuitInsulationTncEntry)         
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            } else if(firstPhase) {
+                const newCircuitInsulationTncEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l1pen : l1pen.current.value,
+                    ra : ra.current.value
+                }
+                if(isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(ra.current.value)){
+                    addEntryLogic(newCircuitInsulationTncEntry)         
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            } else if(secondPhase) {
+                const newCircuitInsulationTncEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l2pen : l2pen.current.value,
+                    ra : ra.current.value
+                }
+                if(isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(ra.current.value)){
+                    addEntryLogic(newCircuitInsulationTncEntry)         
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            } else if(thirdPhase) {
+                const newCircuitInsulationTncEntry = {
+                    symbol: symbol.current.value,
+                    circuitName : circuitName.current.value,
+                    l3pen : l3pen.current.value,
+                    ra : ra.current.value
+                }
+                if(isFieldValueCorrect(l3pen.current.value) && isFieldValueCorrect(ra.current.value)){
+                    addEntryLogic(newCircuitInsulationTncEntry)         
+                } else {
+                    showError('Wypełnij wszystkie pola.')
+                }
+            }
+        }
+        if(discriminator == 3) {
+            const newResidualCurrentProtectionEntry = {
+                symbol: symbol.current.value,
+                measuringPoint : point.current.value,
+                circuitBreaker : cutout.current.value,
+                rcdType : type.current.value,
+                iNom : iNom.current.value,
+                ia : ia.current.value,
+                ta : ta.current.value,
+                trcd : trcd.current.value,
+                ub : ub.current.value,
+                ui : ui.current.value
+            }
+            if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) && isFieldValueCorrect(ia.current.value)
+             && isFieldValueCorrect(ta.current.value) && isFieldValueCorrect(trcd.current.value) && isFieldValueCorrect(ub.current.value)
+              && isFieldValueCorrect(ui.current.value)) {
             
-        //         addEntryLogic(newResidualCurrentProtectionEntry)         
-        //     } else {
-        //         showError('Wypełnij wszystkie pola.')
-        //     }
-        // }
-        // if(index == 4) {
-        //     const newSoilResistanceEntry = {
-        //         symbol : symbol.current.value,
-        //         measuringPoint : point.current.value,
-        //         l : lm.current.value,
-        //         d : dm.current.value,
-        //         p : p.current.value,
-        //     }
-        //     if(isFieldValueCorrect(lm.current.value) && isFieldValueCorrect(dm.current.value) && isFieldValueCorrect(p.current.value)) {
-        //         addEntryLogic(newSoilResistanceEntry)           
-        //     } else {
-        //         showError('Wypełnij wszystkie pola.')
-        //     }
-        // }
-        // if(index == 5) {
-        //     const newContinuityOfSmallResistanceEntry = {
-        //         symbol : symbol.current.value,
-        //         continuity : continuity.current.value,
-        //         rs : rs.current.value,
-        //         ra : ra.current.value,
-        //     }
-        //     if(continuity.current.value !== '' && isFieldValueCorrect(rs.current.value) && isFieldValueCorrect(ra.current.value)) {
-        //         addEntryLogic(newContinuityOfSmallResistanceEntry)           
-        //     } else {
-        //         showError('Wypełnij wszystkie pola.')
-        //     }
-        // }
+                addEntryLogic(newResidualCurrentProtectionEntry)         
+            } else {
+                showError('Wypełnij wszystkie pola.')
+            }
+        }
+        if(discriminator == 4) {
+            const newSoilResistanceEntry = {
+                symbol : symbol.current.value,
+                measuringPoint : point.current.value,
+                l : lm.current.value,
+                d : dm.current.value,
+                p : p.current.value,
+            }
+            if(isFieldValueCorrect(lm.current.value) && isFieldValueCorrect(dm.current.value) && isFieldValueCorrect(p.current.value)) {
+                addEntryLogic(newSoilResistanceEntry)           
+            } else {
+                showError('Wypełnij wszystkie pola.')
+            }
+        }
+        if(discriminator == 5) {
+            const newContinuityOfSmallResistanceEntry = {
+                symbol : symbol.current.value,
+                continuity : continuity.current.value,
+                rs : rs.current.value,
+                ra : ra.current.value,
+            }
+            if(continuity.current.value !== '' && isFieldValueCorrect(rs.current.value) && isFieldValueCorrect(ra.current.value)) {
+                addEntryLogic(newContinuityOfSmallResistanceEntry)           
+            } else {
+                showError('Wypełnij wszystkie pola.')
+            }
+        }
     }
     function handleUpdateMainBtn() {
 
@@ -425,39 +435,88 @@ export default function EditMeasurementComponent() {
         }
     }
 
-    // function handleDeleteEntryBtn(entryId) {
+    function handleDeleteEntryBtn(entryId) {
 
-    //     deleteEntryByIdApi(index, entryId, mainIndex)
-    //         .then(response => {
-    //             console.log(response)
-    //             setRender(render + 1)
-    //         })
-    //         .catch(error => console.log(error))
-    // }
-    // function handleDeleteAllEntriesBtn() {
+        console.log('Delete id: ' + entryId)
 
-    //     deleteAllEntriesApi(index, mainIndex)
-    //         .then(response => {
-    //             setMessageVisible(false)
-    //             console.log(response)
-    //             setRender(render - 1)
-    //         })
-    //         .catch(error => console.log(error))
-    // }
+        deleteEntryByIdApi(discriminator, entryId, main.id)
+            .then(response => {
+                console.log(response)
+                setRender(render + 1)
+            })
+            .catch(error => console.log(error))
+    }
+    function handleUpdateEntrySaveBtn() {
+
+        if(discriminator == 0) {
+            const updatedProtectionMeasurementEntry = {
+                symbol : symbol.current.value,
+                uo : uo.current.value,
+                measuringPoint : point.current.value,
+                cutout : cutout.current.value,
+                type : type.current.value,
+                iNom : iNom.current.value,
+                zs : zs.current.value
+            }
+            if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) 
+            && isFieldValueCorrect(zs.current.value) && isFieldValueCorrect(uo.current.value)) {
+
+                updateEntryLogic(updatedProtectionMeasurementEntry)       
+            } else {
+                showError('Wypełnij wszystkie pola.')
+            }
+        }
+    }
+    function handleUpdateEntryBtn(entryId) {
+
+        setEditEntryOn(true)
+        main.measurementEntries.map(entry => {
+            if(entry.id == entryId) {
+                setEntryInEdit(entry)
+                setUseRefsValues(entry)
+            }
+        } )
+        console.log(entryInEdit)
+    }
+    function setUseRefsValues(entryToUpdate) {
+        symbol.current.value = entryToUpdate.symbol
+        point.current.value = entryToUpdate.measuringPoint
+        cutout.current.value = entryToUpdate.cutout
+        type.current.value = entryToUpdate.type
+        iNom.current.value = entryToUpdate.iNom
+        zs.current.value = entryToUpdate.zs
+    }
+    function handleDeleteAllEntriesBtn() {
+
+        deleteAllEntriesApi(discriminator, main.id)
+            .then(response => {
+                setMessageVisible(false)
+                console.log(response)
+                setRender(render - 1)
+            })
+            .catch(error => console.log(error))
+    }
 
     //btn to delete entry
     function deleteEntryButton(entryId) {
-        // return (
-        //     <td><button className="btn btn-outline-dark btn-sm" onClick = {() => handleDeleteEntryBtn(entryId)}>Usuń</button></td>
-        // )
+        return (
+            <td><button className="btn btn-outline-dark btn-sm" onClick = {() => handleDeleteEntryBtn(entryId)}>Usuń</button></td>
+        )
+    }
+    //btn to update entry
+    function updateEntryButton(entryId) {
+        return (
+            <td><button className="btn btn-outline-dark btn-sm" onClick = {() => handleUpdateEntryBtn(entryId)}>Edytuj wpis</button></td>
+        )
     }
     //btn to delete all entries
     function deleteAllEntriesButton() {
-        // return (
-        //     (main!= null && main.measurementEntries!= null) &&
-        //     <button className="btn btn-outline-dark" onClick = {handleDeleteAllEntriesBtn}>Usuń wszystkie wpisy</button>
-        // )
+        return (
+            (main!= null && main.measurementEntries!= null) &&
+            <button className="btn btn-outline-dark" onClick = {handleDeleteAllEntriesBtn}>Usuń wszystkie wpisy</button>
+        )
     }
+
     return (
         <div className="EditMeasurementComponent">
 
@@ -474,7 +533,7 @@ export default function EditMeasurementComponent() {
 
         {/* Edit main  */}
 
-            { (main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porażeniem przez samoczynne wyłączenie') &&
+            { (discriminator == 0) &&
                 <table className="table">
                     <thead>
                         <tr>
@@ -503,7 +562,7 @@ export default function EditMeasurementComponent() {
                     </tbody>
                 </table>   
             }
-            { (main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodów') &&
+            { (discriminator == 1 || discriminator == 2) &&
                 <table className="table">
                     <thead>
                         <tr>
@@ -512,15 +571,17 @@ export default function EditMeasurementComponent() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td><MainInput inputRef={uiso}/></td>
+                            <td><MainInput defaultValue={main.uiso} inputRef={uiso}/></td>
                         </tr>
                     </tbody>
                 </table>   
             }
-            <button className="btn btn-outline-dark m-1" onClick={handleUpdateMainBtn}>Aktualizuj pomiar</button>
+            { (discriminator < 4) && // todo !
+                <button className="btn btn-outline-dark m-1" onClick={handleUpdateMainBtn}>Aktualizuj pomiar</button>
+            }
             {/* Add entry */}
 
-            { (main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porażeniem przez samoczynne wyłączenie') &&
+            { (discriminator == 0) &&
                 <table className="table">
                 <thead>
                     <tr>
@@ -532,16 +593,16 @@ export default function EditMeasurementComponent() {
                         <td><EntryInputRef type = "text" inputRef = {symbol} size = {5} maxLength = {6}/></td>
                         <td className="col-md-2"><EntryInputRef type = "text" inputRef = {point} maxLength = {20}/></td>
                         <td><EntryInputRef type = "text" inputRef = {cutout} maxLength = {6} title = {entry0TextPL[0]}/></td>
-                        <td className="col-md-1"><select className="form-select" ref={type} 
+                        <td className="col-md-1"><select className="form-select" ref={type}
                             data-toggle="tooltip" data-placement="top" title = {entry0TextPL[1]}>
                                     <option value = "B">B</option>
                                     <option value = "C">C</option>
                                     <option value = "D">D</option>
                             </select>
                         </td>
-                        <td><EntryInputRef type = "number"  inputRef = {iNom} title = {entry0TextPL[2]}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {iNom} title = {entry0TextPL[2]}/></td>
                         <td><EntryInputVal type = "text" disabled = {true} value = {entry.ia} title = {entry0TextPL[3]}/></td>
-                        <td><EntryInputRef type = "number"  inputRef = {zs} title = {entry0TextPL[4]}/></td>
+                        <td><EntryInputRef type = "number" inputRef = {zs} title = {entry0TextPL[4]}/></td>
                         <td><EntryInputVal type = "text" disabled = {true} value = {entry.za} title = {entry0TextPL[5]}/></td>
                         <td><EntryInputVal type = "text" disabled = {true} value = {entry.ik} title = {entry0TextPL[6]}/></td>
                         <td className="col-md-2"><EntryInputVal type = "text" disabled = {true} value = {handleResult(entry.result)} 
@@ -550,7 +611,7 @@ export default function EditMeasurementComponent() {
                 </tbody>
             </table>
             }
-            { (main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodów') &&
+            { (discriminator == 1) &&
             <div>
                 <div className="col-2 m-1">
                 <select className="form-select" onChange = {handlePhaseSelect} ref={phase}>
@@ -587,7 +648,7 @@ export default function EditMeasurementComponent() {
             </table>
             </div>
             }
-            { (main.measurementName == '(TN-C) Badanie rezystancji izolacji obwodów') &&
+            { (discriminator == 2) &&
             <div>
                 <div className="col-2 m-1">
                 <select className="form-select" onChange={handlePhaseSelect} ref={phase}>
@@ -620,7 +681,7 @@ export default function EditMeasurementComponent() {
                 </table>
             </div>
             }
-            { (main.measurementName == 'Parametry zabezpieczeń różnicowoprądowych') &&
+            { (discriminator == 3) &&
                 <table className="table">
                 <thead>
                     <tr>
@@ -650,7 +711,7 @@ export default function EditMeasurementComponent() {
                 </tbody>
             </table>
             }
-            { (main.measurementName == 'Badanie rezystywności gruntu') &&
+            { (discriminator == 4) &&
                 <table className="table">
                 <thead>
                     <tr>
@@ -668,7 +729,7 @@ export default function EditMeasurementComponent() {
                 </tbody>
             </table>
             }
-            { (main.measurementName == 'Badanie ciągłości małych rezystancji') &&
+            { (discriminator == 5) &&
                 <table className="table">
                 <thead>
                     <tr>
@@ -690,12 +751,14 @@ export default function EditMeasurementComponent() {
                 </tbody>
             </table>
             }
-            <button className="btn btn-dark" disabled = {entriesMax} onClick={handleAddEntryBtn}>Aktualizuj wpis</button> 
+            <button className="btn btn-dark" disabled = {entriesMax || editEntryOn} onClick={handleAddEntryBtn}>Dodaj wpis do pomiaru</button> 
+            <button className="btn btn-dark m-2" disabled = {!editEntryOn} onClick={handleUpdateEntrySaveBtn}>Aktualizuj wpis</button>
+            <button className="btn btn-dark m-2" disabled = {!editEntryOn} onClick={() => setEditEntryOn(false)}>Anuluj</button>
             <hr></hr>
 
             {/* view entry */}
 
-            { (main.measurementName == '(TN-C, TN-S) Badanie ochrony przed porażeniem przez samoczynne wyłączenie') &&
+            { (discriminator == 0) &&
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -721,6 +784,7 @@ export default function EditMeasurementComponent() {
                                     <td>{entry.ik}</td>
                                     <td>{handleResult(entry.result)}</td>
                                     {deleteEntryButton(entry.id)}
+                                    {updateEntryButton(entry.id)}
                                 </tr>
                             )
                         )
@@ -728,7 +792,7 @@ export default function EditMeasurementComponent() {
                 </tbody>
             </table>
             }
-            { (main.measurementName == '(TN-S) Badanie rezystancji izolacji obwodów') &&
+            { (discriminator == 1) &&
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -758,6 +822,7 @@ export default function EditMeasurementComponent() {
                                     <td>{entry.ra}</td>
                                     <td>{handleResult(entry.result)}</td>
                                     {deleteEntryButton(entry.id)}
+                                    {updateEntryButton(entry.id)}
                                 </tr>
                             )
                         )
@@ -765,7 +830,7 @@ export default function EditMeasurementComponent() {
                 </tbody>
             </table>
             }
-            { (main.measurementName == '(TN-C) Badanie rezystancji izolacji obwodów') &&
+            { (discriminator == 2) &&
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -791,6 +856,7 @@ export default function EditMeasurementComponent() {
                                     <td>{entry.ra}</td>
                                     <td>{handleResult(entry.result)}</td>
                                     {deleteEntryButton(entry.id)}
+                                    {updateEntryButton(entry.id)}
                                 </tr>
                             )
                         )
@@ -798,7 +864,7 @@ export default function EditMeasurementComponent() {
                 </tbody>
             </table>
             }
-            { (main.measurementName == 'Parametry zabezpieczeń różnicowoprądowych') &&
+            { (discriminator == 3) &&
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -825,6 +891,7 @@ export default function EditMeasurementComponent() {
                                     <td>{entry.ui}</td>
                                     <td>{handleResult(entry.result)}</td>
                                     {deleteEntryButton(entry.id)}
+                                    {updateEntryButton(entry.id)}
                                 </tr>
                             )
                         )
@@ -832,7 +899,7 @@ export default function EditMeasurementComponent() {
                 </tbody>
             </table>
             }
-            { (main.measurementName == 'Badanie rezystywności gruntu') &&
+            { (discriminator == 4) &&
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -853,6 +920,7 @@ export default function EditMeasurementComponent() {
                                     <td>{entry.d}</td>
                                     <td>{entry.p}</td>
                                     {deleteEntryButton(entry.id)}
+                                    {updateEntryButton(entry.id)}
                                 </tr>
                             )
                         )
@@ -860,7 +928,7 @@ export default function EditMeasurementComponent() {
                 </tbody>
             </table>
             }
-            { (main.measurementName == 'Badanie ciągłości małych rezystancji') &&
+            { (discriminator == 5) &&
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -881,6 +949,7 @@ export default function EditMeasurementComponent() {
                                     <td>{entry.ra}</td>
                                     <td>{handleResult(entry.result)}</td>
                                     {deleteEntryButton(entry.id)}
+                                    {updateEntryButton(entry.id)}
                                 </tr>
                             )
                         )
