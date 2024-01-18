@@ -1,13 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom"
-import { addEntryToMainApi, retrieveMeasurementMainById, updateMeasurementMainApi } from "../api/MeasurementMainApiService"
+import { addEntryToMainApi, retrieveMeasurementMainById, updateMeasurementMainApi } from "../../api/MeasurementMainApiService"
 import { useEffect, useRef, useState } from "react"
-import { retrieveMeasurementMainTypes} from "../api/MeasurementMainApiService"
-import { addMeasurementEntry, deleteEntryByIdApi, deleteAllEntriesApi, updateMeasurementEntryApi } from "../api/MeasurementEntryApiService"
-import { handleContinuity, handleResult, setDiscriminatorIndex } from "./functions/CommonFunctions"
-import MainInput from "./elements/MainInput"
-import {EntryInputRef, EntryInputVal} from "./elements/EntryInput"
-import { entry0LabelsPL, entry1LabelsPL, entry2LabelsPL, entry3LabelsPL, entry4LabelsPL, entry5LabelsPL} from "./text/LabelsPL"
-import { main0TextPL, entry0TextPL, entry1TextPL, entry2TextPL, entry3TextPL, entry4TextPL, entry5TextPL } from "./text/TooltipsPL"
+import { addMeasurementEntry, deleteEntryByIdApi, deleteAllEntriesApi, updateMeasurementEntryApi } from "../../api/MeasurementEntryApiService"
+import { handleContinuity, handleResult, setDiscriminatorIndex } from "../functions/CommonFunctions"
+import MainInput from "../elements/MainInput"
+import {EntryInputRef, EntryInputVal} from "../elements/EntryInput"
+import { entry0LabelsPL, entry1LabelsPL, entry2LabelsPL, entry3LabelsPL, entry4LabelsPL, entry5LabelsPL} from "../text/LabelsPL"
+import { main0TextPL, entry0TextPL, entry1TextPL, entry2TextPL, entry3TextPL, entry4TextPL, entry5TextPL } from "../text/TooltipsPL"
 
 export default function EditMeasurementComponent() {
 
@@ -17,7 +16,6 @@ export default function EditMeasurementComponent() {
 
     var maxEntries = 37
 
-    const [mainIndex, setMainIndex] = useState(0)
     const [discriminator, setDiscriminator] = useState(10)
     const [main, setMain] = useState([])
     const [entry, setEntry] = useState([])
@@ -34,6 +32,8 @@ export default function EditMeasurementComponent() {
     const [allPhases, setAllPhases] = useState(true)
 
     const [uoTest, setUoTest] = useState(0)
+
+    const [render, setRender] = useState('')
 
     function handlePhaseSelect(event) {
         if(event.target.value === '1') {
@@ -62,7 +62,7 @@ export default function EditMeasurementComponent() {
         }
     }
 
-    
+
     //discriminator 0
     const un = useRef()
     const ui = useRef() // common with 3
@@ -116,21 +116,10 @@ export default function EditMeasurementComponent() {
     const rs = useRef()
     //discriminator 5
 
-
-    const [render, setRender] = useState('')
-    const [types, setTypes] = useState([])
-
     useEffect ( () => { 
-        //refreshMeasurementName()
-        //controlEntriesQuantity()
         refreshMain()
     }, [render])
 
-    function refreshMeasurementName(){
-        retrieveMeasurementMainTypes()
-            .then(response => setTypes(response.data))
-            .catch(error => console.log(error))
-    }
     function refreshMain(){
         retrieveMeasurementMainById(idMain)
             .then(response => {
@@ -138,6 +127,7 @@ export default function EditMeasurementComponent() {
                 setDiscriminator(setDiscriminatorIndex(response.data.measurementName))
                 setUoTest(response.data.measurementEntries[0].uo)
                 console.log(response)
+                controlEntriesQuantity()
             })
             .catch(error => console.log(error))
     }
@@ -184,26 +174,16 @@ export default function EditMeasurementComponent() {
             .then(response => {
                 console.log(response)
                 setRender(render + 1)
+                setEditEntryOn(false)    
+                setPhaseSelectorDisable(false)
                 })
             .catch(error => console.log(error))
     }   
-
     function handleAddEntryBtn() {
 
         if(discriminator == 0) {
-            const newProtectionMeasurementEntry = {
-                symbol : symbol.current.value,
-                uo : uo.current.value,
-                measuringPoint : point.current.value,
-                cutout : cutout.current.value,
-                type : type.current.value,
-                iNom : iNom.current.value,
-                zs : zs.current.value
-            }
-            if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) 
-            && isFieldValueCorrect(zs.current.value) && isFieldValueCorrect(uo.current.value)) {
-
-                addEntryLogic(newProtectionMeasurementEntry)       
+            if(allFieldsAreCorrectBeforeSave()) {
+                addEntryLogic(entryObjects())       
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
@@ -211,182 +191,75 @@ export default function EditMeasurementComponent() {
         if(discriminator == 1) {
 
             if(allPhases) {
-            const newCircuitInsulationTnsEntry = {
-                symbol: symbol.current.value,
-                circuitName : circuitName.current.value,
-                l1l2 : l1l2.current.value,
-                l2l3 : l2l3.current.value,
-                l3l1 : l3l1.current.value,
-                l1pe : l1pe.current.value,
-                l2pe : l2pe.current.value,
-                l3pe : l3pe.current.value,
-                l1n : l1n.current.value,
-                l2n : l2n.current.value,
-                l3n : l3n.current.value,
-                npe : npe.current.value,
-                ra : ra.current.value
-            }
-            if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
-                && isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l3pe.current.value)
-                && isFieldValueCorrect(l1n.current.value) && isFieldValueCorrect(l2n.current.value) && isFieldValueCorrect(l3n.current.value) 
-                && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-
-                addEntryLogic(newCircuitInsulationTnsEntry)            
+            if(allFieldsAreCorrectBeforeSave()) {
+                addEntryLogic(entryObjects())            
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
             } else if (firstPhase) {
-                const newCircuitInsulationTnsEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l1pe : l1pe.current.value,
-                    l1n : l1n.current.value,
-                    npe : npe.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l1n.current.value)
-                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-                    addEntryLogic(newCircuitInsulationTnsEntry)            
+                if(allFieldsAreCorrectBeforeSave()) {
+                    addEntryLogic(entryObjects())            
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             } else if (secondPhase) {
-                const newCircuitInsulationTnsEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l2pe : l2pe.current.value,
-                    l2n : l2n.current.value,
-                    npe : npe.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l2n.current.value)
-                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-                    addEntryLogic(newCircuitInsulationTnsEntry)            
+                if(allFieldsAreCorrectBeforeSave()) {
+                    addEntryLogic(entryObjects())            
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             } else if(thirdPhase) {
-                const newCircuitInsulationTnsEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l3pe : l3pe.current.value,
-                    l3n : l3n.current.value,
-                    npe : npe.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l3pe.current.value) && isFieldValueCorrect(l3n.current.value)
-                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-                    addEntryLogic(newCircuitInsulationTnsEntry)            
+                if(allFieldsAreCorrectBeforeSave()) {
+                    addEntryLogic(entryObjects())            
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             }
         }
         if(discriminator == 2) {
-
             if(allPhases) {
-                const newCircuitInsulationTncEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l1l2 : l1l2.current.value,
-                    l2l3 : l2l3.current.value,
-                    l3l1 : l3l1.current.value,
-                    l1pen : l1pen.current.value,
-                    l2pen : l2pen.current.value,
-                    l3pen : l3pen.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
-                && isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(l3pen.current.value) 
-                && isFieldValueCorrect(ra.current.value)){
-                
-                    addEntryLogic(newCircuitInsulationTncEntry)         
+                if(allFieldsAreCorrectBeforeSave()){
+                    addEntryLogic(entryObjects())         
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             } else if(firstPhase) {
-                const newCircuitInsulationTncEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l1pen : l1pen.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(ra.current.value)){
-                    addEntryLogic(newCircuitInsulationTncEntry)         
+                if(allFieldsAreCorrectBeforeSave()){
+                    addEntryLogic(entryObjects())         
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             } else if(secondPhase) {
-                const newCircuitInsulationTncEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l2pen : l2pen.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(ra.current.value)){
-                    addEntryLogic(newCircuitInsulationTncEntry)         
+                if(allFieldsAreCorrectBeforeSave()){
+                    addEntryLogic(entryObjects())         
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             } else if(thirdPhase) {
-                const newCircuitInsulationTncEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l3pen : l3pen.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l3pen.current.value) && isFieldValueCorrect(ra.current.value)){
-                    addEntryLogic(newCircuitInsulationTncEntry)         
+                if(allFieldsAreCorrectBeforeSave()){
+                    addEntryLogic(entryObjects())         
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             }
         }
         if(discriminator == 3) {
-            const newResidualCurrentProtectionEntry = {
-                symbol: symbol.current.value,
-                measuringPoint : point.current.value,
-                circuitBreaker : cutout.current.value,
-                rcdType : type.current.value,
-                iNom : iNom.current.value,
-                ia : ia.current.value,
-                ta : ta.current.value,
-                trcd : trcd.current.value,
-                ub : ub.current.value,
-                ui : ui.current.value
-            }
-            if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) && isFieldValueCorrect(ia.current.value)
-             && isFieldValueCorrect(ta.current.value) && isFieldValueCorrect(trcd.current.value) && isFieldValueCorrect(ub.current.value)
-              && isFieldValueCorrect(ui.current.value)) {
-            
-                addEntryLogic(newResidualCurrentProtectionEntry)         
+            if(allFieldsAreCorrectBeforeSave()) {
+                addEntryLogic(entryObjects())         
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
         }
         if(discriminator == 4) {
-            const newSoilResistanceEntry = {
-                symbol : symbol.current.value,
-                measuringPoint : point.current.value,
-                l : lm.current.value,
-                d : dm.current.value,
-                p : p.current.value,
-            }
-            if(isFieldValueCorrect(lm.current.value) && isFieldValueCorrect(dm.current.value) && isFieldValueCorrect(p.current.value)) {
-                addEntryLogic(newSoilResistanceEntry)           
+            if(allFieldsAreCorrectBeforeSave()) {
+                addEntryLogic(entryObjects())           
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
         }
         if(discriminator == 5) {
-            const newContinuityOfSmallResistanceEntry = {
-                symbol : symbol.current.value,
-                continuity : continuity.current.value,
-                rs : rs.current.value,
-                ra : ra.current.value,
-            }
-            if(continuity.current.value !== '' && isFieldValueCorrect(rs.current.value) && isFieldValueCorrect(ra.current.value)) {
-                addEntryLogic(newContinuityOfSmallResistanceEntry)           
+            if(allFieldsAreCorrectBeforeSave()) {
+                addEntryLogic(entryObjects())           
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
@@ -450,20 +323,9 @@ export default function EditMeasurementComponent() {
     function handleUpdateEntrySaveBtn() {
 
         if(discriminator == 0) {
-            const updatedProtectionMeasurementEntry = {
-                symbol : symbol.current.value,
-                uo : uo.current.value,
-                measuringPoint : point.current.value,
-                cutout : cutout.current.value,
-                type : type.current.value,
-                iNom : iNom.current.value,
-                zs : zs.current.value
-            }
-            if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) 
-            && isFieldValueCorrect(zs.current.value) && isFieldValueCorrect(uo.current.value)) {
-                updateEntryLogic(updatedProtectionMeasurementEntry)  
-                setEditEntryOn(false)    
-                setPhaseSelectorDisable(false) 
+
+            if(allFieldsAreCorrectBeforeSave()) {
+                updateEntryLogic(entryObjects())
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
@@ -471,83 +333,26 @@ export default function EditMeasurementComponent() {
         if(discriminator == 1) {
 
             if(allPhases) {
-            const updatedCircuitInsulationTnsEntry = {
-                symbol: symbol.current.value,
-                circuitName : circuitName.current.value,
-                l1l2 : l1l2.current.value,
-                l2l3 : l2l3.current.value,
-                l3l1 : l3l1.current.value,
-                l1pe : l1pe.current.value,
-                l2pe : l2pe.current.value,
-                l3pe : l3pe.current.value,
-                l1n : l1n.current.value,
-                l2n : l2n.current.value,
-                l3n : l3n.current.value,
-                npe : npe.current.value,
-                ra : ra.current.value
-            }
-            if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
-                && isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l3pe.current.value)
-                && isFieldValueCorrect(l1n.current.value) && isFieldValueCorrect(l2n.current.value) && isFieldValueCorrect(l3n.current.value) 
-                && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-
-                updateEntryLogic(updatedCircuitInsulationTnsEntry)  
-                setEditEntryOn(false)    
-                setPhaseSelectorDisable(false)           
-            } else {
-                showError('Wypełnij wszystkie pola.')
-            }
-            } else if (firstPhase) {
-                const updatedCircuitInsulationTnsEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l1pe : l1pe.current.value,
-                    l1n : l1n.current.value,
-                    npe : npe.current.value,
-                    ra : ra.current.value
+                if(allFieldsAreCorrectBeforeSave()) {
+                    updateEntryLogic(entryObjects())         
+                } else {
+                    showError('Wypełnij wszystkie pola.')
                 }
-                if(isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l1n.current.value)
-                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-
-                    updateEntryLogic(updatedCircuitInsulationTnsEntry)  
-                    setEditEntryOn(false)   
-                    setPhaseSelectorDisable(false)          
+            } else if (firstPhase) {
+                if(allFieldsAreCorrectBeforeSave()) {
+                    updateEntryLogic(entryObjects())        
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             } else if (secondPhase) {
-                const updatedCircuitInsulationTnsEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l2pe : l2pe.current.value,
-                    l2n : l2n.current.value,
-                    npe : npe.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l2n.current.value)
-                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-
-                    updateEntryLogic(updatedCircuitInsulationTnsEntry)  
-                    setEditEntryOn(false)  
-                    setPhaseSelectorDisable(false)                  
+                if(allFieldsAreCorrectBeforeSave()) {
+                    updateEntryLogic(entryObjects())                 
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             } else if(thirdPhase) {
-                const updatedCircuitInsulationTnsEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l3pe : l3pe.current.value,
-                    l3n : l3n.current.value,
-                    npe : npe.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l3pe.current.value) && isFieldValueCorrect(l3n.current.value)
-                    && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)) {
-                    
-                    updateEntryLogic(updatedCircuitInsulationTnsEntry)  
-                    setEditEntryOn(false)  
-                    setPhaseSelectorDisable(false) 
+                if(allFieldsAreCorrectBeforeSave()) {
+                    updateEntryLogic(entryObjects())  
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
@@ -556,122 +361,48 @@ export default function EditMeasurementComponent() {
         if(discriminator == 2) {
 
             if(allPhases) {
-                const updatedCircuitInsulationTncEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l1l2 : l1l2.current.value,
-                    l2l3 : l2l3.current.value,
-                    l3l1 : l3l1.current.value,
-                    l1pen : l1pen.current.value,
-                    l2pen : l2pen.current.value,
-                    l3pen : l3pen.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
-                && isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(l3pen.current.value) 
-                && isFieldValueCorrect(ra.current.value)){
-                
-                    updateEntryLogic(updatedCircuitInsulationTncEntry)  
-                    setEditEntryOn(false)    
-                    setPhaseSelectorDisable(false)         
+                if(allFieldsAreCorrectBeforeSave()){
+                    updateEntryLogic(entryObjects())          
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             } else if(firstPhase) {
-                const updatedCircuitInsulationTncEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l1pen : l1pen.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(ra.current.value)){
-                    updateEntryLogic(updatedCircuitInsulationTncEntry)  
-                    setEditEntryOn(false)    
-                    setPhaseSelectorDisable(false)           
+                if(allFieldsAreCorrectBeforeSave()){
+                    updateEntryLogic(entryObjects())         
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             } else if(secondPhase) {
-                const updatedCircuitInsulationTncEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l2pen : l2pen.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(ra.current.value)){
-                    updateEntryLogic(updatedCircuitInsulationTncEntry)  
-                    setEditEntryOn(false)    
-                    setPhaseSelectorDisable(false)             
+                if(allFieldsAreCorrectBeforeSave()){
+                    updateEntryLogic(entryObjects())          
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             } else if(thirdPhase) {
-                const updatedCircuitInsulationTncEntry = {
-                    symbol: symbol.current.value,
-                    circuitName : circuitName.current.value,
-                    l3pen : l3pen.current.value,
-                    ra : ra.current.value
-                }
-                if(isFieldValueCorrect(l3pen.current.value) && isFieldValueCorrect(ra.current.value)){
-                    updateEntryLogic(updatedCircuitInsulationTncEntry)  
-                    setEditEntryOn(false)    
-                    setPhaseSelectorDisable(false)          
+                if(allFieldsAreCorrectBeforeSave()){
+                    updateEntryLogic(entryObjects())        
                 } else {
                     showError('Wypełnij wszystkie pola.')
                 }
             }
         }
         if(discriminator == 3) {
-            const updatedResidualCurrentProtectionEntry = {
-                symbol: symbol.current.value,
-                measuringPoint : point.current.value,
-                circuitBreaker : cutout.current.value,
-                rcdType : type.current.value,
-                iNom : iNom.current.value,
-                ia : ia.current.value,
-                ta : ta.current.value,
-                trcd : trcd.current.value,
-                ub : ub.current.value,
-                ui : ui.current.value
-            }
-            if(cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) && isFieldValueCorrect(ia.current.value)
-             && isFieldValueCorrect(ta.current.value) && isFieldValueCorrect(trcd.current.value) && isFieldValueCorrect(ub.current.value)
-              && isFieldValueCorrect(ui.current.value)) {
-            
-                updateEntryLogic(updatedResidualCurrentProtectionEntry)  
-                setEditEntryOn(false)    
-                setPhaseSelectorDisable(false)          
+            if(allFieldsAreCorrectBeforeSave()) {
+                updateEntryLogic(entryObjects())           
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
         }
         if(discriminator == 4) {
-            const updatedSoilResistanceEntry = {
-                symbol : symbol.current.value,
-                measuringPoint : point.current.value,
-                l : lm.current.value,
-                d : dm.current.value,
-                p : p.current.value,
-            }
-            if(isFieldValueCorrect(lm.current.value) && isFieldValueCorrect(dm.current.value) && isFieldValueCorrect(p.current.value)) {
-                updateEntryLogic(updatedSoilResistanceEntry)  
-                setEditEntryOn(false)    
-                setPhaseSelectorDisable(false)          
+            if(allFieldsAreCorrectBeforeSave()) {
+                updateEntryLogic(entryObjects())         
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
         }
         if(discriminator == 5) {
-            const updatedContinuityOfSmallResistanceEntry = {
-                symbol : symbol.current.value,
-                continuity : continuity.current.value,
-                rs : rs.current.value,
-                ra : ra.current.value,
-            }
-            if(continuity.current.value !== '' && isFieldValueCorrect(rs.current.value) && isFieldValueCorrect(ra.current.value)) {
-                updateEntryLogic(updatedContinuityOfSmallResistanceEntry)  
-                setEditEntryOn(false)    
-                setPhaseSelectorDisable(false)       
+            if(allFieldsAreCorrectBeforeSave()) {
+                updateEntryLogic(entryObjects())       
             } else {
                 showError('Wypełnij wszystkie pola.')
             }
@@ -687,6 +418,183 @@ export default function EditMeasurementComponent() {
             }
         } )
         console.log(entryInEdit)
+    }
+    function entryObjects() {
+        if(discriminator == 0) {
+            return {
+                symbol : symbol.current.value,
+                uo : uo.current.value,
+                measuringPoint : point.current.value,
+                cutout : cutout.current.value,
+                type : type.current.value,
+                iNom : iNom.current.value,
+                zs : zs.current.value
+            }
+        }
+        if(discriminator == 1 && allPhases) {
+            return {
+                symbol: symbol.current.value,
+                circuitName : circuitName.current.value,
+                l1l2 : l1l2.current.value,
+                l2l3 : l2l3.current.value,
+                l3l1 : l3l1.current.value,
+                l1pe : l1pe.current.value,
+                l2pe : l2pe.current.value,
+                l3pe : l3pe.current.value,
+                l1n : l1n.current.value,
+                l2n : l2n.current.value,
+                l3n : l3n.current.value,
+                npe : npe.current.value,
+                ra : ra.current.value
+            }
+        }
+        if(discriminator == 1 && firstPhase) {
+            return {
+                symbol: symbol.current.value,
+                circuitName : circuitName.current.value,
+                l1pe : l1pe.current.value,
+                l1n : l1n.current.value,
+                npe : npe.current.value,
+                ra : ra.current.value
+            }
+        }
+        if(discriminator == 1 && secondPhase) {
+            return {
+                symbol: symbol.current.value,
+                circuitName : circuitName.current.value,
+                l2pe : l2pe.current.value,
+                l2n : l2n.current.value,
+                npe : npe.current.value,
+                ra : ra.current.value
+            }
+        }
+        if(discriminator == 1 && thirdPhase) {
+            return {
+                symbol: symbol.current.value,
+                circuitName : circuitName.current.value,
+                l3pe : l3pe.current.value,
+                l3n : l3n.current.value,
+                npe : npe.current.value,
+                ra : ra.current.value
+            }
+        }
+        if(discriminator == 2 && allPhases) {
+            return {
+                symbol: symbol.current.value,
+                circuitName : circuitName.current.value,
+                l1l2 : l1l2.current.value,
+                l2l3 : l2l3.current.value,
+                l3l1 : l3l1.current.value,
+                l1pen : l1pen.current.value,
+                l2pen : l2pen.current.value,
+                l3pen : l3pen.current.value,
+                ra : ra.current.value
+            }
+        }
+        if(discriminator == 2 && firstPhase) {
+            return {
+                symbol: symbol.current.value,
+                circuitName : circuitName.current.value,
+                l1pen : l1pen.current.value,
+                ra : ra.current.value
+            }
+        }
+        if(discriminator == 2 && secondPhase) {
+            return {
+                symbol: symbol.current.value,
+                circuitName : circuitName.current.value,
+                l2pen : l2pen.current.value,
+                ra : ra.current.value
+            }
+        }
+        if(discriminator == 2 && thirdPhase) {
+            return {
+                symbol: symbol.current.value,
+                circuitName : circuitName.current.value,
+                l3pen : l3pen.current.value,
+                ra : ra.current.value
+            }
+        }
+        if(discriminator == 3) {
+            return {
+                symbol: symbol.current.value,
+                measuringPoint : point.current.value,
+                circuitBreaker : cutout.current.value,
+                rcdType : type.current.value,
+                iNom : iNom.current.value,
+                ia : ia.current.value,
+                ta : ta.current.value,
+                trcd : trcd.current.value,
+                ub : ub.current.value,
+                ui : ui.current.value
+            }
+        }
+        if(discriminator == 4) {
+            return {
+                symbol : symbol.current.value,
+                measuringPoint : point.current.value,
+                l : lm.current.value,
+                d : dm.current.value,
+                p : p.current.value,
+            }
+        }
+        if(discriminator == 5) {
+            return {
+                symbol : symbol.current.value,
+                continuity : continuity.current.value,
+                rs : rs.current.value,
+                ra : ra.current.value,
+            }
+        }
+    }
+    function allFieldsAreCorrectBeforeSave(){
+        if(discriminator == 0) {
+            return cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) 
+            && isFieldValueCorrect(zs.current.value) && isFieldValueCorrect(uo.current.value)
+        }
+        if(discriminator == 1 && allPhases){
+            return isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
+            && isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l3pe.current.value)
+            && isFieldValueCorrect(l1n.current.value) && isFieldValueCorrect(l2n.current.value) && isFieldValueCorrect(l3n.current.value) 
+            && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)
+        }
+        if(discriminator == 1 && firstPhase){
+            return isFieldValueCorrect(l1pe.current.value) && isFieldValueCorrect(l1n.current.value)
+            && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)
+        }
+        if(discriminator == 1 && secondPhase){
+            return isFieldValueCorrect(l2pe.current.value) && isFieldValueCorrect(l2n.current.value)
+            && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)
+        }
+        if(discriminator == 1 && thirdPhase){
+            return isFieldValueCorrect(l3pe.current.value) && isFieldValueCorrect(l3n.current.value)
+            && isFieldValueCorrect(npe.current.value) && isFieldValueCorrect(ra.current.value)
+        }
+        if(discriminator == 2 && allPhases){
+            return isFieldValueCorrect(l1l2.current.value) && isFieldValueCorrect(l2l3.current.value) && isFieldValueCorrect(l3l1.current.value)
+            && isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(l3pen.current.value) 
+            && isFieldValueCorrect(ra.current.value)
+        }
+        if(discriminator == 2 && firstPhase){
+            return isFieldValueCorrect(l1pen.current.value) && isFieldValueCorrect(ra.current.value)
+        }
+        if(discriminator == 2 && secondPhase){
+            return isFieldValueCorrect(l2pen.current.value) && isFieldValueCorrect(ra.current.value)
+        }
+        if(discriminator == 2 && thirdPhase){
+            return isFieldValueCorrect(l3pen.current.value) && isFieldValueCorrect(ra.current.value)
+        }
+        if(discriminator == 3){
+            return cutout.current.value !== '' && type.current.value !== '' && isFieldValueCorrect(iNom.current.value) && isFieldValueCorrect(ia.current.value)
+            && isFieldValueCorrect(ta.current.value) && isFieldValueCorrect(trcd.current.value) && isFieldValueCorrect(ub.current.value)
+             && isFieldValueCorrect(ui.current.value)
+        }
+        if(discriminator == 4){
+            return isFieldValueCorrect(lm.current.value) && isFieldValueCorrect(dm.current.value) && isFieldValueCorrect(p.current.value)
+        }
+        if(discriminator == 5){
+            return continuity.current.value !== '' && isFieldValueCorrect(rs.current.value) && isFieldValueCorrect(ra.current.value)
+        }
     }
     function setUseRefsValues(entryToUpdate) {
 

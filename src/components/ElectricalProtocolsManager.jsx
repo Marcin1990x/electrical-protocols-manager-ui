@@ -12,7 +12,7 @@ import GeneratePdfComponent from "./GeneratePdfComponent"
 import HeaderComponent from "./HeaderComponent"
 import ErrorComponent from "./ErrorComponent"
 import ExitComponent from "./ExitComponent"
-import EditMeasurementComponent from "./EditMeasurementComponent"
+import EditMeasurementComponent from "./EditMeasurementComponent/EditMeasurementComponent"
 
 export default function ElectricalProtocolsManager() {
 
