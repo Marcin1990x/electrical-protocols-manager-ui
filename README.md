@@ -31,6 +31,7 @@ I'm focusing on the backend site.
 - adding 6 types of different measurements to room: each measurement contains of general
   measurement data and measurement entries with measured values and automatically calculated
   results
+- editing all added measurements (new feature 18.01.2024)
 - adding electricians to application which can be later add to protocol
 - adding title page information about measurements condition to protocol
 - generating PDF protocol file with preview in application
