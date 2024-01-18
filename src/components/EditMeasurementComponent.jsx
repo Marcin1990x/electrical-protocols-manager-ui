@@ -645,33 +645,37 @@ export default function EditMeasurementComponent() {
                 showError('Wypełnij wszystkie pola.')
             }
         }
-        // if(discriminator == 4) {
-        //     const newSoilResistanceEntry = {
-        //         symbol : symbol.current.value,
-        //         measuringPoint : point.current.value,
-        //         l : lm.current.value,
-        //         d : dm.current.value,
-        //         p : p.current.value,
-        //     }
-        //     if(isFieldValueCorrect(lm.current.value) && isFieldValueCorrect(dm.current.value) && isFieldValueCorrect(p.current.value)) {
-        //         addEntryLogic(newSoilResistanceEntry)           
-        //     } else {
-        //         showError('Wypełnij wszystkie pola.')
-        //     }
-        // }
-        // if(discriminator == 5) {
-        //     const newContinuityOfSmallResistanceEntry = {
-        //         symbol : symbol.current.value,
-        //         continuity : continuity.current.value,
-        //         rs : rs.current.value,
-        //         ra : ra.current.value,
-        //     }
-        //     if(continuity.current.value !== '' && isFieldValueCorrect(rs.current.value) && isFieldValueCorrect(ra.current.value)) {
-        //         addEntryLogic(newContinuityOfSmallResistanceEntry)           
-        //     } else {
-        //         showError('Wypełnij wszystkie pola.')
-        //     }
-        // }
+        if(discriminator == 4) {
+            const updatedSoilResistanceEntry = {
+                symbol : symbol.current.value,
+                measuringPoint : point.current.value,
+                l : lm.current.value,
+                d : dm.current.value,
+                p : p.current.value,
+            }
+            if(isFieldValueCorrect(lm.current.value) && isFieldValueCorrect(dm.current.value) && isFieldValueCorrect(p.current.value)) {
+                updateEntryLogic(updatedSoilResistanceEntry)  
+                setEditEntryOn(false)    
+                setPhaseSelectorDisable(false)          
+            } else {
+                showError('Wypełnij wszystkie pola.')
+            }
+        }
+        if(discriminator == 5) {
+            const updatedContinuityOfSmallResistanceEntry = {
+                symbol : symbol.current.value,
+                continuity : continuity.current.value,
+                rs : rs.current.value,
+                ra : ra.current.value,
+            }
+            if(continuity.current.value !== '' && isFieldValueCorrect(rs.current.value) && isFieldValueCorrect(ra.current.value)) {
+                updateEntryLogic(updatedContinuityOfSmallResistanceEntry)  
+                setEditEntryOn(false)    
+                setPhaseSelectorDisable(false)       
+            } else {
+                showError('Wypełnij wszystkie pola.')
+            }
+        }
     }
     function handleUpdateEntryBtn(entryId) {
 
@@ -731,6 +735,17 @@ export default function EditMeasurementComponent() {
             trcd.current.value = entryToUpdate.trcd
             ub.current.value = entryToUpdate.ub
             ui.current.value = entryToUpdate.ui
+        }
+        if(discriminator == 4) {
+            point.current.value = entryToUpdate.measuringPoint
+            lm.current.value = entryToUpdate.l
+            dm.current.value = entryToUpdate.d
+            p.current.value = entryToUpdate.p
+        }
+        if(discriminator == 5) {
+            continuity.current.value = entryToUpdate.continuity
+            ra.current.value = entryToUpdate.ra
+            rs.current.value = entryToUpdate.rs
         }
     
     }
